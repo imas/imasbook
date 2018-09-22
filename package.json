@@ -1,0 +1,30 @@
+{
+  "name": "markdown-css-typesetting",
+  "version": "1.0.0",
+  "description": "markDownとCSSで組版するテンプレートです",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx grunt && npx savepdf dist/",
+    "preview": "npx grunt && npx savepdf --preview dist/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takanakahiko/markdown-css-typesetting.git"
+  },
+  "author": "",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/takanakahiko/markdown-css-typesetting/issues"
+  },
+  "homepage": "https://github.com/takanakahiko/markdown-css-typesetting#readme",
+  "devDependencies": {
+    "grunt": "^1.0.3",
+    "grunt-contrib-connect": "^2.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-html-build": "^0.7.1",
+    "grunt-markdown": "^0.7.0",
+    "viola-savepdf": "^1.2.6"
+  }
+}
