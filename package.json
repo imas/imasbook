@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "grunt && savepdf dist/ -s 182mm,257mm",
-    "preview": "grunt && savepdf dist/ -s 182mm,257mm --preview"
+    "build": "grunt && savepdf dist/ -s 148mm,210mm",
+    "preview": "grunt && savepdf dist/ -s 148mm,210mm --preview"
   },
   "repository": {
     "type": "git",

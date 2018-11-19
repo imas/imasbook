@@ -147,7 +147,7 @@ h1::before {
   /* sizeは印刷するページの大きさを指定します。
     * 下のような幅と高さの指定以外にも、A4やJIS-B5などが指定できます。
     */
-  size: 182mm 257mm;
+  size: 148mm 210mm;
   /* @bottom-leftはページの左下の疑似要素について指定する特別なルールです。
     * これ以外にも、@top-centerなどが指定できます。
     * 参考: https://www.w3.org/TR/css3-page/#margin-boxes
