@@ -9,11 +9,11 @@ html, html * {
   */
 
 body {
-  margin: 50px auto;
-  padding: 0 40px;
+  margin: 30px auto;
+  padding: 0 20px;
   max-width: 660px;
   font-family: 'ipag';
-  font-size: 16px;
+  font-size: 11px;
   letter-spacing: 0.02em;
   line-height: 1.7;
   /* word-breakは英単語の改行ルールを指定します */
@@ -27,7 +27,7 @@ body {
 p {
   margin: 24px 0;
   /* text-indentは行頭の空白のサイズを設定します */
-  text-indent: 1em;
+  text-indent: 0.5em;
 }
 
 h1, h2, h3, h4, h5 {
@@ -116,7 +116,7 @@ h1::before {
 
 @media print {
   body {
-    font-size: 14px;
+    font-size: 11px;
     /* widows, orhpansは改ページで文章が分断された時に
       * 先頭（末尾）の行を最低何行確保するかを指定します。
       */
@@ -159,11 +159,11 @@ h1::before {
       * 何も表示させない場合は空文字（''）を指定してください。
       */
     content: counter(page);
-    font-size: 12px;
+    font-size: 9px;
   }
   @bottom-right {
     content: 'テストテストテストテスト';
-    font-size: 12px;
+    font-size: 9px;
   }
 }
 
@@ -172,11 +172,11 @@ h1::before {
   */
 
 @page :right {
-  margin: 17mm 15mm 23mm 20mm;
+  margin: 10mm 10mm 15mm 12mm;
 }
 
 @page :left {
-  margin: 17mm 20mm 23mm 15mm;
+  margin: 10mm 12mm 15mm 10mm;
 }
 
 pre {
