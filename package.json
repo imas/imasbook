@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx grunt && npx savepdf dist/",
-    "preview": "npx grunt && npx savepdf --preview dist/"
+    "build": "grunt && savepdf dist/ -s 182mm,257mm",
+    "preview": "grunt && savepdf dist/ -s 182mm,257mm --preview"
   },
   "repository": {
     "type": "git",
