@@ -1,5 +1,7 @@
 # スコアを用いたライブの予習セットリスト自動生成の試み
 
+## Investigation of Automatically Generation of Set List for Preparation
+
 ## はじめに
 
 ｢アイドルマスター シンデレラガールズ｣は, バンダイナムコエンターテインメントとCygamesが開発/運営するソーシャルゲームである.
