@@ -16,6 +16,9 @@ module.exports = function (grunt) {
                 ],
                 options: {
                     template: 'templates/section.jst',
+                    markdownOptions: {
+                        gfm: true
+                    }
                 }
             }
         },

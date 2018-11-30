@@ -1,4 +1,4 @@
-# アイマス楽曲を歌詞解析してみた話 ～輝きの向こう側に見えたもの～
+# アイマス楽曲を歌詞解析してみた話<br>～輝きの向こう側に見えたもの～
 
 ## はじめに
 
@@ -32,6 +32,8 @@
 今回、自分はLyrics Master(\*1)というソフトを用いて、2018年現在声優が決まっている全アイドルについてアーティスト検索を行い、該当する曲の歌詞を収集しました。
 また、検索ノイズが激しいアイドルや、一部特殊な楽曲やアイドルは特別に下のように検索/整理を行いました。
 
+<footer>\*1 : Lyrics Master http://www.kenichimaehashi.com/lyricsmaster/</footer>
+
 - ロコ
     - `ロコ 中村温姫`として検索
 - ジュリア
@@ -50,7 +52,13 @@
 また、各種データの下処理や自然言語処理には、Rubyでプログラムを書いて行っています。
 ライブラリはMeCab(\*2)とCaboCha(\*3)を使用し、辞書はIPA辞書をベースにしたものを使用しました。
 
+<footer>\*2 : MeCab: Yet Another Part-of-Speech and Morphological Analyzer http://taku910.github.io/mecab/</footer>
+<footer>\*3 : CaboCha: Yet Another Japanese Dependency Structure Analyzer http://taku910.github.io/cabocha/</footer>
+
 詳しいソースコードはGitHub上で公開しています。(\*4)
+
+<footer>\*4 : imas-lyric-analyzer https://github.com/kiridaruma/imas-lyric-analyser</footer>
+
 
 解析の対象となる楽曲の範囲ですが、これを書いている2018年11月末現在時点で何らかの形で楽曲が公開され、CD販売/楽曲配信が行われている曲が対象となります。
 なので、また数年後にもう一度解析を行えばまた違った結果が出てくる可能性があります。
@@ -65,7 +73,7 @@ Lyrics Masterでは一般社団法人日本音楽著作権協会(JASRAC)から�
 
 ## 解析結果
 
-## 結果の見方
+### 結果の見方
 
 解析結果ですが、
 
@@ -419,14 +427,3 @@ moon : 2
 今回用いたスクリプトは全てGitHub上に公開してあります。(\*4)
 さらに詳細な内容について聞きたいという方は、Twitter@kiridarumaまたはwww2480www@gmail.comまでご連絡いただければ出来る範囲内でお手伝い致します。
 これを機に、あなたも歌詞解析を通してアイマスを科学してみませんか？
-
-## 引用・リンク集
-
-1. Lyrics Master
-    - http://www.kenichimaehashi.com/lyricsmaster/
-1. MeCab: Yet Another Part-of-Speech and Morphological Analyzer 
-    - http://taku910.github.io/mecab/
-1. CaboCha: Yet Another Japanese Dependency Structure Analyzer
-    - http://taku910.github.io/cabocha/
-1. imas-lyric-analyzer
-    - https://github.com/kiridaruma/imas-lyric-analyser

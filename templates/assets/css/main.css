@@ -25,17 +25,9 @@ body {
 }
 
 p {
-  margin: 24px 0;
+  margin: 0.5em 0;
   /* text-indentは行頭の空白のサイズを設定します */
   text-indent: 0.5em;
-}
-
-h1, h2, h3, h4, h5 {
-  /* break-before（break-after）はタグの直前（直後）の
-    * 改ページのルールを指定します。
-    * 以下の例では、タグの直後に新しいページが始まらないように指定しています。
-    */
-  break-after: avoid;
 }
 
 article {
@@ -53,7 +45,7 @@ article {
 img {
   display: block;
   margin: 10px auto;
-  max-width: 100%;
+  max-width: 90%;
   box-shadow: 0px 4px 8px 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -102,13 +94,6 @@ article {
   counter-reset: fig footnote;
 }
 
-h1::before {
-  /* counter(section)とすることで、その地点での
-    * sectionカウンタの値を表示させます。
-    */
-  content: counter(section) '. ';
-}
-
 /* @mediaルールは特定の環境でのみ適用されるルールです。
   * printを指定すると印刷時にのみ適用され、
   * screenを指定すると画面表示時のみ適用されます。
@@ -147,36 +132,37 @@ h1::before {
   /* sizeは印刷するページの大きさを指定します。
     * 下のような幅と高さの指定以外にも、A4やJIS-B5などが指定できます。
     */
-  size: 148mm 210mm;
-  /* @bottom-leftはページの左下の疑似要素について指定する特別なルールです。
-    * これ以外にも、@top-centerなどが指定できます。
-    * 参考: https://www.w3.org/TR/css3-page/#margin-boxes
-    */
+  size: A5;
+
+  marks: crop cross;
+  bleed: 4mm;
+  
+}
+
+@page:left {
+  margin: 10mm 12mm 15mm 10mm;
+
   @bottom-left {
-    /* contentでページの左下に追加するテキストを指定します。
-      * counter(page)とすると、そのページのページ番号が指定できます。
-      * contentは必ず指定する必要があるので、
-      * 何も表示させない場合は空文字（''）を指定してください。
-      */
     content: counter(page);
     font-size: 9px;
   }
   @bottom-right {
-    content: 'テストテストテストテスト';
+    content: "start: " string(heading, start); 
     font-size: 9px;
   }
+
 }
-
-/* @pageに:rightや:leftセレクタを追加すると
-  * 右側（左側）のページだけに適用できます。
-  */
-
-@page :right {
+@page:right {
   margin: 10mm 10mm 15mm 12mm;
-}
 
-@page :left {
-  margin: 10mm 12mm 15mm 10mm;
+  @bottom-left {
+    content: "start: " string(heading, start); 
+    font-size: 9px;
+  }
+  @bottom-right {
+    content: counter(page);
+    font-size: 9px;
+  }
 }
 
 pre {
@@ -186,4 +172,26 @@ pre {
   line-height: 1.45;
   background-color: #f6f8fa;
   border-radius: 3px;
+}
+
+table{
+  margin:0 auto;
+  border-spacing: 2px 0px;
+}
+td,th{
+  padding:2px;
+}
+th{
+  color:#fff;
+  background:#005ab3;
+}
+table tr:nth-child(odd) td{
+  background:#e6f2ff;
+}
+table tr:last-child td{
+  border-bottom: #005ab3 1px solid;
+}
+
+footer {
+  float: footnote;
 }
