@@ -12,13 +12,21 @@
 　im@sparqlはLinked Open Data(LOD)の形を取っています。そのため誰でもデータベースへアクセスすることができます。しかし、そのままでは使えません。「SPARQL」というSQLに似たクエリ言語を通じてアクセスする必要があります。SPARQLの言語仕様やLODの考え方については以下をご覧ください。  
 <!-- ここ賛否両論 -->
 <!-- っていうかURLどうしようかしら -->
-・SPARQL 1.1 Query Language(\*1)  
-・SPARQL 1.1クエリ言語(\*2)  
-・SPARQL入門(\*3)
+
+- SPARQL 1.1 Query Language(\*1)
+- SPARQL 1.1クエリ言語(\*2)  
+- SPARQL入門(\*3)
+
+<footer>\*1：https://www.w3.org/TR/2013/REC-sparql11-query-20130321/</footer>
+<footer>\*2：http://www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/REC-sparql11-query-20130321.html</footer>
+<footer>\*3：https://www.slideshare.net/takemikami/sparql-123607069</footer>
 
 <!-- <big><big>4.2 クエリを打ってみる</big></big>　　　はじめてのSPARQL   -->
 ## クエリを打ってみる
 　本章では簡単なクエリを通じて、SPARQLの構文の基礎を学びます。結果の確認は、im@sparqlのサイト(\*4)を使うと簡単です。まずはこちらのクエリです。
+
+<footer>\*4：https://sparql.crssnky.xyz/imas/</footer>
+
 ```sparql
 PREFIX schema: <http://schema.org/>
 PREFIX imas: <https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#>
@@ -62,6 +70,8 @@ WHERE {
 と、`;`で文を繋げることで同じ主語を継続して指定できます。取得対象の指定は、取得したい部分を`?`から始まる単語で変数とします。ワイルドカードのようなものです。主語述語目的語どこにでも配置でき、例のように英数字以外の文字も使えます。一方、固定したいものはURIなどの形で表現します。今回の場合、各目的語に対して当てはまるものは一つしか無いので、各変数は一つの答えのみを持ちます。当てはまるものが複数ある場合は、全ての組み合わせ(nCr)を配列にして返します。  
 　最初に記したとおり、主語と述語にはほぼ必ず**URI(Uniform Resource Identifier)**が使用されます。`imasrdf:Shimamura_Uzuki`や`http://schema.org/name`です。Identifierという通り、なにかを区別して表現するものです。`imasrdf:Shimamura_Uzuki`はim@sparqlで島村卯月のインスタンスを表し、`http://schema.org/name`はschema.org(\*5)で名称を表す述語となっています。
 
+<footer>\*5：http://schema.org/ ：well knowな語彙一覧サイト</footer>
+
 <!-- <big><big>4.3 クエリをつなげてみる</big></big>　　　SPARQLの醍醐味   -->
 ## クエリをつなげてみる
 　4.2章では目的語を取得するクエリを例に取りましたが、目的語を固定して主語や述語を取得するクエリを作ることもできます。例えば...
@@ -72,7 +82,10 @@ WHERE {
 }
 ```
 というクエリなんてどうでしょうか。URIが含まれていないのでもちろんPrefixは必要ないです。後ろに付いている`@ja`はそのオブジェクトの言語を示します。どういうことか、im@sparqlが動いているApache Jena Fuseki2(\*6)では、文字列型と言語が指定されたものは区別されるようです。そのため、(よくある)文字列を示す`"`だけでなく、日本語の文字列だと示すものを`@`付きで指定してあげる必要があります。ちなみに、なぜ`島村卯月`が普通の文字列ではなく日本語としているのかというと、今後他の言語で示されるかもしれないからです。(InitialiMess@geもやりましたし北米へは何度も出演してますからね！)  
-　このクエリが取得するのは目的語が`"島村卯月"@ja`のものです。残念ながらim@sparqlには１つ目のクエリで固定した、島村卯月のインスタンスにあるschema:name(名称)にしかありません。結果は一つです。しかしこれは好都合です。取得したこの主語を使ってさらに別の情報を取得しましょう。  
+　このクエリが取得するのは目的語が`"島村卯月"@ja`のものです。残念ながらim@sparqlには１つ目のクエリで固定した、島村卯月のインスタンスにあるschema:name(名称)にしかありません。結果は一つです。しかしこれは好都合です。取得したこの主語を使ってさらに別の情報を取得しましょう。
+
+<footer>\*6：https://jena.apache.org/documentation/fuseki2/</footer>
+
 ```SPARQL
 SELECT * 
 WHERE {
@@ -94,10 +107,4 @@ WHERE {
 　クエリを打ち、そこからプログラムが利用できる形で情報を取得できたので、これであなたもim@sparql経験者です。いわゆる`HelloWorld!`より何歩も進んだ存在でしょう。  
 　im@sparqlはアイマスワールドをデータ資源へと写像した存在です。豊富なデータが、あなたのアイマスエンジニアリング力だけでなく、SPARQLという言語の習得の手助けとなるでしょう。しかし、このデータベースは完全ではありません。途中まで揃えてあるデータや、これから新しくアイマスワールドに加えらた情報を追加しなければなりません。im@sparqlの基になっているRDFファイルがGitHub上(\*7)で管理されています。みなさんのお力添えをお願いします。なにもPullReqを飛ばせとは言いません。issueにてマサカリを飛ばしていただくだけで結構です。まずはご自分の担当アイドル周りからでも、情報をデータベースへ登録してみませんか？
 
-<footer>\*1：https://www.w3.org/TR/2013/REC-sparql11-query-20130321/</footer>
-<footer>\*2：http://www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/REC-sparql11-query-20130321.html</footer>
-<footer>\*3：https://www.slideshare.net/takemikami/sparql-123607069</footer>
-<footer>\*4：https://sparql.crssnky.xyz/imas/</footer>
-<footer>\*5：http://schema.org/ ：well knowな語彙一覧サイト</footer>
-<footer>\*6：https://jena.apache.org/documentation/fuseki2/</footer>
 <footer>\*7：https://github.com/imas/imasparql/</footer>
