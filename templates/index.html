@@ -8,6 +8,7 @@
   <title></title>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
     crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:900&amp;subset=japanese" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/font.css">
   <link rel="stylesheet" href="assets/css/main.css">
   <link rel="stylesheet" href="assets/css/head.css">
@@ -17,52 +18,78 @@
 
 <body>
   <div class="firstpage">
-    <h1>週刊 iM@Study 2018/12号</h1>
-    <h2>-iM@study 合同誌-</h2>
-    <p>著 : iM@study有志</p>
-    <p>発行 : iM@study</p>
+    <h2>iM@study 合同誌</h2>
+    <h1>週刊</h1>
+    <h1>iM@Study <small>2018/12号</small></h1>
+    <div class="information_cont">
+        <div class="information">
+          <p class="title">著</p>
+          <p>iM@study有志</p>
+        </div>
+        <div class="information">
+          <p class="title">発行</p>
+          <p>iM@study</p>
+        </div>
+    </div>
   </div>
   <div class="TOC">
     <ul>
       <li>
-        <div class="author">
+        <div class="index_item">
           <figure class="image">
-            <img alt='avatar' src='{{site.url}}{{site.baseurl}}/{{author.image}}' class='avatar avatar-96 photo' height='96'
-              width='96' />
+            <img alt='icon' src='assets/img/takanakahiko.jpg' class='avatar'/>
           </figure>
           <div class="text">
-            <h2 class="name">{{ author.display_name }}</h2>
-            <div class="description">
-              <p>{{ author.description }}</p>
-            </div>
-            <ul class="links">
-              {% if author.twitter %}
-              <li><a href="https://www.twitter.com/{{author.twitter}}"><i class="svg-icon twitter"></i></a></li>
-              {% endif %}
-              {% if author.facebook %}
-              <li><a href="https://www.facebook.com/{{author.facebook}}"><i class="svg-icon facebook"></i></a></li>
-              {% endif %}
-            </ul>
+            <h2>アイマス楽曲を歌詞解析してみた話<br><span class="right">～輝きの向こう側に見えたもの～</span></h2>
+            <p class="author">@kiridaruma</p><span class='page'>3</span><!-- ページ修正 -->
           </div>
         </div>
-        <span class="title">アイマス楽曲を歌詞解析してみた話 ～輝きの向こう側に見えたもの～</span>
-        <span>3</span><!-- ページ修正 -->
       </li>
       <li>
-        <span class="title">アイドルと学ぶホームページの作り方</span>
-        <span>13</span><!-- ページ修正 -->
+        <div class="index_item">
+          <figure class="image">
+            <img alt='icon' src='assets/img/takanakahiko.jpg' class='avatar'/>
+          </figure>
+          <div class="text">
+            <h2>アイドルと学ぶホームページの作り方</h2>
+            <p class="author">@mh35</p><span class='page'>3</span><!-- ページ修正 -->
+          </div>
+        </div>
       </li>
       <li>
-        <span class="title">李衣菜チャンのヘッドホンアンプをつくるにゃ！</span>
-        <span>27</span><!-- ページ修正 -->
+        <div class="index_item">
+          <figure class="image">
+            <img alt='icon' src='assets/img/takanakahiko.jpg' class='avatar'/>
+          </figure>
+          <div class="text">
+            <h2>李衣菜チャンの<br><span class="right">ヘッドホンアンプをつくるにゃ！</span></h2>
+            <p class="author">@yuki-hevx86</p><span class='page'>3</span><!-- ページ修正 -->
+          </div>
+        </div>
       </li>
       <li>
-        <span class="title">im@sparql入門</span>
-        <span>37</span><!-- ページ修正 -->
-      <li>
-        <span class="title">スコアを用いたライブの予習セットリスト自動生成の試み</span>
-        <span>43</span><!-- ページ修正 -->
+        <div class="index_item">
+          <figure class="image">
+            <img alt='icon' src='assets/img/takanakahiko.jpg' class='avatar'/>
+          </figure>
+          <div class="text">
+            <h2>im@sparql入門</h2>
+            <p class="author">@crssnky</p><span class='page'>3</span><!-- ページ修正 -->
+          </div>
+        </div>
       </li>
+      <li>
+        <div class="index_item">
+          <figure class="image">
+            <img alt='icon' src='assets/img/takanakahiko.jpg' class='avatar'/>
+          </figure>
+          <div class="text">
+            <h2>スコアを用いた<br><span class="right">ライブの予習セットリスト自動生成の試み</span></h2>
+            <p class="author">@papix</p><span class='page'>3</span>
+          </div>
+        </div>
+      </li>
+
     </ul>
   </div>
   <!-- build:section recursive views -->

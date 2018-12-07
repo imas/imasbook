@@ -1,8 +1,5 @@
 article h1,article h2,article h3,article h4,article h5 {
-  /* break-before（break-after）はタグの直前（直後）の
-    * 改ページのルールを指定します。
-    * 以下の例では、タグの直後に新しいページが始まらないように指定しています。
-    */
+  color: #494949;/*文字色*/
   break-after: avoid;
 }
 
@@ -34,7 +31,6 @@ article h1:after {/*タブ*/
 
 article h2 {
   padding: 0.25em 0.5em;/*上下 左右の余白*/
-  color: #494949;/*文字色*/
   background: transparent;/*背景透明に*/
   border-left: solid 5px #7db4e6;/*左線*/
 }
