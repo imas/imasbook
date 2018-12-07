@@ -1,66 +1,99 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title></title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/font.css">
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/head.css">
-    <link rel="stylesheet" href="assets/css/toc.css">
-    <link rel="stylesheet" href="assets/css/okuduke.css">
-  </head>
-  <body>
-    <div class="firstpage">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title></title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="assets/css/font.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/head.css">
+  <link rel="stylesheet" href="assets/css/toc.css">
+  <link rel="stylesheet" href="assets/css/okuduke.css">
+</head>
+
+<body>
+  <div class="firstpage">
+    <h1>週刊 iM@Study 2018/12号</h1>
+    <h2>-iM@study 合同誌-</h2>
+    <p>著 : iM@study有志</p>
+    <p>発行 : iM@study</p>
+  </div>
+  <div class="TOC">
+    <ul>
+      <li>
+        <div class="author">
+          <figure class="image">
+            <img alt='avatar' src='{{site.url}}{{site.baseurl}}/{{author.image}}' class='avatar avatar-96 photo' height='96'
+              width='96' />
+          </figure>
+          <div class="text">
+            <h2 class="name">{{ author.display_name }}</h2>
+            <div class="description">
+              <p>{{ author.description }}</p>
+            </div>
+            <ul class="links">
+              {% if author.twitter %}
+              <li><a href="https://www.twitter.com/{{author.twitter}}"><i class="svg-icon twitter"></i></a></li>
+              {% endif %}
+              {% if author.facebook %}
+              <li><a href="https://www.facebook.com/{{author.facebook}}"><i class="svg-icon facebook"></i></a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+        <span class="title">アイマス楽曲を歌詞解析してみた話 ～輝きの向こう側に見えたもの～</span>
+        <span>3</span><!-- ページ修正 -->
+      </li>
+      <li>
+        <span class="title">アイドルと学ぶホームページの作り方</span>
+        <span>13</span><!-- ページ修正 -->
+      </li>
+      <li>
+        <span class="title">李衣菜チャンのヘッドホンアンプをつくるにゃ！</span>
+        <span>27</span><!-- ページ修正 -->
+      </li>
+      <li>
+        <span class="title">im@sparql入門</span>
+        <span>37</span><!-- ページ修正 -->
+      <li>
+        <span class="title">スコアを用いたライブの予習セットリスト自動生成の試み</span>
+        <span>43</span><!-- ページ修正 -->
+      </li>
+    </ul>
+  </div>
+  <!-- build:section recursive views -->
+  <!-- /build -->
+  <section class="okuduke">
+    <header>
       <h1>週刊 iM@Study 2018/12号</h1>
-      <h2>-iM@study 合同誌-</h2>
-      <p>著 : iM@study有志</p>
-      <p>発行 : iM@study</p>
-    </div>
-    <div class="TOC">
-      <ul>
-          <li>
-              <span class="title">アイマス楽曲を歌詞解析してみた話 ～輝きの向こう側に見えたもの～</span>
-              <span>3</span><!-- ページ修正 -->
-          </li>
-          <li>
-              <span class="title">アイドルと学ぶホームページの作り方</span>
-              <span>13</span><!-- ページ修正 -->
-          </li>
-          <li>
-              <span class="title">李衣菜チャンのヘッドホンアンプをつくるにゃ！</span>
-              <span>27</span><!-- ページ修正 -->
-          </li>
-          <li>
-              <span class="title">im@sparql入門</span>
-              <span>37</span><!-- ページ修正 -->
-          <li>
-              <span class="title">スコアを用いたライブの予習セットリスト自動生成の試み</span>
-              <span>43</span><!-- ページ修正 -->
-          </li>
+      <p>- iM@study 合同誌 -</p>
+    </header>
+    <div>
+      <ul class="editions">
+        <li>2018年12月30日初刷発行</li>
       </ul>
+      <br>
+      <table>
+        <tr>
+          <th>著者</th>
+          <td>iM@study有志</td>
+        </tr>
+        <tr>
+          <th>印刷・製本</th>
+          <td>有限会社 ねこのしっぽ</td>
+        </tr>
+        <tr>
+          <th>発行・販売</th>
+          <td>iM@study</td>
+        </tr>
+      </table>
     </div>
-    <!-- build:section recursive views -->
-    <!-- /build -->
-    <section class="okuduke">
-      <header>
-          <h1>週刊 iM@Study 2018/12号</h1>
-          <p>- iM@study 合同誌 -</p>
-      </header>
-      <div>
-        <ul class="editions">
-            <li>2018年12月30日初刷発行</li>
-        </ul>
-        <br>    
-        <table>
-          <tr><th>著者</th><td>iM@study有志</td></tr>
-          <tr><th>印刷・製本</th><td>有限会社 ねこのしっぽ</td></tr>
-          <tr><th>発行・販売</th><td>iM@study</td></tr>
-        </table>
-      </div>
-      <p class="printed_in">Printed in Japan</p>
-    </section>
-  </body>
+    <p class="printed_in">Printed in Japan</p>
+  </section>
+</body>
+
 </html>
