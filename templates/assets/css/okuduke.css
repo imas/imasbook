@@ -8,17 +8,16 @@
     font-variant-caps: normal;
     text-align: justify;
     break-after: page;
-    break-before: page;
     margin-top: auto;
     display: flex;
     flex-direction: column;
-    height: 100%;
     break-inside: avoid;
-    unicode-bidi: normal
+    unicode-bidi: normal;
+    margin-top: 40px; 
 }
 
 .okuduke header{
-    margin-top: 140mm; display: block; unicode-bidi: normal;
+    display: block; unicode-bidi: normal;
 }
 
 .okuduke header h1{
