@@ -16,7 +16,6 @@ article h1{
   
 article h1:after {/*タブ*/
   position: absolute;
-  font-family: "Font Awesome 5 Free",'Quicksand','Avenir','Arial',sans-serif;
   content: 'section ' counter(section);
   background: #80c8d1;
   color: #fff;

@@ -3,7 +3,6 @@
     color: rgb(0, 0, 0);
     line-height: 1.6;
     font-weight: 100;
-    font-family: Fnt_1, "Source Han Sans", "ヒラギノ角ゴ ProN W3", HiraKakuProN-W3, "ヒラギノ角ゴ Pro W3", HiraKakuPro-W3, sans-serif;
     font-style: normal;
     font-variant-ligatures: normal;
     font-variant-caps: normal;
@@ -23,7 +22,7 @@
 }
 
 .okuduke header h1{
-    font-family: Fnt_1, "Source Han Sans", "ヒラギノ角ゴ ProN W3", HiraKakuProN-W3, "ヒラギノ角ゴ Pro W3", HiraKakuPro-W3, Fnt_3, Rokkitt, Fnt_1, "Source Han Sans", serif; line-height: 1.2; hyphens: none; text-align: left; font-weight: 300; break-after: avoid; word-break: keep-all; word-wrap: break-word; overflow-wrap: break-word; font-size: 17px; margin: 2em 0px 0px; color: rgb(0, 0, 0); padding: 0px; display: block; unicode-bidi: normal;
+    line-height: 1.2; hyphens: none; text-align: left; font-weight: 300; break-after: avoid; word-break: keep-all; word-wrap: break-word; overflow-wrap: break-word; font-size: 17px; margin: 2em 0px 0px; color: rgb(0, 0, 0); padding: 0px; display: block; unicode-bidi: normal;
 }
 
 .okuduke header p{

@@ -4,7 +4,7 @@
 }
 
 .firstpage *{
-  font-family: 'Noto Sans JP', sans-serif;
+/*  font-family: 'Noto Sans JP';*/
   line-height: 1.2em;
   margin: 0;
 }
@@ -60,7 +60,6 @@
 .TOC:after {
   text-align: center;
   position: absolute;
-  font-family: "Font Awesome 5 Free",'Quicksand','Avenir','Arial',sans-serif;
   content: 'index';
   background: #80c8d1;
   color: #fff;
