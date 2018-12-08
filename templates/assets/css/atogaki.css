@@ -25,17 +25,10 @@
   margin: auto;
 }
 
-.atogaki h1{
-  text-align:center;
-  margin: 0;
-  font-weight: 900;
-  font-size: 20px;
-}
-
 .atogaki_item {
   display: flex;
-  margin: 10px 20px;
-  padding: 5px;
+  margin: 0px 20px;
+  padding: 10px 0px;
   border-bottom: solid 2px #80c8d1;
 }
 
@@ -89,14 +82,14 @@
 
 .atogaki_item .label {
   margin: 10px 0px;
-  margin-right: 10px;
+  margin-right: 5px;
   font-size: 8px;
 }
 
 .atogaki_item .label:before {
   width: 50px;
   margin: 0px 5px 5px 0;
-  padding:5px 10px;
+  padding:5px 5px;
   border-radius: 20px;
   background: #30b0d8;
   color: #fff;
