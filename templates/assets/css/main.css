@@ -12,7 +12,6 @@ body {
   margin: 30px auto;
   padding: 0 20px;
   max-width: 660px;
-  font-family: 'ipag';
   font-size: 11px;
   letter-spacing: 0.02em;
   line-height: 1.7;
@@ -24,7 +23,7 @@ body {
   overflow-wrap: break-word;
 }
 
-p {
+article p {
   margin: 0.5em 0;
   /* text-indentは行頭の空白のサイズを設定します */
   text-indent: 0.5em;
@@ -42,26 +41,26 @@ article {
   border-radius: 0.2em;
 }
 
-img {
+article img {
   display: block;
   margin: 10px auto;
-  max-width: 90%;
+  max-width: 80%;
   box-shadow: 0px 4px 8px 2px rgba(0, 0, 0, 0.2);
 }
 
-tr, th, td {
+article tr,article th,article td {
   /* break-insideはタグ途中の改ページのルールを指定します。
     * 以下の例では、タグの途中で新しいページが始まらないように指定しています。
     */
   break-inside: avoid;
 }
 
-hr {
+article hr {
   border: none;
   text-align: center;
 }
 
-hr::before {
+article hr::before {
   content: '';
   display: inline-block;
   width: 10px;
@@ -70,11 +69,11 @@ hr::before {
   background-color: black;
 }
 
-.top {
+article .top {
   font-size: 200%;
 }
 
-.logo {
+article .logo {
   margin-right: 16px;
 }
 
@@ -134,8 +133,8 @@ article {
     */
   size: A5;
 
-  marks: crop cross;
-  bleed: 4mm;
+  /* marks: crop cross;
+  bleed: 4mm; */
   
 }
 
@@ -146,26 +145,25 @@ article {
     content: counter(page);
     font-size: 9px;
   }
-  @bottom-right {
-    content: "start: " string(heading, start); 
-    font-size: 9px;
-  }
 
 }
 @page:right {
   margin: 10mm 10mm 15mm 12mm;
 
-  @bottom-left {
-    content: "start: " string(heading, start); 
-    font-size: 9px;
-  }
   @bottom-right {
     content: counter(page);
     font-size: 9px;
   }
 }
 
-pre {
+@page :first {
+	@bottom-left { content: normal; }
+	@bottom-right { content: normal; }
+	@top-center { content: normal; }
+}
+
+
+article pre {
   padding: 16px;
   overflow: auto;
   font-size: 85%;
@@ -174,24 +172,25 @@ pre {
   border-radius: 3px;
 }
 
-table{
+article table{
   margin:0 auto;
   border-spacing: 2px 0px;
 }
-td,th{
+article td,article th{
   padding:2px;
+  font-size: 0.5rem;
 }
-th{
+article th{
   color:#fff;
   background:#005ab3;
 }
-table tr:nth-child(odd) td{
+article table tr:nth-child(odd) td{
   background:#e6f2ff;
 }
-table tr:last-child td{
+article table tr:last-child td{
   border-bottom: #005ab3 1px solid;
 }
 
-footer {
+article footer {
   float: footnote;
 }

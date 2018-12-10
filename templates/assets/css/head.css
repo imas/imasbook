@@ -1,12 +1,9 @@
-h1, h2, h3, h4, h5 {
-  /* break-before（break-after）はタグの直前（直後）の
-    * 改ページのルールを指定します。
-    * 以下の例では、タグの直後に新しいページが始まらないように指定しています。
-    */
+article h1,article h2,article h3,article h4,article h5 {
+  color: #494949;/*文字色*/
   break-after: avoid;
 }
 
-h1{
+article h1{
   page-break-before: right;
   position: relative;
   border-top: solid 2px #80c8d1;
@@ -17,9 +14,8 @@ h1{
   margin: 1.5em 0 0.5em;
 }
   
-h1:after {/*タブ*/
+article h1:after {/*タブ*/
   position: absolute;
-  font-family: "Font Awesome 5 Free",'Quicksand','Avenir','Arial',sans-serif;
   content: 'section ' counter(section);
   background: #80c8d1;
   color: #fff;
@@ -32,20 +28,19 @@ h1:after {/*タブ*/
   letter-spacing: 0.05em;
 }
 
-h2 {
+article h2 {
   padding: 0.25em 0.5em;/*上下 左右の余白*/
-  color: #494949;/*文字色*/
   background: transparent;/*背景透明に*/
   border-left: solid 5px #7db4e6;/*左線*/
 }
 
-h3 {
+article h3 {
   position: relative;
   padding-left: 1.2em;/*アイコン分のスペース*/
   line-height: 1.4;
 }
   
-h3:before{
+article h3:before{
   break-after: avoid;
   font-family: "Font Awesome 5 Free";
   content: "\f00c";/*アイコンのユニコード*/
