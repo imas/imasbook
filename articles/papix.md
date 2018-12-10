@@ -60,7 +60,7 @@ https://idolmaster.jp/event/cinderella6th/information.php</footer>
 
 `title`は楽曲のタイトルであり, `performed_by`はその楽曲のオリジナルメンバー(歌ったアイドル)を表す. また, `meta`については楽曲が持つ属性を格納する. 例えば上記の例では, `is_winter`というメタデータが`true`になっており, これは冬をテーマにした楽曲であることを示す.
 
-メタデータについては, 今回は`is_sprintg`, `is_summer`, `is_autumn`, `is_winter`を用意した. これは, 昨今の｢THE IDOLM@STER CINDERELLA GIRLS MASTER SEASONS!｣シリーズ及び｢シンデレラガールズ劇場｣エンディングテーマにて四季をテーマにした楽曲が多かったこと, ｢THE IDOLM@STER CINDERELLA GIRLS 6thLIVE MERRY-GO-ROUNDOME!!!｣が合計4公演開催されること[2]が決まっており, 各公演で1つの季節をテーマにする可能性があったことが理由である.
+メタデータについては, 今回は`is_spring`, `is_summer`, `is_autumn`, `is_winter`を用意した. これは, 昨今の｢THE IDOLM@STER CINDERELLA GIRLS MASTER SEASONS!｣シリーズ及び｢シンデレラガールズ劇場｣エンディングテーマにて四季をテーマにした楽曲が多かったこと, ｢THE IDOLM@STER CINDERELLA GIRLS 6thLIVE MERRY-GO-ROUNDOME!!!｣が合計4公演開催されること[2]が決まっており, 各公演で1つの季節をテーマにする可能性があったことが理由である.
 
 <footer>\*2 : THE IDOLM@STER OFFICIAL WEB ｢開催概要│THE IDOLM@STER CINDERELLA GIRLS 6thLIVE｣, 2018年
 https://idolmaster.jp/event/cinderella6th/information.php</footer>
