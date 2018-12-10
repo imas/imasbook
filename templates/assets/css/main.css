@@ -133,8 +133,8 @@ article {
     */
   size: A5;
 
-  marks: crop cross;
-  bleed: 4mm;
+  /* marks: crop cross;
+  bleed: 4mm; */
   
 }
 
