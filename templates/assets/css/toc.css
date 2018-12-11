@@ -29,18 +29,18 @@
 
 .firstpage .information{
   display: inline-block;
-  width: 40%;
-  margin: 30px 10px;
+  width: 23%;
+  margin: 30px 5px;
   padding: 10px;
 }
 
 .firstpage .information p{
   margin: 0;
-  font-size: 20px;
+  font-size: 12px;
 }
 
 .firstpage .information .title{
-  font-size: 12px;
+  font-size: 7px;
 }
 
 .right{

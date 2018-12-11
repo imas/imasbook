@@ -1,4 +1,5 @@
 # im@sparql入門
+<p class="right">著:croMisa</p>
 
 <!-- 今のままでも良い気がする -->
 <center><big><big><big>im@sparql</big></big></big></center>

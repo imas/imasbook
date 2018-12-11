@@ -1,4 +1,5 @@
 # スコアを用いたライブの予習セットリスト自動生成の試み
+<p class="right">著:遠山 賢寿</p>
 
 ## Investigation of Automatically Generation of Set List for Preparation
 
