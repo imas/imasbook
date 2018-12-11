@@ -16,7 +16,7 @@ article h1{
   
 article h1:after {/*タブ*/
   position: absolute;
-  content: 'section ' counter(section);
+  content: 'Chapter ' counter(section);
   background: #80c8d1;
   color: #fff;
   left: 0px;
