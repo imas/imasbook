@@ -12,6 +12,11 @@ article h1{
   line-height: 1.4;
   padding: 0.4em 0.5em;
   margin: 1.5em 0 0.5em;
+  font-size: 190%;
+}
+
+article h1 .subtitle{
+  font-size: 10px;
 }
   
 article h1:after {/*タブ*/
