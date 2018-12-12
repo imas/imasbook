@@ -1,7 +1,5 @@
-# スコアを用いたライブの予習セットリスト自動生成の試み
+# スコアを用いたライブの予習セットリスト自動生成の試み 〜Investigation of Automatically Generation of Set List for Preparation〜
 <p class="right">著:遠山 賢寿</p>
-
-## Investigation of Automatically Generation of Set List for Preparation
 
 ## はじめに
 
@@ -12,7 +10,7 @@
 
 他方, 本作によって提供された楽曲について見ると, 2018年6月末時点で190曲が公開されているという調査結果がある[1]. ライブイベントの開催にあたって, 披露される可能性が高い楽曲を集めた楽曲集, いわゆる｢予習セットリスト｣を構築するにあたっては, 各公演について15名〜20名前後の出演者と既存の190曲を軸にして, ライブのテーマや過去の傾向などを考慮しつつ組み立てる必要がある. 予習セットリストを効率よく構築することができれば, より多くの時間をライブイベントの準備に充てることができる.
 
-<footer>\*1 : 天蛾, ｢アイドルマスターのオリジナル曲数を数えてみた・2018年6月｣ 天さんは今日もブルー, 2018年
+<footer>\*1 : 天蛾 ｢アイドルマスターのオリジナル曲数を数えてみた・2018年6月｣ 天さんは今日もブルー, 2018年
 http://blog.bellmega.blue/post/2000</footer>
 
 そこで本稿では, 予習セットリストの効率的な構築を狙い, その第一歩として単純なスコアの算出による予習セットリストの自動生成を試みた.
@@ -26,7 +24,7 @@ http://blog.bellmega.blue/post/2000</footer>
 
 出演者データについては, ｢THE IDOLM@STER CINDERELLA GIRLS 6thLIVE MERRY-GO-ROUNDOME!!!｣におけるメットライフドームのDAY1公演に出演した27名(一ノ瀬志希, 三村かな子, 佐藤心, 前川みく, 向井拓海, 城ヶ崎美嘉, 城ヶ崎莉嘉, 塩見周子, 多田李衣菜, 大和亜季, 大槻唯, 姫川友紀, 安部菜々, 宮本フレデリカ, 小早川紗枝, 島村卯月, 川島瑞樹, 木村夏樹, 本田未央, 松永涼, 棟方愛海, 渋谷凛, 白坂小梅, 相葉夕美, 藤本里奈, 速水奏, 難波笑美)及びDAY2公演に出演した27名(アナスタシア, 一ノ瀬志希, 二宮飛鳥, 佐々木千枝, 佐藤心, 双葉杏, 向井拓海, 城ヶ崎美嘉, 城ヶ崎莉嘉, 塩見周子, 安部菜々, 宮本フレデリカ, 小早川紗枝, 島村卯月, 新田美波, 早坂美玲, 木村夏樹, 本田未央, 橘ありす, 渋谷凛, 白坂小梅, 結城晴, 藤本里奈, 赤城みりあ, 速水奏, 道明寺歌鈴, 龍崎薫)を対象とした[2].
 
-<footer>\*2 : THE IDOLM@STER OFFICIAL WEB ｢開催概要│THE IDOLM@STER CINDERELLA GIRLS 6thLIVE｣, 2018年
+<footer>\*2 : バンダイナムコエンターテインメント ｢開催概要│THE IDOLM@STER CINDERELLA GIRLS 6thLIVE｣ THE IDOLM@STER OFFICIAL WEB, 2018年
 https://idolmaster.jp/event/cinderella6th/information.php</footer>
 
 ### 楽曲データ
@@ -61,11 +59,7 @@ https://idolmaster.jp/event/cinderella6th/information.php</footer>
 
 `title`は楽曲のタイトルであり, `performed_by`はその楽曲のオリジナルメンバー(歌ったアイドル)を表す. また, `meta`については楽曲が持つ属性を格納する. 例えば上記の例では, `is_winter`というメタデータが`true`になっており, これは冬をテーマにした楽曲であることを示す.
 
-メタデータについては, 今回は`is_spring`, `is_summer`, `is_autumn`, `is_winter`を用意した. これは, 昨今の｢THE IDOLM@STER CINDERELLA GIRLS MASTER SEASONS!｣シリーズ及び｢シンデレラガールズ劇場｣エンディングテーマにて四季をテーマにした楽曲が多かったこと, ｢THE IDOLM@STER CINDERELLA GIRLS 6thLIVE MERRY-GO-ROUNDOME!!!｣が合計4公演開催されること[2]が決まっており, 各公演で1つの季節をテーマにする可能性があったことが理由である.
-
-<footer>\*2 : THE IDOLM@STER OFFICIAL WEB ｢開催概要│THE IDOLM@STER CINDERELLA GIRLS 6thLIVE｣, 2018年
-https://idolmaster.jp/event/cinderella6th/information.php</footer>
-
+メタデータについては, 今回は`is_spring`, `is_summer`, `is_autumn`, `is_winter`を用意した. これは, 昨今の｢THE IDOLM@STER CINDERELLA GIRLS MASTER SEASONS!｣シリーズ及び｢シンデレラガールズ劇場｣エンディングテーマにて四季をテーマにした楽曲が多かったこと, ｢THE IDOLM@STER CINDERELLA GIRLS 6thLIVE MERRY-GO-ROUNDOME!!!｣が合計4公演開催されることが決まっており, 各公演で1つの季節をテーマにする可能性があったことが理由である.
 
 楽曲データの具体的な例として, ｢Trinity Field｣と｢未完成の歴史｣のデータを示す:
 
