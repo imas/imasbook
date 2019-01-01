@@ -128,6 +128,12 @@
   font-weight: bold;
 }
 
+.index_item h2 .subtitle{
+  vertical-align: top;
+  text-align: right;
+  font-size: 7px;
+}
+
 .index_item .description {
   color: #505050;
 }
