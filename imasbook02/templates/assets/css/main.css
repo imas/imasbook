@@ -1,0 +1,196 @@
+/* bodyタグのみの指定では，codeタグ他が違うフォントになってしまう */
+
+html, html * {
+  font-family: 'ipag';
+}
+
+/* CSSはスタイルを指定したいタグと、スタイルの内容のセットで構成されています。
+  * 以下の例では、<body>タグのスタイルについて設定しています。
+  */
+
+body {
+  margin: 30px auto;
+  padding: 0 20px;
+  max-width: 660px;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  line-height: 1.7;
+  /* word-breakは英単語の改行ルールを指定します */
+  word-break: normal;
+  /* line-breakは日本語文章の改行ルールを指定します */
+  line-break: strict;
+  /* overflow-wrapは1つの単語が領域からはみ出した時の動作を指定します */
+  overflow-wrap: break-word;
+}
+
+article p {
+  margin: 0.5em 0;
+  /* text-indentは行頭の空白のサイズを設定します */
+  text-indent: 0.5em;
+}
+
+article {
+  page-break-before: always;
+  page-break-after: always;
+}
+
+:not(pre)>code {
+  margin: 0 0.2em;
+  padding: 0.2em 0.4em;
+  background-color: #ebe9e5;
+  border-radius: 0.2em;
+}
+
+article img {
+  display: block;
+  margin: 10px auto;
+  max-width: 80%;
+  box-shadow: 0px 4px 8px 2px rgba(0, 0, 0, 0.2);
+}
+
+article tr,article th,article td {
+  /* break-insideはタグ途中の改ページのルールを指定します。
+    * 以下の例では、タグの途中で新しいページが始まらないように指定しています。
+    */
+  break-inside: avoid;
+}
+
+article hr {
+  border: none;
+  text-align: center;
+}
+
+article hr::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: black;
+}
+
+article .top {
+  font-size: 200%;
+}
+
+article .logo {
+  margin-right: 16px;
+}
+
+body {
+  /* counter-resetで新しいカウンタを追加します。
+    * カウンタは特定の要素が出現するたびに値を追加することができます。
+    */
+  counter-reset: section;
+}
+
+article {
+  /* counter-incrementでカウンタを1追加します。
+    * この設定で、<article>タグが出現するたびに
+    * sectionカウンタが1追加されます。
+    */
+  counter-increment: section;
+  counter-reset: fig footnote;
+}
+
+/* @mediaルールは特定の環境でのみ適用されるルールです。
+  * printを指定すると印刷時にのみ適用され、
+  * screenを指定すると画面表示時のみ適用されます。
+  */
+
+@media print {
+  body {
+    font-size: 11px;
+    /* widows, orhpansは改ページで文章が分断された時に
+      * 先頭（末尾）の行を最低何行確保するかを指定します。
+      */
+    widows: 3;
+    orphans: 3;
+    /* hyphensは単語途中での行の折り返しルールを指定します */
+    hyphens: auto;
+  }
+}
+
+@media print {
+  figure {
+    width: 70%;
+    /* block-endでページ下にレイアウトされます。
+      * 参考: https://www.w3.org/TR/css-page-floats-3/
+      */
+    float: block-end;
+    float-reference: page;
+  }
+  #colophon {
+    margin-top: 8rem;
+  }
+}
+
+/* @pageは印刷ページについて指定する特別なルールです */
+
+@page {
+  /* sizeは印刷するページの大きさを指定します。
+    * 下のような幅と高さの指定以外にも、A4やJIS-B5などが指定できます。
+    */
+  size: A5;
+
+  /* marks: crop cross;
+  bleed: 4mm; */
+  
+}
+
+@page:left {
+  margin: 10mm 12mm 15mm 10mm;
+
+  @bottom-left {
+    content: counter(page);
+    font-size: 9px;
+  }
+
+}
+@page:right {
+  margin: 10mm 10mm 15mm 12mm;
+
+  @bottom-right {
+    content: counter(page);
+    font-size: 9px;
+  }
+}
+
+@page :first {
+	@bottom-left { content: normal; }
+	@bottom-right { content: normal; }
+	@top-center { content: normal; }
+}
+
+
+article pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f6f8fa;
+  border-radius: 3px;
+}
+
+article table{
+  margin:0 auto;
+  border-spacing: 2px 0px;
+}
+article td,article th{
+  padding:2px;
+  font-size: 0.5rem;
+}
+article th{
+  color:#fff;
+  background:#005ab3;
+}
+article table tr:nth-child(odd) td{
+  background:#e6f2ff;
+}
+article table tr:last-child td{
+  border-bottom: #005ab3 1px solid;
+}
+
+article footer {
+  float: footnote;
+}

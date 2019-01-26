@@ -1,0 +1,60 @@
+.okuduke{
+    font-size: 8.5pt;
+    color: rgb(0, 0, 0);
+    line-height: 1.6;
+    font-weight: 100;
+    font-style: normal;
+    font-variant-ligatures: normal;
+    font-variant-caps: normal;
+    text-align: justify;
+    break-after: page;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    break-inside: avoid;
+    unicode-bidi: normal;
+    margin-top: 40px; 
+}
+
+.okuduke header{
+    display: block; unicode-bidi: normal;
+}
+
+.okuduke header h1{
+    line-height: 1.2; hyphens: none; text-align: left; font-weight: 300; break-after: avoid; word-break: keep-all; word-wrap: break-word; overflow-wrap: break-word; font-size: 17px; margin: 2em 0px 0px; color: rgb(0, 0, 0); padding: 0px; display: block; unicode-bidi: normal;
+}
+
+.okuduke header p{
+    margin: 0px; text-align: justify; text-indent: 0px; display: block; unicode-bidi: normal;
+}
+
+.okuduke div{
+    margin: 0.3em 0px; padding: 0.3em 0px; border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); display: block; unicode-bidi: normal;
+}
+
+.okuduke div ul.editions{
+    margin: 0px; padding-left: 0px; display: block; unicode-bidi: normal;
+}
+
+.okuduke div ul.editions li{
+    margin: 0px; position: relative; list-style: none outside none; display: list-item;
+}
+
+.okuduke div table{
+    border-collapse: collapse; display: table; border-spacing: 2px;
+}
+.okuduke div table tr{
+    display: table-row;
+}
+
+.okuduke div table th{
+    width: 12em; padding-right: 2em; vertical-align: top; text-align: justify; text-align-last: justify; display: table-cell;
+}
+
+.okuduke div table td{
+    display: table-cell;
+}
+
+.okuduke .printed_in{
+    margin: 0px; text-align: justify; text-indent: 0px; display: block; unicode-bidi: normal;
+}

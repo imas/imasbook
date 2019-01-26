@@ -1,0 +1,21 @@
+/* フォントはTTFのみPDF埋め込みを確認 */
+
+/*
+ * "IPA Font (IPAMincho)" licensed under the IPA Font License Agreement v1.0
+ * http://ipafont.ipa.go.jp/
+ * http://ipafont.ipa.go.jp/ipa_font_license_v1.html
+ */
+@font-face {
+    font-family: 'ipam';
+    src: url('../fonts/ipam00303/ipam.ttf');
+}
+
+/*
+ * "IPA Font (IPAGothic)" licensed under the IPA Font License Agreement v1.0
+ * http://ipafont.ipa.go.jp/
+ * http://ipafont.ipa.go.jp/ipa_font_license_v1.html
+ */
+@font-face {
+    font-family: 'ipag';
+    src: url('../fonts/ipag00303/ipag.ttf');
+}
