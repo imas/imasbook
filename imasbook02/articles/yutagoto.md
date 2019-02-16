@@ -17,7 +17,7 @@
 ### CiecleCIとは
 
 CircleCI(\*1)とは、継続的なインテグレーションサービスです。コミットからテスト、デプロイなどユーザが設定した設定した情報を元に自動で行うことができます。
-CircleCIにはCircleCI Orbs(\*2)というCircleCIの設定ファイルのコマンドや設定などの共通書影を使い回すことができる仕組みがあります。この仕組の使い方は「あるRuby on Railsのプロジェクトのテストコマンドは他のRuby on Railsのプロジェクトとほぼ同じだから使いまわしたい」や「あるPythonのプロジェクトのライブラリ読み込みコマンドは他のPythonのプロジェクトとほぼ同じだから共通化したい」といったことがあったときに有用です。
+CircleCIにはCircleCI Orbs(\*2)というCircleCIの設定ファイルのコマンドや設定などの共通処理を使い回すことができる仕組みがあります。この仕組みの使い方は「あるRuby on Railsのプロジェクトのテストコマンドは他のRuby on Railsのプロジェクトとほぼ同じだから使いまわしたい」や「あるPythonのプロジェクトのライブラリ読み込みコマンドは他のPythonのプロジェクトとほぼ同じだから共通化したい」といったことがあったときに有用です。
 この仕組みを利用して著者が作成した「今日が誕生日のアイドルを出力する」のOrbsを導入してみます。
 今回はCircleCIの詳しい使い方には触れません。
 
@@ -74,7 +74,7 @@ install-sudo: &install-sudo |
   apt-get update
   apt-get install -y sudo
 orbs:
-  todays-imas-idol: yutagoto/todays-imas-idol@volatile
+  todays-imas-idol: yutagoto/todays-imas-idol@1.0.0
 
 executors:
   ubuntu-docker:
