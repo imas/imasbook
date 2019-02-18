@@ -64,14 +64,88 @@
 
 
 ## サーバ実装
-うづコインのサーバサイドはGoで実装されており、クライアントに対してはgRPC(\*4)を用いてAPIを提供しています。
-2019/02/16現在、コードの公開はしておりませんが、整備が完了し次第publicにする予定です。本当です。多分。
+うづコインのサーバはGoで実装されており、クライアントに対してはgRPC(\*4)を用いてAPIを提供しています。
+~~2019/02/16現在、コードの公開はしておりませんが、整備が完了し次第publicにする予定です。本当です。多分。~~
+
+**grpc/grpc-go**(\*5)をベースに用いており、サーバサイド向けに解釈したClean Architectureをアーキテクチャとして採用しています。
+
+
+執筆中に気が変わったので公開しました。(\*6)
+
+* [kagemiku/uzucoin](https://github.com/kagemiku/uzucoin)
 
 <footer>\*4 https://grpc.io/</footer>
+<footer>\*5 https://github.com/grpc/grpc-go</footer>
+<footer>\*6 https://github.com/kagemiku/uzucoin</footer>
+
 
 ### 通信について
+通信は前述の通り、gRPCを用いて行います。データ構造およびAPIの定義は**Protocol Buffers**(\*7)を用いています。うづコインでも用いているProtocol Buffersファイルの一部を次に示します。
+
+```
+service Uzucoin {
+    rpc RegisterProducer(RegisterProducerRequest) returns (RegisterProducerResponse);
+    rpc GetHistory(GetHistoryRequest) returns (History);
+    rpc GetBalance(GetBalanceRequest) returns (Balance);
+    rpc GetChain(GetChainRequest) returns (Chain);
+    rpc AddTransaction(AddTransactionRequest) returns (AddTransactionResponse);
+    rpc GetTask(GetTaskRequest) returns (Task);
+    rpc ResolveNonce(ResolveNonceRequest) returns (ResolveNonceResponse);
+}
+```
+
+<footer>\*7 https://developers.google.com/protocol-buffers/</footer>
+
 
 ## Let’s S(min)ING!
+それでは、みんな大好きな**S(min)ING!**をしてみましょう。ここから先はちょっとややこしいです。macOSにおける説明のみ行います。また、goの環境などはすでに構築されている前提で行います。すまん。がんばります。
+
+まずは環境構築から。雑にREADMEの内容をペッと貼ります。
+
+```
+$ # install protobuf
+$ brew install protobuf
+$
+$ # install protobuf plugin for go
+$ go get -u github.com/golang/protobuf/protoc-gen-go
+$
+$ # install protobuf plugin for go
+$ git clone git@github.com:grpc/grpc-swift.git
+$ cd grpc-swift
+$ make plugin
+$ cp protoc-gen-swift protoc-gen-swiftgrpc /usr/local/bin
+```
+
+次に、**kagemiku/uzucoin**をcloneし、`make`を走らせます。
+
+```
+$ git clone git@github.com:kagemiku/uzucoin.git $GOPATH/src/github.com/kagemiku/uzucoin
+$ cd $GOPATH/src/github.com/kagemiku/uzucoin
+$ make dep && make
+```
+
+これでうづコインサーバが起動しました。次はクライアントの起動です。現状、S(min)ING!できるまともなClient実装がないため、コマンドラインから直接APIを叩きます。**evans**(\*8)という、いい感じなCLIのgRPCクライアントがあるので、それを使用します。
+
+```
+$ brew tap ktr0731/evans
+$ brew install evans
+$ evans protobuf/uzucoin.proto
+```
+
+evans起動後は、packageおよびserviceの選択を行います。
+
+```
+127.0.0.1:50051> package uzucoin
+uzucoin@127.0.0.1:50051> service Uzucoin
+```
+
+ここまで終わると、次のような画面になっているはずです。多分。
+
+<img src="images/kagemiku/evans_ss.png" width="300">
+
+
+
+<footer>\*8 https://github.com/ktr0731/evans</footer>
 
 ## おわりに
 みんなありがとー！
