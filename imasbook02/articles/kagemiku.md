@@ -119,7 +119,8 @@ $ cp protoc-gen-swift protoc-gen-swiftgrpc /usr/local/bin
 次に、**kagemiku/uzucoin**をcloneし、`make`を走らせます。
 
 ```
-$ git clone git@github.com:kagemiku/uzucoin.git $GOPATH/src/github.com/kagemiku/uzucoin
+$ git clone git@github.com:kagemiku/uzucoin.git \
+> $GOPATH/src/github.com/kagemiku/uzucoin
 $ cd $GOPATH/src/github.com/kagemiku/uzucoin
 $ make dep && make
 ```
@@ -143,6 +144,85 @@ uzucoin@127.0.0.1:50051> service Uzucoin
 
 <img src="images/kagemiku/evans_ss.png" width="300">
 
+ここからが本番です。気合をいれましょう。まずはプロデューサーの登録をします。うづコインを送る相手としてuzukiという方もプロデューサー登録をしておきます。
+
+```
+uzucoin.Uzucoin@127.0.0.1:50051> call RegisterProducer
+uid (TYPE_STRING) => kagemiku
+name (TYPE_STRING) => kagemiku
+{
+  "succeeded": true
+}
+
+uzucoin.Uzucoin@127.0.0.1:50051> call RegisterProducer
+uid (TYPE_STRING) => uzuki
+name (TYPE_STRING) => uzuki
+{
+  "succeeded": true
+}
+```
+
+次に、uzukiという方へ424うづコイン送ります。プロデューサー登録すると全員はじめに414うづコインもらえます。余談ですが島村卯月の誕生日は4月24日です。
+
+```
+uzucoin.Uzucoin@127.0.0.1:50051> call AddTransaction
+fromUID (TYPE_STRING) => kagemiku
+toUID (TYPE_STRING) => uzuki
+amount (TYPE_DOUBLE) => 424
+{
+  "timestamp": "2019-02-19 23:21:00.251881 +0900 JST m=+36.991302071"
+}
+```
+
+この時点ではまだ送金は完了していません。ノンスを見つけてあげて、うづきチェーンにうづきブロックとして取引記録を追加してあげる必要があります。まずは現在のタスクを確認しましょう。
+
+```
+uzucoin.Uzucoin@127.0.0.1:50051> call GetTask
+{
+  "exists": true,
+  "transaction": {
+    "fromUID": "kagemiku",
+    "toUID": "uzuki",
+    "amount": 424,
+    "timestamp": "2019-02-19 23:21:00.251881 +0900 JST m=+36.991302071"
+  },
+  "prevHash": "d9578cfdea09b7af6b72ae7a35f35e2cfccc83486d8e7b716f2f32e3701f9ce6"
+}
+```
+
+Let's S(min)ING! いい感じのノンスを見つけてあげましょう。`prevHash`には直近のうづきブロックのハッシュ値を、`nonce`にはノンスを、そして`resolverUID`には先程登録した自分のプロデューサーIDを入力します。
+
+```
+uzucoin.Uzucoin@127.0.0.1:50051> call ResolveNonce
+prevHash (TYPE_STRING) => d9578cfdea09b7af6b72ae7a35f....長いので省略
+nonce (TYPE_STRING) => shimamura
+resolverUID (TYPE_STRING) => kagemiku
+{
+  "succeeded": true,
+  "reward": 1
+}
+```
+
+今回は紙面の都合上、一発でS(min)ING!に成功したようになっていますが、実際は泥臭い作業をやってます。
+
+本当にuzukiという方に送金ができたか、確認してみましょう。
+
+```
+uzucoin.Uzucoin@127.0.0.1:50051> call GetHistory
+uid (TYPE_STRING) => kagemiku
+{
+  "transactions": [
+    {
+      "fromUID": "kagemiku",
+      "toUID": "uzuki",
+      "amount": 424,
+      "timestamp": "2019-02-19 23:21:00.251881 +0900 JST m=+36.991302071"
+    }
+  ]
+}
+```
+
+あ〜すこ。
 
 
 <footer>\*8 https://github.com/ktr0731/evans</footer>
