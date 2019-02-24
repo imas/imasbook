@@ -156,29 +156,29 @@ void serialize(T& a, FimasparqlResultItem& in){
 ```C++
 USTRUCT(BlueprintType)
 struct FimasparqlBindings{
-	GENERATED_BODY()
-	UPROPERTY(BlueprintReadWrite, Category = "imasparql")
-		FimasparqlResultItem predicate;
-	UPROPERTY(BlueprintReadWrite, Category = "imasparql")
-		FimasparqlResultItem object;
+  GENERATED_BODY()
+  UPROPERTY(BlueprintReadWrite, Category = "imasparql")
+    FimasparqlResultItem predicate;
+  UPROPERTY(BlueprintReadWrite, Category = "imasparql")
+    FimasparqlResultItem object;
 };
 template<typename T>
 void serialize(T& a, FimasparqlBindings& in){
-	a(cereal::make_nvp("predicate", in.predicate));
-	a(cereal::make_nvp("object", in.object));
+  a(cereal::make_nvp("predicate", in.predicate));
+  a(cereal::make_nvp("object", in.object));
 }
 ```
 　次に、`"bindings"`を配列で持つ`"result"`です。配列は、UE4の`TArray`(\*12)を用いて表現します。`std::vector`に似た可変長配列です。
 ```C++
 USTRUCT(BlueprintType)
 struct FimasparqlResult{
-	GENERATED_BODY()
-	UPROPERTY(BlueprintReadWrite, Category = "imasparql")
-		TArray<FimasparqlBindings> bindings;
+  GENERATED_BODY()
+  UPROPERTY(BlueprintReadWrite, Category = "imasparql")
+    TArray<FimasparqlBindings> bindings;
 };
 template<typename T>
 void serialize(T& a, FimasparqlResult& in){
-	a(cereal::make_nvp("bindings", in.bindings));
+  a(cereal::make_nvp("bindings", in.bindings));
 }
 ```
 
@@ -186,13 +186,13 @@ void serialize(T& a, FimasparqlResult& in){
 ```C++
 USTRUCT(BlueprintType)
 struct FimasparqlHead{
-	GENERATED_BODY()
-	UPROPERTY(BlueprintReadWrite, Category = "imasparql")
-		TArray<FString> vars;
+  GENERATED_BODY()
+  UPROPERTY(BlueprintReadWrite, Category = "imasparql")
+    TArray<FString> vars;
 };
 template<typename T>
 void serialize(T& a, FimasparqlHead& in){
-	a(cereal::make_nvp("vars", in.vars));
+  a(cereal::make_nvp("vars", in.vars));
 }
 ```
 <footer>\*12：http://api.unrealengine.com/JPN/Programming/UnrealArchitecture/TArrays/</footer>
@@ -206,3 +206,107 @@ void serialize(T& a, FimasparqlHead& in){
 　お疲れ様です！以上で、クエリ結果を受け取る準備ができました！次はクエリを送信するクラスを作っていきます。
 
 ## 送受信するクラスを定義する
+　Blueprintのイベントとして利用するため、UE4のアクターとして定義します。アクターを新しく定義する場合は、UE4エディタから行いましょう(「プログラマ向けクイックスタート」の2項)。本項では、3項から割り込む形で説明します。  
+
+### ヘッダ
+　今回必要なヘッダはこちらです。
+```C++
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "Http.h"
+#include "HttpManager.h"
+#include "imasparqlJsonStructs.h"
+#include "<このヘッダーファイルの名前>.generated.h"
+```
+
+　1,5,6番目はもう大丈夫ですね。2番目の`"GameFramework/Actor.h"`はアクターの基ですね、最初から書かれています。3,4番目は名前の通り、HTTP通信に必要なヘッダです。  
+
+　あ、ちなみにC++でよく見られる、ヘッダではクラスの宣言だけを書いておき、ソースの方で本体をインクルードする方法ですが、UE4のマクロを含むものでやろうとするとビルドしてくれないので、素直にヘッダに書きましょう。  
+
+　続いてクラス本体です。
+```C++
+UCLASS(Blueprintable, BlueprintType)
+class <プロジェクト名>_API A<名付けた名前>: public AActor{
+  GENERATED_BODY()
+public:
+  UFUNCTION(BlueprintCallable, Category = "imasparql")
+    void GetIdolData(FString name);
+  UFUNCTION(BlueprintImplementableEvent, BlueprintCallable,
+            Category = "imasparql")
+    void OnGetIdolData(const FIdol& idol);
+private:
+  void OnCompleteGetIdolData(FHttpRequestPtr req, FHttpResponsePtr res,
+                              bool bSuccess);
+};
+
+```
+
+　今回はクラスなので、`UCLASS()`マクロを使います。`Blueprintable`は、UE4のBlueprintでクラスを継承することを示します。一方`BlueprintType`は、Blueprintで他のクラスの変数にできることを示します。`class`句の後ろにある`<モジュール名>_API`は、このクラスが他のモジュールから利用できるようにするマクロです。おそらく最初から書かれています。`GENERATED_BODY()`も大丈夫ですね。`UFUNCTION()`は`UPROPERTY()`同様、UE4の機能から参照されるために書きます、それの関数版です。`BlueprintCallable`はBlueprintから呼び出し可能な関数であること、`BlueprintImplementableEvent`はBlueprintで実装可能なイベント関数であることを示します。これがあると、ソースで実装を書く必要がありません(コンパイルが通る)。  
+　これらの関数を扱うイメージとしては、
+1. `GetIdolData`でim@sparqlにクエリを送信する。
+2. レスポンスを受信したら、`OnCompleteGetIdolData`が呼ばれる。
+3. `OnCompleteGetIdolData`で結果を`FIdol構造体`に変換して、`OnGetIdolData`を呼ぶ。
+4. Bllueprintで実装された`OnGetIdolData`がなにかする。
+
+です。それでは、関数を定義していきましょう。
+
+### ソース
+ヘッダは作成時に書かれた一つのみで追加の必要はありません。
+```C++
+void AimasparqlBP::GetIdolData(FString name){
+  auto& http = FHttpModule::Get();
+  TSharedRef<IHttpRequest> request = http.CreateRequest();
+  request->OnProcessRequestComplete().BindUObject(this,
+            &AimasparqlBP::OnCompleteGetIdolData);
+  request->SetURL("https://sparql.crssnky.xyz/spql/imas/query?\
+  force-accept=text%2Fplain&query=PREFIX%20schema%3A%20%3Chttp%3A%2F%2F\
+  schema.org%2F%3E%0A%0Aselect%20distinct%20%3Fpredicate%20%3Fobject\
+  %0Awhere%7B%0A%20%20%3Fidol_iri%20%3Fpredicate%20%3Fobject%3B%0A%20\
+  %20%20%20%20%20%20%20%20%20%20%20%20%20%20%20schema%3Aname%20%22" 
+  + FGenericPlatformHttp::UrlEncode(name) + "%22%40ja%0A%7D");
+  request->SetVerb("GET");
+  request->SetHeader("User-Agent", "X-UnrealEngine-Agent");
+  request->ProcessRequest();
+
+  auto& manager = http.GetHttpManager();
+  manager.AddRequest(request);
+}
+```
+
+　`GetIdolData`です。HTTPリクエストのためのオブジェクトを作り、やることなすことを設定しています。`OnProcessRequestComplete()`ではレスポンス受信後の動作を決めます。関数だけでなくラムダなども`Bind～`を変えることで設定できます。`SetURL`ではそのままGETメソッドで先ほど挙げたこのクエリを渡します。  
+```SPARQL
+select distinct ?predicate ?object
+where{
+  ?idol_iri ?predicate ?object;
+  <http://schema.org/name> "任意のアイドル名"@ja.
+}
+```
+この時`任意のアイドル名`を引数のアイドル名にするのですが、`FGenericPlatformHttp::UrlEncode()`でURLエンコードしないとクエリが破綻するので気をつけましょう(C++に限った話ではないですね)。そして、`ProcessRequest()`で実際にクエリを送信します。  
+
+　ちなみに、`manager.AddRequest()`につっこむことでTick(\*13)を伝えることができ、タイムアウトなどが働くようになるみたいです。
+<footer>\*13 UE4のアクターが感じ取れる時間の単位</footer>
+
+```C++
+void AimasparqlBP::OnCompleteGetIdolData(FHttpRequestPtr req,
+                                        FHttpResponsePtr res, bool bSuccess){
+  auto& http = FHttpModule::Get();
+  auto& manager = http.GetHttpManager();
+
+  if(!bSuccess){
+    UE_LOG(LogTemp, Warning, TEXT("No Response."));
+  } else{
+    auto txt = res->GetContentAsString();
+
+    FimasparqlHead head;
+    FimasparqlResult result;
+    std::stringstream buf;
+    buf << TCHAR_TO_UTF8(*txt);
+    cereal::JSONInputArchive a(buf);
+    a(head, result);
+
+    FIdol idol(result);
+    OnGetIdolData(idol);
+  }
+  manager.RemoveRequest(req.ToSharedRef());
+}
+```
