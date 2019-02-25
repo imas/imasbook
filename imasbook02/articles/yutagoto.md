@@ -14,9 +14,7 @@
 
 今回はアイドルの情報の中でも、CircleCIを使用して「今日が誕生日のアイドルを取得する」方法について触れます。
 
-## CircleCIに導入してみる
-
-### CircleCIとは
+## CircleCIとは
 
 CircleCI(\*1)とは継続的なインテグレーションサービスの一つです。コミットからテスト、デプロイなどユーザが設定した情報を元に自動で行うことができます。
 
@@ -29,7 +27,7 @@ CircleCIにはCircleCI Orbs(\*2)というCircleCIの設定ファイルのコマ�
 <footer>\*1：https://circleci.jp/</footer>
 <footer>\*2：https://circleci.com/orbs/</footer>
 
-### 著者が実装したOrbsを導入する
+## 著者が実装したOrbsを導入する
 
 最初に作業の流れを確認します。
 
@@ -41,33 +39,33 @@ CircleCIにはCircleCI Orbs(\*2)というCircleCIの設定ファイルのコマ�
 1. GitHubにpushしてCircleCIの実行結果を確認する
 1. CircleCIの実行結果を見てみる
 
-#### GitHubにリポジトリを作る
+### GitHubにリポジトリを作る
 
 GitHubにリポジトリを作ります。すでに作成されたリポジトリで試す場合はここではとくに何もしません。
 
-#### CircleCIにサインアップする
+### CircleCIにサインアップする
 
 https://circleci.jp/ にアクセスをしてサインアップします。すでにアカウントがある場合はそれを使用しても構いません。
 
-#### CircleCIにプロジェクトを追加する
+### CircleCIにプロジェクトを追加する
 
 プロジェクトを追加します。GitHubのリポジトリを検索して `Set Up Project` をクリックします。
 
-`![setup_circleci](images/yutagoto/setup_circleci.png)`
+![setup_circleci](images/yutagoto/setup_circleci.png)
 
 セットアップページが表示されますが、ここではなにもせずに `Start building` をします。(ここでbuildをしても必ず失敗するので、失敗のログを残したくないのであれば次に設定する`.circleci/config.yml`を作成し、exampleにあるコードを書いてGitHubにプッシュします)
 
-#### CircleCI 2.1を有効にする
+### CircleCI 2.1を有効にする
 
-`![config](images/yutagoto/config.png)`
+![config](images/yutagoto/config.png)
 
 `Start building`をクリックしたあとに表示されるページの右上の歯車アイコンからプロジェクトの設定をします。
 
 その中にある `Advances Settings`から `Ennable build processing (preview)`を有効にします。
 
-`![config21](images/yutagoto/config21.png)`
+![config21](images/yutagoto/config21.png)
 
-#### `.circleci/config.yml` を書く
+### `.circleci/config.yml` を書く
 
 ここで実際に設定を書いていきます。 `.circleci/config.yml`に以下のコードを書きます。この設定で「今日が誕生日のアイドルを取得する」ことができます。
 
@@ -104,7 +102,7 @@ workflows:
 
 上記はubuntuを使用していますが、各プロジェクトに合わせて使用するimageを変更してください(著者のrubyのプロジェクトでも動作確認はできています)。
 
-##### それぞれの設定コードの解説
+#### それぞれの設定コードの解説
 
 ```yml
 version: 2.1
@@ -161,23 +159,23 @@ workflows:
 
 `jobs`の`steps`に `todays-imas-idol/echo-todays-imas-idol` を書きます。
 
-##### GitHubにpushしてCircleCIの実行結果を確認する
+#### GitHubにpushしてCircleCIの実行結果を確認する
 
 GitHubにpushして、CircleCIの実行結果をみてみます。
-
-`![stdout](images/yutagoto/stdout.png)`
+attachments/10836/2019/02/16/43446/27b83cc8-af8d-45a5-bd20-dc3b7b8f734d.png">
+![stdout](images/yutagoto/stdout.png)
 
 ここで今日が誕生日のアイドルを確認することができます。今日が誕生日のアイドルがいない場合はnullが出力されます。
 
-### `yutagoto/todays-imas-idol&#64;1.0.0` の他の使い方
+## `yutagoto/todays-imas-idol&#64;1.0.0` の他の使い方
 
 いままでの例ではCircleCIの実行結果に標準出力してアイドルを確認していましたが、このOrbsにはSlackやDiscordへの通知にも対応しているので、わざわざ実行結果のページに遷移しなくともアイドルを感じることができます。くわしい使い方はOrbsのページ(\*3)を参照してください。以下にSlackへの通知の実行結果の例を載せます。
 
-`![slack](images/yutagoto/slack.png)`
+![slack](images/yutagoto/slack.png)
 
 <footer>\*3：https://circleci.com/orbs/registry/orb/yutagoto/todays-imas-idol</footer>
 
-## おわりに
+# おわりに
 
 これで一通り「今日が誕生日のアイドルCircleCIで出力する」をマスターしました。CIツールの導入により生産性が上がる中で、アイドル情報を得られるということでさらに生産性が上がったような気がしませんか？
 
