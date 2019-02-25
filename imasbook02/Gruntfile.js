@@ -18,6 +18,9 @@ module.exports = function (grunt) {
                     template: 'templates/section.jst',
                     markdownOptions: {
                         gfm: true
+                    },
+                    postCompile: function(src, context) {
+                      return src.replace(/<p><img src=/g, "<p class=\"imageHolder\"><img src=");
                     }
                 }
             }
