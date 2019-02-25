@@ -175,7 +175,7 @@ attachments/10836/2019/02/16/43446/27b83cc8-af8d-45a5-bd20-dc3b7b8f734d.png">
 
 <footer>\*3：https://circleci.com/orbs/registry/orb/yutagoto/todays-imas-idol</footer>
 
-# おわりに
+## おわりに
 
 これで一通り「今日が誕生日のアイドルCircleCIで出力する」をマスターしました。CIツールの導入により生産性が上がる中で、アイドル情報を得られるということでさらに生産性が上がったような気がしませんか？
 
