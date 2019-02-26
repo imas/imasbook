@@ -243,15 +243,15 @@ private:
 
 　今回はクラスなので、`UCLASS()`マクロを使います。`Blueprintable`は、UE4のBlueprintでクラスを継承することを示します。一方`BlueprintType`は、Blueprintで他のクラスの変数にできることを示します。`class`句の後ろにある`<モジュール名>_API`は、このクラスが他のモジュールから利用できるようにするマクロです。おそらく最初から書かれています。`GENERATED_BODY()`も大丈夫ですね。`UFUNCTION()`は`UPROPERTY()`同様、UE4の機能から参照されるために書きます、それの関数版です。`BlueprintCallable`はBlueprintから呼び出し可能な関数であること、`BlueprintImplementableEvent`はBlueprintで実装可能なイベント関数であることを示します。これがあると、ソースで実装を書く必要がありません(コンパイルが通る)。  
 　これらの関数を扱うイメージとしては、
-1. `GetIdolData`でim@sparqlにクエリを送信する。
-2. レスポンスを受信したら、`OnCompleteGetIdolData`が呼ばれる。
-3. `OnCompleteGetIdolData`で結果を`FIdol構造体`に変換して、`OnGetIdolData`を呼ぶ。
-4. Bllueprintで実装された`OnGetIdolData`がなにかする。
+1. `GetIdolData()`でim@sparqlにクエリを送信する。
+2. レスポンスを受信したら、`OnCompleteGetIdolData()`が呼ばれる。
+3. `OnCompleteGetIdolData()`で結果を`FIdol構造体`に変換して、`OnGetIdolData()`を呼ぶ。
+4. Bllueprintで実装された`OnGetIdolData()`がなにかする。
 
 です。それでは、関数を定義していきましょう。
 
 ### ソース
-ヘッダは作成時に書かれた一つのみで追加の必要はありません。
+ヘッダは作成時に書かれた一つのみで追加の必要はありません。最初は`GetIdolData()`です。
 ```C++
 void AimasparqlBP::GetIdolData(FString name){
   auto& http = FHttpModule::Get();
@@ -273,7 +273,7 @@ void AimasparqlBP::GetIdolData(FString name){
 }
 ```
 
-　`GetIdolData`です。HTTPリクエストのためのオブジェクトを作り、やることなすことを設定しています。`OnProcessRequestComplete()`ではレスポンス受信後の動作を決めます。関数だけでなくラムダなども`Bind～`を変えることで設定できます。`SetURL`ではそのままGETメソッドで先ほど挙げたこのクエリを渡します。  
+　HTTPリクエストのためのオブジェクトを作り、やることなすことを設定しています。`OnProcessRequestComplete()`ではレスポンス受信後の動作を決めます。関数だけでなくラムダなども`Bind～`を変えることで設定できます。`SetURL`ではそのままGETメソッドで先ほど挙げたこのクエリを渡します。  
 ```SPARQL
 select distinct ?predicate ?object
 where{
@@ -283,7 +283,9 @@ where{
 ```
 この時`任意のアイドル名`を引数のアイドル名にするのですが、`FGenericPlatformHttp::UrlEncode()`でURLエンコードしないとクエリが破綻するので気をつけましょう(C++に限った話ではないですね)。そして、`ProcessRequest()`で実際にクエリを送信します。  
 
-　ちなみに、`manager.AddRequest()`につっこむことでTick(\*13)を伝えることができ、タイムアウトなどが働くようになるみたいです。
+　ちなみに、`manager.AddRequest()`につっこむことでTick(\*13)を伝えることができ、タイムアウトなどが働くようになるみたいです。  
+
+　続いて、`OnCompleteGetIdolData`です。
 <footer>\*13 UE4のアクターが感じ取れる時間の単位</footer>
 
 ```C++
@@ -296,13 +298,17 @@ void AimasparqlBP::OnCompleteGetIdolData(FHttpRequestPtr req,
     UE_LOG(LogTemp, Warning, TEXT("No Response."));
   } else{
     auto txt = res->GetContentAsString();
+		if(!txt.Left(1).Contains("{")){
+			UE_LOG(LogTemp, Warning, TEXT("ERROR in response. Query is wrong."));
+			return;
+		}
 
     FimasparqlHead head;
     FimasparqlResult result;
     std::stringstream buf;
     buf << TCHAR_TO_UTF8(*txt);
-    cereal::JSONInputArchive a(buf);
-    a(head, result);
+    cereal::JSONInputArchive archive(buf);
+    archive(head, result);
 
     FIdol idol(result);
     OnGetIdolData(idol);
@@ -310,3 +316,13 @@ void AimasparqlBP::OnCompleteGetIdolData(FHttpRequestPtr req,
   manager.RemoveRequest(req.ToSharedRef());
 }
 ```
+
+　正しく受信できていれば、`res->GetContentAsString()`を用いてJSONの文字列を取得します。ちなみに、ここで確認するのは**正しく受信できたか**なので、クエリが間違っていたり、クエリ結果が空でも`bSuccess=true`になります(間違えていること、結果が無いことが正しく知らされるので)。一応、クエリ結果がちゃんと返ってきてるか判定しましょう。クエリが間違えている場合、JSONが返ってきません。なので今回は雑に、`{`から始まるかチェックします。  
+
+　正しそうなクエリが返ってきているならば、格納する構造体を作成して変換していきましょう。`std::stringstream`から、`<<`を経て、`JSONInputArchive()`で準備が終わるのはcereal様様でございます。完成した変換器`archive`にルートのJSONオブジェクトを入れましょう。今回ならば`head`と`result`です。  
+
+　クエリ結果を`FimasparqlResult構造体`に格納できたならば、次は使いやすい`FIdol構造体`に形を変えます。と、言っても、既に変え方は定義済みなのでコンストラクタで済ませましょう。あとはこの構造体を、Blueprintで実装予定の関数である`OnGetIdolData()`へ渡すだけです。  
+
+　お疲れ様です！以上で、im@sparqlから取得したアイドルデータをBlueprintで扱う準備が整いました！次は、実際にBlueprintを繋いで、アイドルデータを取得できるか試しましょう。  
+
+## Blueprintを描く
