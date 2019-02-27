@@ -132,7 +132,19 @@ uzucoin@127.0.0.1:50051> service Uzucoin
 
 ここまで終わると、次のような画面になっているはずです。多分。
 
-<img src="images/kagemiku/evans_ss.png" width="300">
+
+<br/>
+<br/>
+
+<img src="images/kagemiku/evans_ss.png" width="1000">
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
 ここからが本番です。気合をいれましょう。まずはプロデューサーの登録をします。うづコインを送る相手としてuzukiという方もプロデューサー登録をしておきます。
 
