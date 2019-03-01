@@ -256,14 +256,11 @@ private:
 void AimasparqlBP::GetIdolData(FString name){
   auto& http = FHttpModule::Get();
   TSharedRef<IHttpRequest> request = http.CreateRequest();
-  request->OnProcessRequestComplete().BindUObject(this,
-            &AimasparqlBP::OnCompleteGetIdolData);
   request->SetURL("https://sparql.crssnky.xyz/spql/imas/query?\
-  force-accept=text%2Fplain&query=PREFIX%20schema%3A%20%3Chttp%3A%2F%2F\
-  schema.org%2F%3E%0A%0Aselect%20distinct%20%3Fpredicate%20%3Fobject\
-  %0Awhere%7B%0A%20%20%3Fidol_iri%20%3Fpredicate%20%3Fobject%3B%0A%20\
-  %20%20%20%20%20%20%20%20%20%20%20%20%20%20%20schema%3Aname%20%22" 
-  + FGenericPlatformHttp::UrlEncode(name) + "%22%40ja%0A%7D");
+force-accept=text%2Fplain&query=select%20distinct%20%3fpredicate\
+%20%3fobject%0d%0awhere%7b%0d%0a%20%20%3fidol_iri%20%3fpredicate\
+%20%3fobject%3b%0d%0a%20%20%3chttp%3a%2f%2fschema%2eorg%2fname\
+%3e%20%22" + FGenericPlatformHttp::UrlEncode(name) + "%22%40ja%0A%7D");
   request->SetVerb("GET");
   request->SetHeader("User-Agent", "X-UnrealEngine-Agent");
   request->ProcessRequest();
