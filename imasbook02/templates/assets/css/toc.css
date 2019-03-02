@@ -30,7 +30,7 @@
 .firstpage .information{
   display: inline-block;
   width: 23%;
-  margin: 30px 5px;
+  margin: 15px 5px;
   padding: 10px;
 }
 
@@ -66,7 +66,7 @@
   bottom: 100%;
   border-radius: 5px 5px 0 0;
   padding: 5px 7px 3px;
-  font-size: 2em;
+  font-size: 1.8em;
   line-height: 1;
   letter-spacing: 0.05em;
   left: 0;
@@ -87,8 +87,8 @@
 
 .index_item {
   display: flex;
-  margin: 10px;
-  padding: 5px;
+  margin: 6px;
+  padding: 3px;
 }
 
 .index_item *{
@@ -122,9 +122,9 @@
 }
 
 .index_item h2 {
-  line-height: 1.4;
+  line-height: 1.2;
   color: #505050;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: bold;
 }
 
@@ -147,7 +147,7 @@
 .index_item .author::before {
   margin-left: 1px;
   margin-right: 1px;
-  border-bottom: solid 1px lightgray;
+  border-bottom: solid 0.8px lightgray;
   content: "";
   order: 1;
   flex: auto;
