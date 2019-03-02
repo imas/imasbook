@@ -152,3 +152,16 @@
   order: 1;
   flex: auto;
 }
+
+.booknote {
+  page-break-before: always;
+  margin-top: 460px;
+}
+.booknote header {
+  font-weight: bold;
+  font-size: 12px;
+}
+.booknote div {
+  font-size: 11px;
+  line-height: 1.45;
+}
