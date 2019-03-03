@@ -39,6 +39,9 @@ NASに導入するアプリケーションは以下の通りだ。
   - NASの標準プレイヤー。
   - ブラウザで再生できる
   - Android, iOS, WindowsPhone向けアプリがある
+
+必要なら以下も導入してほしい。
+
 - iTunes Server
   - PCで再生するときに使用する
 - MinimServer
