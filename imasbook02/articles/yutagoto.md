@@ -184,3 +184,14 @@ attachments/10836/2019/02/16/43446/27b83cc8-af8d-45a5-bd20-dc3b7b8f734d.png">
 本業のみならず副業の生産性もどんどん上げて、より質の高いプロダクトを作っていきましょう！
 
 <footer>\*4：https://github.com/YutaGoto/todays-imas-idol-orb</footer>
+
+## おまけ
+
+今後 実装していきたいものの案として、
+
+- GitLab CIやTravis CIなど他のCIサービスへの展開
+- ランダムでアイドルとそのアイドルの趣味を出力させるCircle CI Orbの実装
+- 今日が過去のライブと同じ日だったライブを出力させるCircle CI Orbの実装
+
+などを考えています。
+
