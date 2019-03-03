@@ -4,13 +4,13 @@
 ## 本チャプタの対象者
 
 - なにかしらソフトウェアを開発しているエンジニア
-- GitHubなどのサービスを利用してソースコードや文書を管理している人
+- GitHubを利用してソースコードや文書を管理している人
 
 ## はじめに
 
 この本を読んでいるプロデューサーエンジニアのみなさんはだいたい副業でエンジニアをやっているかたがほとんどだと思われます。とくにWeb、ネイティブアプリ、ゲームなどといったソフトウェアを開発していると思います。
 
-開発をする中で生産性をあげるツールとしてCIがあるのですが、このCIを使用してアイドル情報を取得することでプロデューサーエンジニアとしてより生産性が上がると思いませんか？
+開発をする中で生産性をあげるツールとしてCIがあるのですが、CIを使用してアイドル情報を取得することでプロデューサーエンジニアとしてより生産性が上がると思いませんか？
 
 今回はアイドルの情報の中でも、CircleCIを使用して「今日が誕生日のアイドルを取得する」方法について触れます。
 
@@ -162,18 +162,20 @@ workflows:
 #### GitHubにpushしてCircleCIの実行結果を確認する
 
 GitHubにpushして、CircleCIの実行結果をみてみます。
-attachments/10836/2019/02/16/43446/27b83cc8-af8d-45a5-bd20-dc3b7b8f734d.png">
+
 ![stdout](images/yutagoto/stdout.png)
 
 ここで今日が誕生日のアイドルを確認することができます。今日が誕生日のアイドルがいない場合はnullが出力されます。
 
 ## yutagoto/todays-imas-idol&#64;1.0.0 の他の使い方
 
-いままでの例ではCircleCIの実行結果に標準出力してアイドルを確認していましたが、このOrbsにはSlackやDiscordへの通知にも対応しているので、わざわざ実行結果のページに遷移しなくともアイドルを感じることができます。くわしい使い方はOrbsのページ(\*3)を参照してください。以下にSlackへの通知の実行結果の例を載せます。
+いままでの例ではCircleCIの実行結果に標準出力してアイドルを確認していましたが、このOrbsにはSlackやDiscordへの通知にも対応しているので、わざわざ実行結果のページに遷移しなくともアイドルを感じることができます。くわしい使い方はOrbsのページ(\*3)を参照してください。以下にSlackやDicsordへの通知の実行結果の例を載せます。
 
 ![slack](images/yutagoto/slack.png)
 
-<footer>\*3：https://circleci.com/orbs/registry/orb/yutagoto/todays-imas-idol</footer>
+![discord](images/yutagoto/discord.png)
+
+<footer>\*4：https://circleci.com/orbs/registry/orb/yutagoto/todays-imas-idol</footer>
 
 ## おわりに
 
@@ -183,15 +185,15 @@ attachments/10836/2019/02/16/43446/27b83cc8-af8d-45a5-bd20-dc3b7b8f734d.png">
 
 本業のみならず副業の生産性もどんどん上げて、より質の高いプロダクトを作っていきましょう！
 
-<footer>\*4：https://github.com/YutaGoto/todays-imas-idol-orb</footer>
+<footer>\*5：https://github.com/YutaGoto/todays-imas-idol-orb</footer>
 
 ## おまけ
 
 今後 実装していきたいものの案として、
 
 - GitLab CIやTravis CIなど他のCIサービスへの展開
-- ランダムでアイドルとそのアイドルの趣味や好きなことを出力させるCircle CI Orb
-- 今日が過去のライブと同じ日だったライブを出力させるCircle CI Orb
+- ランダムでアイドルとそのアイドルの趣味や好きなことを出力させるCircleCI Orb
+- 今日が過去のライブと同じ日だったライブを出力させるCircleCI Orb
 - 今日が誕生日のアイドルを取得するJavaScriptやRubyなどのライブラリ
 
 などを考えています。
