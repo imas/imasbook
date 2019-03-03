@@ -60,6 +60,7 @@ NASに導入するアプリケーションは以下の通りだ。
 - 同じようなアルバム名がたくさんある
 
 そこで、私はアルバム名の単語で分ける事にした。
+
 MA3の場合は以下のようになる。
 
 `~/THE IDOLM@STER/MASTER/ARTIST 3/01 天海春香1/00 PROLOGUE/01 ONLY MY NOTE (M@STER VERSION).flac`
