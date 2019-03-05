@@ -47,7 +47,7 @@ article p.imageHolder {
 
 article img {
   display: inline;
-  margin: 10px auto;
+  margin: 0px auto;
   max-width: 80%;
 }
 
@@ -175,7 +175,12 @@ article pre {
   border-radius: 3px;
 }
 
+article div.tableHolder {
+  text-align: center;
+}
+
 article table{
+  display: inline;
   margin:0 auto;
   border-spacing: 2px 0px;
 }

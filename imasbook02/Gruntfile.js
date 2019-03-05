@@ -20,7 +20,10 @@ module.exports = function (grunt) {
                         gfm: true
                     },
                     postCompile: function(src, context) {
-                      return src.replace(/<p><img src=/g, "<p class=\"imageHolder\"><img src=");
+                      return src
+                        .replace(/<p><img src=/g, "<p class=\"imageHolder\"><img src=")
+                        .replace(/<table>/g, "<div class=\"tableHolder\"><table>")
+                        .replace(/<\/table>/g, "</table></div>");
                     }
                 }
             }
