@@ -20,12 +20,12 @@ CircleCI(\*1)とは継続的なインテグレーションサービスの一つ�
 
 CircleCIにはCircleCI Orbs(\*2)というCircleCIの設定ファイルのコマンドや設定などの共通処理を使い回すことができる仕組みがあります。この仕組みの使い方は「あるRuby on Railsのプロジェクトのテストコマンドは他のRuby on Railsのプロジェクトとほぼ同じだから使い回したい」ときや「あるPythonのプロジェクトのライブラリ読み込みコマンドは他のPythonのプロジェクトとほぼ同じだから共通化したい」といったことがあったときにとても有用です。
 
+<footer>\*1：https://circleci.jp/</footer>
+<footer>\*2：https://circleci.com/orbs/</footer>
+
 この仕組みを利用して著者が作成した「今日が誕生日のアイドルを出力する」のOrbsを導入してみます。
 
 今回はCircleCIの詳しい使い方には触れません。
-
-<footer>\*1：https://circleci.jp/</footer>
-<footer>\*2：https://circleci.com/orbs/</footer>
 
 ## 著者が実装したOrbsを導入する
 
@@ -169,7 +169,7 @@ GitHubにpushして、CircleCIの実行結果をみてみます。
 
 ## yutagoto/todays-imas-idol&#64;1.0.0 の他の使い方
 
-いままでの例ではCircleCIの実行結果に標準出力してアイドルを確認していましたが、このOrbsにはSlackやDiscordへの通知にも対応しているので、わざわざ実行結果のページに遷移しなくともアイドルを感じることができます。くわしい使い方はOrbsのページ(\*3)を参照してください。以下にSlackやDicsordへの通知の実行結果の例を載せます。
+いままでの例ではCircleCIの実行結果に標準出力してアイドルを確認していましたが、このOrbsにはSlackやDiscordへの通知にも対応しているので、わざわざ実行結果のページに遷移しなくともアイドルを感じることができます。くわしい使い方はOrbsのページ(\*4)を参照してください。以下にSlackへの通知の実行結果の例を載せます。
 
 ![slack](images/yutagoto/slack.png)
 
@@ -181,7 +181,7 @@ GitHubにpushして、CircleCIの実行結果をみてみます。
 
 これで一通り「今日が誕生日のアイドルCircleCIで出力する」をマスターしました。CIツールの導入により生産性が上がる中で、アイドル情報を得られるということでさらに生産性が上がったような気がしませんか？
 
-このCirclrCI OrbsはGitHubに公開(\*4)していますので、もしバグを発見したときや新規機能を追加したいときはPull Requestを作成してください！
+このCirclrCI OrbsはGitHubに公開(\*5)していますので、もしバグを発見したときや新規機能を追加したいときはPull Requestを作成してください！
 
 本業のみならず副業の生産性もどんどん上げて、より質の高いプロダクトを作っていきましょう！
 
