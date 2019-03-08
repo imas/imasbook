@@ -14,14 +14,14 @@
 
 今回はアイドルの情報の中でも、CircleCIを使用して「今日が誕生日のアイドルを取得する」方法について触れます。
 
+<footer>\*1：https://circleci.jp/</footer>
+<footer>\*2：https://circleci.com/orbs/</footer>
+
 ## CircleCIとは
 
 CircleCI(\*1)とは継続的なインテグレーションサービスの一つです。コミットからテスト、デプロイなどユーザが設定した情報を元に自動で行うことができます。
 
 CircleCIにはCircleCI Orbs(\*2)というCircleCIの設定ファイルのコマンドや設定などの共通処理を使い回すことができる仕組みがあります。この仕組みの使い方は「あるRuby on Railsのプロジェクトのテストコマンドは他のRuby on Railsのプロジェクトとほぼ同じだから使い回したい」ときや「あるPythonのプロジェクトのライブラリ読み込みコマンドは他のPythonのプロジェクトとほぼ同じだから共通化したい」といったことがあったときにとても有用です。
-
-<footer>\*1：https://circleci.jp/</footer>
-<footer>\*2：https://circleci.com/orbs/</footer>
 
 この仕組みを利用して著者が作成した「今日が誕生日のアイドルを出力する」のOrbsを導入してみます。
 
