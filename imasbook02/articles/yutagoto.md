@@ -133,7 +133,7 @@ executors:
 
 ```yml
 orbs:
-  todays-imas-idol: yutagoto/todays-imas-idol&#64;1.0.0
+  todays-imas-idol: yutagoto/todays-imas-idol@1.0.0
 ```
 
 使用するOrbsを定義します。今回は yutagoto/todays-imas-idol&#64;1.0.0(\*3)を使用します。
