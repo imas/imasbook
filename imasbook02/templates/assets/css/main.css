@@ -29,6 +29,10 @@ article p {
   text-indent: 0.5em;
 }
 
+article a {
+  text-decoration: none
+}
+
 article {
   page-break-before: always;
   page-break-after: always;
@@ -41,9 +45,13 @@ article {
   border-radius: 0.2em;
 }
 
+article p.imageHolder {
+  text-align: center;
+}
+
 article img {
-  display: block;
-  margin: 10px auto;
+  display: inline;
+  margin: 0px auto;
   max-width: 80%;
 }
 
@@ -171,7 +179,12 @@ article pre {
   border-radius: 3px;
 }
 
+article div.tableHolder {
+  text-align: center;
+}
+
 article table{
+  display: inline;
   margin:0 auto;
   border-spacing: 2px 0px;
 }
