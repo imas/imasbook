@@ -45,9 +45,13 @@ article {
   border-radius: 0.2em;
 }
 
+article p.imageHolder {
+  text-align: center;
+}
+
 article img {
-  display: block;
-  margin: 10px auto;
+  display: inline;
+  margin: 0px auto;
   max-width: 80%;
 }
 
@@ -175,7 +179,12 @@ article pre {
   border-radius: 3px;
 }
 
+article div.tableHolder {
+  text-align: center;
+}
+
 article table{
+  display: inline;
   margin:0 auto;
   border-spacing: 2px 0px;
 }
