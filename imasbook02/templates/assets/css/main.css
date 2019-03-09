@@ -29,6 +29,10 @@ article p {
   text-indent: 0.5em;
 }
 
+article a {
+  text-decoration: none
+}
+
 article {
   page-break-before: always;
   page-break-after: always;
