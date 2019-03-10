@@ -123,9 +123,10 @@ struct FimasparqlResultItem{
 ```
 
 UE4のコーディング規約(\*8)では、構造体名はF始まりになります。Fから始めましょう。
-<footer>\*8：http://api.unrealengine.com/JPN/Programming/Development/CodingStandard/</footer>  
+<footer>\*8：http://api.unrealengine.com/JPN/Programming/Development/CodingStandard/</footer>
+<footer>\*9 UE4のビジュアルプログラミングツール</footer>
 
-<br><br><!-- ←これが無いと、*9が前ページに、だからって*8の下に*9footerを入れると*9は次ページへ..... -->
+<!-- <br><br>←これが無いと、*9が前ページに、だからって*8の下に*9footerを入れると*9は次ページへ..... -->
 
 マクロを読み飛ばしましたね。`USTRUCT()`はUE4に、構造体であることを示します。その中に`BlueprintType`を記述することで、Blueprint(\*9)でも扱える構造体になります。3行目にある`GENERATED_BODY()`は、UE4の機能で扱われるための**おまじない**です。`UPROPERTY()`は、すぐ下に書かれたプロパティがUE4がどのように扱うかを制御するためのマクロです。`BlueprintReadWrite`は名の通り、Blueprintで読み書きができるようにします。`Category`は、そのプロパティがどのカテゴリに属するかを決められます。  
 
@@ -150,7 +151,6 @@ void serialize(T& a, FimasparqlResultItem& in){
 ```
 
 下部の関数は、cerealでJSONのオブジェクト名と構造体の変数名を対応付ける関数です。実はこの関数、optionalな要素に対応していません。cerealのissueで提案(\*10)されているみたいですが議論中です。その議論の中で提案されてた現時点での妥協案が上部の関数です。無ければ無いで、例外を吸収すれば良いみたいです(参考(\*11))。示したクエリ結果の例で、`datatype`と`xml:lang`がoptionalな要素だとわかるので、この2つを上部の関数で対応付けます。  
-<footer>\*9 UE4のビジュアルプログラミングツール</footer>
 <footer>\*10：https://github.com/USCiLab/cereal/issues/30</footer>
 <footer>\*11：https://qiita.com/syoyo/items/b4f4add5aeacad0ddd6a</footer>
 
