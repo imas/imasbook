@@ -125,7 +125,7 @@ struct FimasparqlResultItem{
 UE4のコーディング規約(\*8)では、構造体名はF始まりになります。Fから始めましょう。
 <footer>\*8：http://api.unrealengine.com/JPN/Programming/Development/CodingStandard/</footer>  
 
-<br><!-- ←これが無いと、*9が前ページに、だからって*8の下に*9footerを入れると*9は次ページへ..... -->
+<br><br><!-- ←これが無いと、*9が前ページに、だからって*8の下に*9footerを入れると*9は次ページへ..... -->
 
 マクロを読み飛ばしましたね。`USTRUCT()`はUE4に、構造体であることを示します。その中に`BlueprintType`を記述することで、Blueprint(\*9)でも扱える構造体になります。3行目にある`GENERATED_BODY()`は、UE4の機能で扱われるための**おまじない**です。`UPROPERTY()`は、すぐ下に書かれたプロパティがUE4がどのように扱うかを制御するためのマクロです。`BlueprintReadWrite`は名の通り、Blueprintで読み書きができるようにします。`Category`は、そのプロパティがどのカテゴリに属するかを決められます。  
 
