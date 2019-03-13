@@ -338,7 +338,7 @@ IDEからプロジェクトを実行し、UE4エディタを立ち上げます�
 作ったらダブルクリックでBlueprintエディタを起動し、`"Event Graph"`タブでBlueprintを記述していきます。記述するグラフはこちら。
 <img style="max-width:100%" src="images/crssnky/BP3.png">
 
-まず、`Event BeginPlay`から`GetIdolData`に繋ぎます。`Name`プロパティには、本誌の表紙アイドルである真乃ちゃんのフルネームを入れましょう。次に`Event OnGetIdolData`を作成します。これはC++で定義したとおり、クエリ結果を使いやすい`FIdol構造体`に格納したあとに呼ばれる関数ですね。未実装でしたが、Blueprintで実装していきましょう。引数であった`Idol`変数をbreakして構造体の中身をつまめるようにします。そこから`NameKana`と`Description`から値を取り出し、`Append`に取り付けます。この`Append`はString型に働くもので、文字列の結合を行うノードです。分かりやすいように、Aピンに`名前：`、Cピンに`, 説明：`を入れておきましょう。最後に、`PrintString`を`OnGetIdolData`と`Append`に繋ぎます。この`PrintString`はデバッグように、実行画面左上に文字列を表示できるノードです。  
+まず、`Event BeginPlay`から`GetIdolData`に繋ぎます。`Name`プロパティには、本誌の表紙アイドルである真乃ちゃんのフルネームを入れましょう。次に`Event OnGetIdolData`を作成します。これはC++で定義したとおり、クエリ結果を使いやすい`FIdol構造体`に格納したあとに呼ばれる関数ですね。未実装でしたが、Blueprintで実装していきましょう。引数であった`Idol`変数をbreakして構造体の中身をつまめるようにします。そこから`NameKana`と`Description`から値を取り出し、`Append`に取り付けます。この`Append`はString型に働くもので、文字列の結合を行うノードです。分かりやすいように、Aピンに`名前：`、Cピンに`, 説明：`を入れておきましょう。最後に、`PrintString`を`OnGetIdolData`と`Append`に繋ぎます。この`PrintString`はデバッグのために、実行画面左上に文字列を表示できるノードです。  
 
 以上で、Blueprintの記述は終わりです。簡単でしたね。Blueprintエディタから保存とコンパイルを行いましょう。
 
