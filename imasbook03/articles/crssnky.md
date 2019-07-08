@@ -1,4 +1,4 @@
-# タイトル
+# im@sparql基本 ～HTMLでさっと表示編～
 
 ## 見出し
 
@@ -19,8 +19,8 @@ void main()
 }
 ```
 
-|赤|青|黄|
-|---|---|---|
-|Cute|Cool|Passion|
-|Princess|Fairy|Angel|
-|Physical|Intelli|Mental|
+| 赤       | 青      | 黄      |
+| -------- | ------- | ------- |
+| Cute     | Cool    | Passion |
+| Princess | Fairy   | Angel   |
+| Physical | Intelli | Mental  |
