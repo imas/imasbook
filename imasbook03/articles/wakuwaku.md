@@ -35,7 +35,7 @@ NASでどこでもライブラリ内の曲すべてを聴くことができる�
 
 ## 実装
 
-### 今回使うもの
+### 0. 今回使うもの
 
 - im@sparql
 - Synology DS918+
@@ -43,32 +43,32 @@ NASでどこでもライブラリ内の曲すべてを聴くことができる�
   - Docker
   - Node-RED
 
-### NASにDockerをインストール
+### 1. NASにDockerをインストール
 
-#### 1. DSMにログインしてパッケージセンターを起動する
+#### 1-1. DSMにログインしてパッケージセンターを起動する
 
 
 
-#### 2. `Docker`で検索
+#### 1-2. `Docker`で検索
 
 ![docker install 1](./images/wakuwaku/docker-install-1.png)
 
-#### 3. Docker をインストール
+#### 1-3. Docker をインストール
 
 ![docker install 2](./images/wakuwaku/docker-install-2.png)
 
 `インストール`をクリックしたら自分の環境に合わせてインストール先の設定を求められる場合がある。
 
-### Node-REDの準備
+### 2. Node-REDの準備
 
-#### 1. Docker Image 「nodered/node-red-docker」のダウンロード
+#### 2-1. Docker Image 「nodered/node-red-docker」のダウンロード
 
 - レジストリを開いて`node-red`で検索。
 - nodered/node-red-dockerをダウンロード。
 
 ![node-red setup 1](./images/wakuwaku/node-red-setup-1.png)
 
-#### 2. Docker Container を立ち上げる
+#### 2-2. Docker Container を立ち上げる
 
 - イメージを開いて`nodered/node-red-docker:latest`をクリック。
 - 起動ボタンを押す。
@@ -92,14 +92,16 @@ NASでどこでもライブラリ内の曲すべてを聴くことができる�
 
 ![node-red setup 5](./images/wakuwaku/node-red-setup-5.png)
 
-#### 3. Node-RED接続確認
+#### 2-3. Node-RED接続確認
 
-### 誕生日のアイドルを取得する
+- `http://{NAS_IP}:1880`にアクセスする。
 
-### NASに保存してある曲を取得する
+### 3. 誕生日のアイドルを取得する
 
-### NASにプレイリストを登録する
+### 4. NASに保存してある曲を取得する
 
-### Slackに通知をする
+### 5. NASにプレイリストを登録する
+
+### 6. Slackに通知をする
 
 ## 終わりに
