@@ -59,38 +59,35 @@ NASでどこでもライブラリ内の曲すべてを聴くことができる�
 
 #### 2-1. Docker Image 「nodered/node-red-docker」のダウンロード
 
-- レジストリを開いて`node-red`で検索。
-- nodered/node-red-dockerをダウンロード。
+レジストリを開いて`node-red`で検索。nodered/node-red-dockerをダウンロード。
 
 ![node-red setup 1](./images/wakuwaku/node-red-setup-1.png)
 
 #### 2-2. Docker Container を立ち上げる
 
-- イメージを開いて`nodered/node-red-docker:latest`をクリック。
-- 起動ボタンを押す。
-- ウィンドウが開くので詳細設定を押す。
+イメージを開いて`nodered/node-red-docker:latest`をクリック。起動ボタンを押す。ウィンドウが開くので詳細設定を押す。
 
 ![node-red setup 2](./images/wakuwaku/node-red-setup-2.png)
 
-- コンテナと通信するためのポート設定をする。ここではNode-REDと同じ`1880`に設定する
-- 設定したポート番号でNode-REDにアクセスできる。
-- 設定したら`適用`をクリックし，詳細設定ウィンドウを閉じる。
+コンテナと通信するためのポート設定をする。ここではNode-REDと同じ`1880`に設定する。
+設定したポート番号でNode-REDにアクセスできる。
+設定したら`適用`をクリックし，詳細設定ウィンドウを閉じる。
 
 ![node-red setup 3](./images/wakuwaku/node-red-setup-3.png)
 
-- コンテナ作成ウィンドウに戻り，`次へ`をクリックする。
-- ポート設定が正しくできているかチェックする。
-- 適用をクリックして，コンテナを起動する。
+コンテナ作成ウィンドウに戻り，`次へ`をクリックする。
+ポート設定が正しくできているかチェックする。
+適用をクリックして，コンテナを起動する。
 
 ![node-red setup 4](./images/wakuwaku/node-red-setup-4.png)
 
-- コンテナを開き，node-redのコンテナが立ち上がっているか確認する。
+コンテナを開き，node-redのコンテナが立ち上がっているか確認する。
 
 ![node-red setup 5](./images/wakuwaku/node-red-setup-5.png)
 
 #### 2-3. Node-RED接続確認
 
-- `http://{NAS_IP}:1880`にアクセスする。
+`http://{NAS_IP}:1880`にアクセスする。
 
 ![node-red setup 6](./images/wakuwaku/node-red-setup-6.png)
 
