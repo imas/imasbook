@@ -56,8 +56,10 @@ Kotlinは、チェコに本社を置くJetBrains社が開発している、静�
 #### 小鳥
 えーっと、このサイト、ですか？　なんだかチェックボックスがたくさんありますね…。
 
-![図2. Ktor Project Generator(https://start.ktor.io)](./images/subroh0508/ktorio.png)
-<center>図2. Ktor Project Generator(https://start.ktor.io)</center><br/>
+![図2. Ktor Project Generator](./images/subroh0508/ktorio.png)
+<center>図2. Ktor Project Generator(\*2)</center><br/>
+
+<footer>\*2 https://start.ktor.io</footer>
 
 #### P
 そうですそうです！　ひとまずチェックボックスは無視して、左下の青い「Build」ボタンを押してください。
@@ -205,12 +207,194 @@ OKです！　それじゃ、今度は「localhost:8080/today」にアクセス�
 #### 小鳥
 よろしくお願いします！　今日はありがとうございました。
 
-## Hello, World!
+## 補足コーナー
+「小鳥さん=ITガチ初心者」の想定で書いたので、技術濃度がかなり薄くなってしまった(´・ω・｀)　なので、SSに登場したフレームワーク・Ktorについて補足します。
 
-## リクエストを送る
+### What is Ktor?
+**Ktor(\*3)とは、軽量かつシンプルなKotlin製Webアプリケーションフレームワーク**です。2018年11月にバージョン1.0がリリースされたばかりの新しいフレームワークであり、現在でも活発に開発が進んでいます。
 
-## JSONを返す
+Ktorは、前述までのサーバーサイドのアプリケーション開発以外にも、HttpやWebSocket等の外部サービスとの接続のための非同期クライアントの機能もサポートしています。最近では、**DroidKaigi 2019の公式アプリ(\*4)**がHttpクライアントにKtorを採用した事例もあり、サーバーサイド・クライアントサイドの両面で利用実績が増えつつあるフレームワークだと言えるでしょう。
 
-## HTMLを返す
+### ルーティングの記述
 
-## パラメーターの型チェック
+KtorによるGET・PUT・POSTといったルーティングの記述は、`routing`メソッドを使って以下のように書くことができます。
+
+```
+routing {
+    get("/") {
+        call.respondText("Hello, World!", ContentType.Text.Plain)
+    }
+    put("/item/{id}") {
+        val itemId = call.parameters["id"]
+    }
+    post("/route") {
+        // data class HelloWorld(val hello: String)が宣言済みと仮定
+        // ContentNegotiation(後述)も設定済みと仮定
+        val data = call.receive<HelloWorld>()
+    }
+}
+```
+<center>コード4. ルーティング記述例</center><br/>
+
+<footer>\*3 https://ktor.io/</footer>
+<footer>\*4 https://github.com/DroidKaigi/conference-app-2019</footer>
+
+また、`route`メソッドを使うことで、URLパスにprefixを付けることも可能です。
+
+```
+routing {
+    route("/api/v1") {
+        get("/home") { ... }
+        get("/post/{id}") { ... } 
+    }
+}
+```
+<center>コード5. パスへのprefix</center><br/>
+
+パラメーターやリクエストボディの値の取得は、`call.parameters["hoge"]`や`call.receive<Hoge>()`で取得することができます。URLパスに関しては、下記4つのパラメーターのoptional指定やワイルドカードに対応しています。
+
+- {param?}: パラメーターのoptional指定。
+- \*: ワイルドカード。1文字以上のセグメントにマッチします。
+- {...}: URIの末尾までの残りにマッチする。
+- {param...}: URIの末尾までの残りのセグメントをパラメーターとして受け取る。値は`call.parameters.getAll("param")`のように受け取る。
+
+### JSONを受ける、JSONを返す
+POSTでJSONのリクエストボディを受け取りたい時、またはレスポンスとしてJSONを返したい時、Ktorでは**ContentNegotiation**に各種JSONのコンバーターを設定します。
+
+公式ではGson(\*5)とJackson(\*6)の対応モジュールが用意されています。今回はGsonの例を紹介します。
+
+まず、GradleにGson用コンバーターのモジュールを追記します
+
+```
+dependencies {
+    implementation "io.ktor:ktor-gson:$ktor_version"
+}
+```
+<center>コード6. ktor-gsonへの依存関係追加</center><br/>
+
+<br/>
+
+<footer>\*5 https://github.com/google/gson</footer>
+<footer>\*6 https://github.com/FasterXML/jackson</footer>
+
+次に、Application.ktの`routing`の記述の手前に、下記のコードを追記します。
+
+```
+install(ContentNegotiation) {
+    gson {
+        // Gsonの設定記述
+        // 例: serializeNulls()
+    }
+}
+```
+<center>コード6. ContentNegotiationの設定</center><br/>
+
+最後に、`call.respond()`メソッドでレスポンスを記述し、完了です。
+
+```
+data class Character(val first: Name, val family: Name)
+
+routing {
+    get("/character") {
+        // GET /character で{"first": "小鳥","family": "音無"}が返る
+        call.respond(Character("小鳥", "音無"))
+    }
+}
+```
+<center>コード7. JSONを返すレスポンスの記述</center><br/>
+
+このように、Gsonの存在を意識することなく、JSONを使った値のやりとりが簡単に実装できます。最高ですね！
+
+複雑なオブジェクトをシリアライズする場合はGsonのTypeAdapterを用意する必要がありますが、これも`gson { ... }`の中で設定することが可能です。
+
+```
+install(ContentNegotiation) {
+    gson {
+        registerTypeAdapter(HogeTypeAdapter())
+    }
+}
+```
+<center>コード8. TypeAdapterの設定</center><br/>
+
+### HTMLを返す
+Ktorには、Kotlinで記述したHTMLをレスポンスとして返す機能も存在します。この機能は、HTML用のKotlin DSLモジュールをGradleに追記することで利用可能になります。
+
+```
+dependencies {
+    implementation "io.ktor:ktor-html-builder:$ktor_version"
+}
+```
+<center>コード9. ktor-html-builderへの依存関係追加</center><br/>
+
+上記モジュールを追加すると、`call.respondHtml`というメソッドが利用できるようになり、Kotlinで定義されたDSLを使って返したいHTMLを自由に記述することが可能になります。
+
+```
+call.respondHtml {
+    head {
+        title { +"UNI-ON@IR!!!! Fairy Station" }
+    }
+    body {
+        h1(id = "music") {
+            +"FairyTaleじゃいられない"
+        }
+    }
+}
+```
+<center>コード10. HTMLをレスポンスとして返す</center><br/>
+
+ktor-html-builderは、内部で**kotlinx.html(\*7)**というライブラリを使い、HTML用のDSLの機能を提供しています。このライブラリの実装を読むと、Kotlinの特長の1つである「DSLの作成に有用な機能が揃っている」ことを実感できると思います。興味があれば調べてみてください。
+
+<footer>\*7 https://github.com/Kotlin/kotlinx.html</footer>
+
+### パラメーターの型チェック
+
+JVM言語であるKotlinでサーバーサイドの実装をする上で、パラメーターの型バリデーションは是非とも導入したい機能の1つでしょう。こちらも、リクエストパラメーターの型バリデーションに絞った上で紹介していきます。
+
+リクエストパラメーターの型バリデーションは、ktor-locationsというモジュールを利用し、導入します。まずは、Gradleに依存関係を追記します。
+```
+dependencies {
+    implementation "io.ktor:ktor-locations:$ktor_version"
+}
+```
+<center>コード11. ktor-locationsへの依存関係追加</center><br/>
+
+ktor-locationsの基本的な使い方は、以下の2点です。
+- `@Location`アノテーションにパスを記述する。
+- `@Location`の次の行にdata classを宣言し、型情報を指定する。
+
+実際のコードは以下のようになります。
+
+```
+routing {
+    @Location("/live/{title}/{seq}")
+    data class LiveMusicParams(val title: String, val seq: Int)
+    get<LiveMusicParams> { params: LiveMusicParams ->
+        if (params.title == "million6th_angel" && seq == 1) {
+            call.respondText("Angelic Parade♪")
+        } else if (params.title == "million6th_princess" && seq == 1) {
+            call.respondText("Princess Be Ambitious!!")
+        } else if (params.title == "million6th_fairy" && seq == 1) {
+            call.respondText("FairyTaleじゃいられない")
+        } else {
+            call.respondText("(o・∇・o)")
+        }
+    }
+}
+```
+<center>コード12. ミリオン6thの1曲目を返すAPIサーバー</center><br/>
+
+若干記述量が増えますが、シンプルなデータクラスの宣言のみでバリデーションを実装できるため、手軽さを感じられるのではないでしょうか。
+
+### おわりに
+
+小鳥さんとKotlinでイチャつくSS、それからシンプルなAPIサーバーをKtorで実装するためのTipsの2本立てでお送りしました。いかがだったでしょう？
+
+Kotlinはかわいい言語です。書いていて、幸せを感じる言語です。
+
+小鳥さんはもちろんかわいいです。事務員の今もかわいいですし、高校生時代はホントマジでヤバイです。小鳥さんの学生時代を知らないそこのあなたは、早く「朝焼けは黄金色」(\*8)を765万回読んでください。
+
+かわいい言語であるKotlinと、存在そのものがかわいい小鳥さん、両者が掛け合わさった時、この世に新たな宇宙が誕生します。読者のみなさんも、これを機に小鳥さんと一緒にKotlinに触れ、かわいいの先に見える未知の世界を体験してみてください。
+
+(真面目な話、世の中Kotlin書けるエンジニアがマジで見つからなくて本当に採用大変なんだ！！！　つらい！！！　これ読んだプロデューサーさんは、頼むからみんなKotlin書いてくれ！！！　お願いします！！！)
+
+<footer>\*8 https://www.amazon.co.jp/dp/4758067082/ref=cm_sw_r_tw_dp_U_x_pN2jDb4TK9ZQD</footer>
