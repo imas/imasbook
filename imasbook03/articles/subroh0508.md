@@ -1,4 +1,4 @@
-# 小鳥さんと一緒に100%Kotlinでサイト製作<br><span class="subtitle">〜Backend編〜</span>
+# 小鳥さんと一緒に100%Kotlinのサイト製作<br><span class="subtitle">〜Backend編〜</span>
 <p class="right">著:にしこりさぶろ〜</p>
 
 _前回のあらすじ！_(\*1)
