@@ -127,7 +127,8 @@ const dateFormat = {
   },
   _priority : ["yyyy", "MM", "dd", "hh", "mm", "ss"],
   format: function(date, format){
-    return this._priority.reduce((res, fmt) => res.replace(fmt, this._fmt[fmt](date)), format)
+    return this._priority
+      .reduce((res, fmt) => res.replace(fmt, this._fmt[fmt](date)), format);
   }
 };
 const now = dateFormat.format(date, 'MM-dd');
@@ -158,7 +159,8 @@ return msg;
 `function`でim@sparqlから取得したデータから使うデータを抜き出し，整形する。
 
 ```js
-msg.payload = msg.payload.results.bindings.map(data => data.name.value) || Array();
+msg.payload = msg.payload.results.bindings
+              .map(data => data.name.value) || Array();
 
 return msg;
 ```
