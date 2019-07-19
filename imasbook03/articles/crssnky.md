@@ -20,11 +20,15 @@ im@sparqlは、現在も広がるアイマスワールドをデータベース�
 
 ## 構成
 今回は生のHTML+JS+CSSで書きます。説明の単純化が目的のため、デキる方は読み替えつつ、フレームワークなどを導入しても良いですね。  
+
+以下に作成するファイルの配置を示します。と言っても、HTMLとJSとCSSを一つずつ作り、同じディレクトリに配置するだけです。ファイル名はお好きなものに替えてもらっても構いません。
 ```
 Directory
-  |--sample.html, sample.js, sample.css
+  |--sample.html
+  |--sample.js
+  |--sample.css
 ```
-サンプルはこちら(\*2)です。ユニット名を入力して確定すると、im@sparqlへクエリを送ります。結果が返ってきたら画面いっぱいにユニットメンバーのイメージカラーが並ぶようになっています。ちなみに、ユニット内にイメージカラーを持っていないアイドルは取得されず、イメージカラー有りのメンバーのみ取得されます。  
+完成品はこちら(\*2)です。ユニット名を入力して確定すると、im@sparqlへクエリを送ります。結果が返ってきたら画面いっぱいにユニットメンバーのイメージカラーが等分で並ぶようになっています。ちなみに、ユニット内にイメージカラーを持っていないアイドルは取得されず、イメージカラー有りのメンバーのみ取得されます。(例:`L.M.B.G`は専用ペンライトが発売されたアイドルのみ、イメージカラーが判明しています。そのため、表示されるアイドルは半分以下となっています。)  
 <center>![](./images/crssnky/construct.png)<br/>
 図2 動作イメージ</center>
 
@@ -32,7 +36,7 @@ Directory
 
 ## サンプルコード
 ### HTML
-最初にガワであるHTMLを書いていきます。と言っても特殊なことはしません。CSSとJSを読み込み、入力欄と描画枠を記述するだけです。サンプルコードはこちら。
+最初にガワであるHTMLを書いていきます。と言っても特殊なことはしません。CSSとJSを読み込み、入力欄と描画枠を記述するだけです。
 ```html
 <!DOCTYPE html>
 <html lang="ja">
@@ -52,7 +56,7 @@ Directory
 </body>
 </html>
 ```
-`id=sub`の`div`タグは、ユニット名を入力するInputと確定ボタン、エラーメッセージのための`p`タグを最終的に隠すために有ります。  
+`id=sub`の`div`タグは、ユニット名を入力するInputと確定ボタン、エラーメッセージのための`p`タグを最終的に隠すために、それらの親になっています。  
 確定ボタンを押したら、Input要素をJavaScriptの関数に渡すようにします。  
 `id=main`の`div`タグに、取得できた結果を格納していきます。
 
@@ -141,9 +145,9 @@ function exe(unitName) {
 最初に今回使用するSPARQLのクエリの雛形を宣言します。見やすくすると...
 ```SPARQL
 PREFIX schema: <http://schema.org/>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX imas: <https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#>
-PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX imas:   <https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?iname ?color WHERE {
   ?unit   rdf:type       imas:Unit;
           schema:name    ?uname;
@@ -168,7 +172,7 @@ if (json.length === 0) {
   return;
 }
 ```
-色を持つメンバーが居ない・ユニット名がマッチしない場合は結果の配列の長さが0になるため、その後のif文でエラー処理をします。  
+色を持つメンバーが居ない・ユニット名がマッチしない場合は結果の配列の長さが0になるため、if文でエラー処理をします。  
 ```JavaScript
 document.getElementById("sub").style = "display:none";
 ```
