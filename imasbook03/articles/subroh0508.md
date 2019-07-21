@@ -397,4 +397,5 @@ Kotlinはかわいい言語です。書いていて、幸せを感じる言語�
 
 (真面目な話、世の中Kotlin書けるエンジニアがマジで見つからなくて本当に採用大変なんだ！！！　つらい！！！　これ読んだプロデューサーさんは、頼むからみんなKotlin書いてくれ！！！　お願いします！！！)
 
-<footer>\*8 https://www.amazon.co.jp/dp/4758067082/ref=cm_sw_r_tw_dp_U_x_pN2jDb4TK9ZQD</footer>
+<footer>\*8 http://data.ichijinsha.co.jp/book/booksearch/booksearch_detail.php?i=75806708</footer>
+
