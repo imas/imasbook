@@ -37,11 +37,13 @@ NASでどこでもライブラリ内の曲すべてを聴くことができる�
 
 ### 0. 今回使うもの
 
-- im@sparql
+- im@sparql (\*1)
 - Synology DS918+
   - Audio Station
   - Docker
   - Node-RED
+
+<footer>\*1: https://sparql.crssnky.xyz/imas/</footer>
 
 ### 1. NASにDockerをインストール
 
