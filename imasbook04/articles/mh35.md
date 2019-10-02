@@ -1,0 +1,3 @@
+# アイドルマスター
+
+this is sample.

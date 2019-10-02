@@ -8,17 +8,17 @@ jobs:
     - checkout
     - restore_cache:
         keys:
-        - v1-dependencies-{{ checksum "imasbook03/yarn.lock" }}
+        - v1-dependencies-{{ checksum "imasbook04/yarn.lock" }}
         - v1-dependencies-
     - run:
         name: build output.pdf
         command: |
-          cd imasbook03
+          cd imasbook04
           yarn install
           yarn run build
     - save_cache:
         paths:
-        - "imasbook03/node_modules"
-        key: v1-dependencies-{{ checksum "imasbook03/yarn.lock" }}
+        - "imasbook04/node_modules"
+        key: v1-dependencies-{{ checksum "imasbook04/yarn.lock" }}
     - store_artifacts:
-        path: imasbook03/output.pdf
+        path: imasbook04/output.pdf
