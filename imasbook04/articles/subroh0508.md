@@ -326,7 +326,7 @@ val queries: List<String> = listOf(
 val query: String = queries.joinToString("&")
 ``` 
 
- ここまでの実装をまとめると、こんな感じです！(\*12)
+ ここまでの実装のまとめです！(\*12)
 
 ```
 submitButton?.addEventListener("click", { event: Event? ->
@@ -335,7 +335,6 @@ submitButton?.addEventListener("click", { event: Event? ->
     val minMinuteValue = minMinute?.value ?: "0"
     val maxHourValue = maxHour?.value ?: "0"
     val maxMinuteValue = maxMinute?.value ?: "0"
-
     val queries = listOf(
             "names[]=${
                 listOfNotNull(producer, ritsuko, junjirou)
@@ -384,5 +383,144 @@ fun request(query: String): Promise<List<CalendarEvent>> =
                 }
 ```
 
-## §3 空き時間を探すロジックの実装
+## §3 空き時間を探すロジックの実装 + 結果の表示
 
+ 遂にFirebase Functionsから3人のスケジュールを取得できました！後は空き時間を探すロジックを書いて、結果をHTMLに表示するだけです！頑張りましょう！
+
+ まず最初に、Kotlin/JSでのDOM操作がしやすくなるよう、ライブラリを追加します。`kotlinx-html`というライブラリを`yarn add`します。
+
+```
+yarn add --dev kotlinx-html
+```
+
+ このライブラリを使うと、Kotlin/JS上で簡単にHTMLを書けるようになります！試しに`kotlinx-html`を使って、Firebase Functionsから取得したスケジュールを`ul`/`li`タグでリスト表示するメソッドを実装してみましょう(\*13)。
+
+```
+fun resultElement(events: List<CalendarEvent>) = document.create.div {
+    val producerEvents = events.filter { it.name == "プロデューサーさん" }
+    val ritsukoEvents = events.filter { it.name == "律子さん" }
+    val junjirouEvents = events.filter { it.name == "社長" }
+
+    fun kotlinx.html.FlowContent.eventSummary(name: String, events: List<CalendarEvent>) {
+        // (1) divタグ
+        div { +"${name}[${events.size}件]" }
+```
+
+<footer>\*13 commit hash: 31a747b55ceaa03bddfd70a82f39216b41b936af</footer>
+
+```
+        if (events.isNotEmpty()) {
+            // (2) ulタグ
+            ul {
+                events.forEach {
+                    // (3) liタグ
+                    li { +"${it.summary}: ${it.startTimeString()} - ${it.endTimeString()}" }
+                }
+            }
+        }
+    }
+
+    // (4) pタグ
+    p {
+        eventSummary("プロデューサーさん", producerEvents)
+        eventSummary("律子さん", ritsukoEvents)
+        eventSummary("社長", junjirouEvents)
+    }
+}
+```
+
+ (1)〜(4)の箇所で`kotlinx-html`のメソッドを使っていますよ。`タグ名 { ... }`の形でHTMLを直に書いているような見た目を崩すことなく、DOMの組み立てができるよくできたライブラリです！
+
+ 残るは取得したスケジュールから、空き時間を探すロジックです。今回はシンプルに、「開始時間から終了時間まで、30分毎に空き時間があるかforループでチェックする」方法で実装してみます。
+
+```
+const val THIRTY_MIN = 1800000
+
+// offset時間から30分の間にスケジュールが存在するかチェックするメソッド
+fun checkFreeTimes(offset: Long, events: List<CalendarEvent>): Boolean =
+        events.filterNot {
+            it.end.getTime().toLong() < offset ||
+                (offset + THIRTY_MIN) < it.start.getTime().toLong()
+        }.isEmpty()
+
+val freeTimes: MutableList<Long> = mutableListOf()
+// 入力した開始時間から終了時間まで、30分毎にチェックメソッドを実行する
+// 空いているoffset時間はMutableListに格納する
+for (offset in minTime..maxTime step THIRTY_MIN) {
+    if (checkFreeTimes(offset, events)) {
+        freeTimes.add(offset)
+    }
+}
+```
+
+ 空き時間が取得できたら、最後は表示です。長かった作業もこれで終わります！
+
+```
+p { if (freeTimes.isNotEmpty()) {
+    div { +"この時間が空いてます！" }
+    ul { freeTimes.forEach { offset ->
+        li { +"${
+            Date(offset).toLocaleTimeString("ja-JP") + "-" +
+                Date(offset + THIRTY_MIN).toLocaleTimeString("ja-JP")
+        }}
+    } }
+} else { div { +"空いている時間が見つかりませんでした🥺" } } }
+``` 
+
+ そして運命の時……。値を入力して、空き時間を実際に調べてみましょう……！どきどき……。
+
+![図4. 完成したスケジュールチェッカー](./images/subroh0508/complete.png)
+<center>図4. 完成したスケジュールチェッカー</center><br/>
+ 
+ やりました！完成です！(\*14)
+ 
+ ……あっ、でもよく見ると、後ろの30分余計に空き時間が表示されちゃってます。ここはあとでPull Requestを出して、修正しておきましょう。何よりこれで、スケジュール調整が一気に楽になります！早くプロデューサーさんにも報告しないと！
+
+<footer>\*14 commit hash: d094f6b20bafdb2a497b18763abf140ace2afc9c</footer>
+
+## エピローグ -新年明けまして-
+
+#### プロデューサー
+ ただいま戻りましたー！お疲れさまです、音無さん！
+
+ 去年の年末に作ったスケジュールチェッカー、その後の調子はどうですか？
+
+#### 小鳥
+ もう最高です！！！Google Calendarを開く度に憂鬱だったあの時がウソのようです！！！
+
+ せっかくなので、今度はあのスケジュールチェッカーから、直接予定の追加もできるようにしたいです！
+
+#### プロデューサー
+ いやー、今の音無さんだったらちょちょいのちょいですよ！Kotlin、完璧に使いこなしているじゃないですか！
+
+#### 小鳥
+ そんなことはないです。年末は最初の環境構築をプロデューサーさんに丸ごと頼ってしまいましたし……。まだまだ、精進あるのみです！
+
+(ガチャン！)
+
+#### 律子
+ た、大変です！プロデューサー！
+
+#### プロデューサー
+ お、お疲れ律子！どうした？そんなに血相を変えて？
+
+#### 律子
+ 今日の16時から入れていたゴールドレコードのアポ、たった今「765プロさんの方から取りやめの電話があった」と連絡があったんです。それでまさかとは思って、他の取材や収録の予定も確認を取ってみたんですけど、軒並み全部キャンセルされていて……。
+
+#### プロデューサー
+ な、なんだって！！！年始の大事なかきいれ時に……。
+
+#### 律子
+ 犯人はおそらく、黒井社長でしょうね……。できる限りのリカバーはしますが、ここまでやられると、完全に元に戻すのは不可能かと。
+
+#### プロデューサー
+ でもどうやって？黒井社長の嫌がらせ対策で、最近アポや取材の予定はあらゆる手段を使って表に出ないようにしていたのに。一体どこから流出したんだ？
+
+#### 律子
+ ……そういえば、去年小鳥さんが作ったスケジュールチェッカー、少し触ってみましたけど、一切ログインやユーザー確認の画面、出てこなかったですよね？あれ、何のアクセス制限もなしに公開したり、してないですよね？
+
+#### プロデューサー & 小鳥
+ ……あ。
+
+#### プロデューサー & 小鳥
+ ああああああああああああああ！！！！！！！！！！！！
