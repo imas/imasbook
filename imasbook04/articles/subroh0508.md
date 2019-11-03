@@ -38,6 +38,7 @@
  あぁ、そういえば。年末ですし、そろそろお店埋まっちゃいますね。
 <br/>
 <br/>
+
 ![図1. 予定いっぱいのGoogle Calendar](./images/subroh0508/googlecalendar.png)
 <center>図1. 予定いっぱいのGoogle Calendar</center><br/>
 
@@ -195,7 +196,193 @@ resetButton?.addEventListener("click", { event: Event? ->
 
 ## §2 Firebase Functionsへのリクエスト
 
-## §3 空き時間を探すロジックの実装
+ シンプルですけど、UIの実装は終わりました。次はプロデューサーさんがFirebase Functionsに置いてくれたAPIから、プロデューサーさん、律子さん、社長のスケジュールを取得しましょう！
+
+<br/>
+<br/>
+<br/>
+<br/>
 
 <footer>\*7 https://kotlinlang.org/docs/reference/properties.html#getters-and-setters</footer>
 <footer>\*8 commit hash: 09ddbc7169e6a692324de928fcd59df2602067a2</footer>
+
+ 因みに、APIの仕様はこんな感じです！
+
+- GET /schedules
+- パラメーター
+  - names: 予定の空きをチェックしたい人の名前
+  - from: 開始時間(ISO8601形式)
+  - to: 終了時間(ISO8601形式)
+- レスポンス
+  - Google Calendar APIの`Events.list`のレスポンスそのまま(\*9)
+
+ HTTPのクライアントライブラリには、KtorのKotlin/JS用ライブラリ(\*10)が最も高機能ですね。ですが今回は、簡単なGETのリクエストを送るだけなので、JavascriptのFetch API(\*11)を使って実装しちゃいます！
+
+ Kotlin/JSでFetch APIを利用するには、`window`プロパティから生えている`fetch`メソッドを使います。返り値は`Promise`クラスのインスタンスになります。Javascriptで扱う場合と、ほぼ一緒ですね。
+
+```
+val query: String = "..."
+val promise: Promise<Any?> = window.fetch(
+        "https://us-central1-imasbook04-sample.cloudfunctions.net" + 
+            "/schedules?${query}",
+        RequestInit(mode = RequestMode.CORS)
+)
+        .then { response -> response.json() }
+```
+
+ 上記コードの最後の行、`Response#json`メソッドを使ってAPIレスポンスのBodyを取得しています。なんですけど、このままだとBodyの値が`Any?`型になってしまい、ちょっと扱いづらいです。
+
+ なので、Google Calendarから取ってきたイベントを表す、`CalendarEvent`クラスを新たに定義して、Bodyの値を変換しましょう！
+
+ Firebase Functionsからはたくさんの値が降ってきますけど、今回のアプリでは「イベントが誰のものか」「イベントの名前」「開始時間」「終了時間」の4つが分かれば十分そうです。なので、これを満たすように`data class`で`CalendarEvent`クラスを定義します。
+
+<footer>\*9 https://developers.google.com/calendar/v3/reference/events/list#response_1</footer>
+<footer>\*10 https://ktor.io/clients/http-client/multiplatform.html#javascript</footer>
+<footer>\*11 https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch</footer>
+
+```
+class CalendarEvent(
+        val name: String,
+        val summary: String,
+        val start: Date,
+        val end: Date
+)
+``` 
+
+ ついでに、`Any?`から`CalendarEvent`に型を変換するメソッドも、`CalendarEvent`のクラスメソッドとして実装します！
+
+```
+companion object {
+    fun fromDynamic(obj: dynamic): CalendarEvent = CalendarEvent(
+            name = when (obj.organizer.displayName) {
+                "imasbook04_producer" -> "プロデューサーさん"
+                "imasbook04_ritsuko" -> "律子さん"
+                "imasbook04_junjirou" -> "社長"
+                else -> "？？？"
+            },
+            summary = obj.summary as String,
+            start = Date(Date.parse(obj.start.dateTime as String)),
+            end = Date(Date.parse(obj.end.dateTime as String))
+    )
+}
+```
+
+ さてさて、`fromDynamic`メソッドの引数に、また見慣れない単語が出てきました。そう、`dynamic`型です。この`dynamic`、Kotlinの中でもKotlin/JSにしか登場しない、珍しい文法なんです！
+
+ はてさて、この子はどんな働きをする型でしょう？その答えは、**「Kotlinのコードの中で、Javascriptのオブジェクトをそのまま扱うことができる型」**です！
+
+ ……何を言っているかわからない、ですか？了解です、例をお見せします。
+
+```
+val obj: dynamic = js("{ hoge: "hoge", aaa: { bbb: "bbb" } }")...(1)
+
+println(obj.hoge) // => "hoge" ...(2)
+println(obj.aaa.bbb) // => "bbb" ...(2)
+
+obj.aaa.ccc = "1234"
+
+println(obj.aaa.ccc) // => "1234"...(3)
+```
+
+ コード例の(1)では、Kotlin/JSの`js`メソッドを使って、Javascriptのオブジェクトを`dynamic`型で宣言しています。
+
+ `dynamic`型で宣言された変数`obj`は、Kotlinのコードの中で **「あたかもJavascriptのオブジェクトのように」**ふるまいます。例えば(2)のように、Javascriptとほぼ同じようなアクセサで、`hoge`キーに対応する文字列や`aaa.bbb`キーに対応する文字列を取得できます。また、(3)のように、存在しないキーに対する代入処理も、いともかんたんに書けちゃうんです。
+
+ そうです！`dynamic`型は、Kotlinの世界とJavascriptの世界を結ぶ、とても優秀な橋渡し役なんです！この`dynamic`型があるからこそ、Javascriptのクラスや関数をKotlinの世界でも自由に扱うことができるんです！
+
+ でも、1つ注意があります。この`dynamic`型、便利だからといってたくさん使うと、型安全なKotlinの良さが完全に消えてしまいます……。**アイドルの個性を活かしつつ、お仕事を取ってくるのが優秀なプロデューサー**、ですよね？だから**Kotlin/JSでも、Kotlinの良さを引き出せるよう、`dynamic`型とKotlinの型のマッピングメソッドはサボらずしっかり実装しましょう**ね！
+
+ Firebase Functionsへのリクエストの実装はあと少し！最後は、チェックボックスやテキストボックスの値からリクエストのクエリを生成します！
+
+```
+val dayValue = day?.value ?: "1"
+val minHourValue = minHour?.value ?: "0"
+val minMinuteValue = minMinute?.value ?: "0"
+val maxHourValue = maxHour?.value ?: "0"
+val maxMinuteValue = maxMinute?.value ?: "0"
+
+val queries: List<String> = listOf(
+        "names[]=${
+            listOfNotNull(producer, ritsuko, junjirou)
+                .filter { it.checked }
+                .joinToString("&names[]=") { it.name }
+        }",
+        "from=${
+            dateTimeFormat(
+                day = dayValue,
+                hour = minHourValue,
+                minute = minMinuteValue
+            )
+        }%2B09:00",
+        "to=${
+            dateTimeFormat(
+                day = dayValue,
+                hour = maxHourValue,
+                minute = maxMinuteValue
+            )
+        }%2B09:00"
+)
+
+val query: String = queries.joinToString("&")
+``` 
+
+ ここまでの実装をまとめると、こんな感じです！(\*12)
+
+```
+submitButton?.addEventListener("click", { event: Event? ->
+    val dayValue = day?.value ?: "1"
+    val minHourValue = minHour?.value ?: "0"
+    val minMinuteValue = minMinute?.value ?: "0"
+    val maxHourValue = maxHour?.value ?: "0"
+    val maxMinuteValue = maxMinute?.value ?: "0"
+
+    val queries = listOf(
+            "names[]=${
+                listOfNotNull(producer, ritsuko, junjirou)
+                    .filter { it.checked }
+                    .joinToString("&names[]=") { it.name }
+            }",
+            "from=${
+                dateTimeFormat(
+                    day = dayValue,
+                    hour = minHourValue,
+                    minute = minMinuteValue
+                )
+            }%2B09:00",
+            "to=${
+                dateTimeFormat(
+                    day = dayValue,
+                    hour = maxHourValue,
+                    minute = maxMinuteValue
+                )
+            }%2B09:00"
+    )
+
+    request(queries.joinToString("&"))
+            .then {
+                document.getElementById("result")?.clear()
+                document.getElementById("result")
+                    ?.appendText(it.toString())
+            }
+})
+```
+
+<footer>\*12 commit hash: 3b701a6ae7337cfcc76827f86034427ae2df19b6</footer>
+
+```
+fun request(query: String): Promise<List<CalendarEvent>> =
+        window.fetch(
+                "http://localhost:5000/imasbook04-sample/us-central1" +
+                    "/schedules?${query}",
+                RequestInit(mode = RequestMode.CORS)
+        )
+                .then { response -> response.json() }
+                .then { body ->
+                    body.unsafeCast<Array<Array<dynamic>>>()
+                        .flatten()
+                        .map { CalendarEvent.fromDynamic(it) }
+                }
+```
+
+## §3 空き時間を探すロジックの実装
+
