@@ -434,7 +434,7 @@ fun resultElement(events: List<CalendarEvent>) = document.create.div {
  残るは取得したスケジュールから、空き時間を探すロジックです。今回はシンプルに、「開始時間から終了時間まで、30分毎に空き時間があるかforループでチェックする」方法で実装してみます。
 
 ```
-const val THIRTY_MIN = 1800000
+const val THIRTY_MIN = 1800000L
 
 // offset時間から30分の間にスケジュールが存在するかチェックするメソッド
 fun checkFreeTimes(offset: Long, events: List<CalendarEvent>): Boolean =
