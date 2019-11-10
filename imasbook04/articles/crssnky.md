@@ -120,9 +120,46 @@ SpectreVisualizerをBlueprint(以下BP)で作成します。コンテンツブ�
 <center>![](./images/crssnky/1-10.png)<br/>
 図14 ConstructionScriptの完成後</center>
 
-
-
 ### Position based colors ～位置と色相で良い感じの色～
+作った方はお気付きですね。そうです。**色が無ーーーい！！**というわけで、このMeshに対して色を設定していきましょう。色は、Boxの位置によって色相(Hue)が移り変わる綺麗そうなものにします。
+
+UE4では色や質感をMaterialで記述していきます。Blueprintと同様のノードとブランチのビジュアルプログラミングで記述できます。最終的にはターゲット機器に合わせたShaderCodeに変換されます。  
+まず、コンテンツブラウザからMaterialを作成し、適当な名前を付けてください。
+
+<center>![](./images/crssnky/2-2.png)<br/>
+図15 Materialの作成</center>
+
+作成したMaterialを開くと"Material Editor"(\*7)が開きます。結果を確認しながらシェーダーを記述できます。
+<footer>\*7：https://docs.unrealengine.com/ja/Engine/Rendering/Materials/Editor/index.html</footer>
+
+最初に、このマテリアルの"Shading Model"を変更します。今回は、光の影響を受けさせる気は無いので`Unlit`にします。  
+<center>![](./images/crssnky/2-3.png)<br/>
+図16 Materialの全体</center>
+
+今回作成するグラフは図17です。こちらも小分けにして説明します。
+
+<center>![](./images/crssnky/2-1.png)<br/>
+図17 Materialの全体</center>
+
+まず初めに位置を取得します。`Absolute World Position`ノードは、各ピクセルが画面のどの位置を表示しているかを取得できます。つまりMeshの表面の1点1点がワールド座標のどの位置かがわかります。位置はXYZで返ってくるため、`BreakOutFloat3Components`でそれぞれを一つに分割します。出力ピンがR・G・Bとなっていますが、1個目2個目3個目のことを指していると思われます。
+
+先程作成したBPはY・Z軸に広がるものでしたので、G・Bピンを使って色相の角度を求めます。今回は簡単に、`Arctangent2`ノードで求めます(Y軸が横、Z軸が高さなので本来ならばGピンとXピンが繋がれるはずですが、逆になっても対して変わらないので、見やすさ重視で平行に繋いでいます)。ちなみに`Arctangent2`は負荷が高いため、`Arctangent2Fast`で代用しても構いません。
+
+また、次の計算のために"2π"を`Constant`・`Pi`ノードで作成します。
+
+<center>![](./images/crssnky/2-4.png)<br/>
+図18 Material①</center>
+
+後半です。まず、`Arctangent2`ノードで求めた角度を正規化します。`Divede`ノードを使って"2π"で割ります。そしてその値を`HueShift`ノードで色相として求め、それを`EmissiveColor`ピンに接続します。  
+これで完成です！色相がぐるっと変化しているのがプレビューで確認できると思います。
+
+<center>![](./images/crssnky/2-5.png)<br/>
+図19 Material②</center>
+
+最後にこれを、先程作成したBPの適用します。BlueprintEditorを開き、"Components"タブで"InstancedStaticMesh"を選択します。そして"Details"タブの"Materials"グループの"Element 0"を作成したMaterialに変更します。"Viewport"タブのStaticMeshにも色がついたことでしょう。
+
+<center>![](./images/crssnky/2-6.png)<br/>
+図20 Materialの適用</center>
 
 ### Niagara① ～ローリング△さんかく～
 
