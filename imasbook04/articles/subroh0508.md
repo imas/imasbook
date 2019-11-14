@@ -211,6 +211,7 @@ resetButton?.addEventListener("click", { event: Event? ->
 - レスポンス
   - Google Calendar APIの`Events.list`のレスポンスそのまま(\*9)
 
+
  HTTPのクライアントライブラリには、KtorのKotlin/JS用ライブラリ(\*10)が最も高機能ですね。ですが今回は、簡単なGETのリクエストを送るだけなので、JavaScriptのFetch API(\*11)を使って実装しちゃいます！
 
  Kotlin/JSでFetch APIを利用するには、`window`プロパティから生えている`fetch`メソッドを使います。返り値は`Promise`クラスのインスタンスになります。JavaScriptで扱う場合と、ほぼ一緒ですね。
