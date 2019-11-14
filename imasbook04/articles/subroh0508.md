@@ -54,7 +54,7 @@
 #### プロデューサー
  えっ！？ま、まぁ「Google Calendarから予定を取って、空いた時間を探す」だけなら、そんなに難しくはないですけど……。でも僕も年末は、外回りや収録・取材の付き添いでまとまった時間は取れないんですよ……。
 
- それから小鳥さん、WebアプリだとJavascriptの知識が必要ですよ？今から新しく言語を覚えるんじゃ、とても年末には間に合わ……
+ それから小鳥さん、WebアプリだとJavaScriptの知識が必要ですよ？今から新しく言語を覚えるんじゃ、とても年末には間に合わ……
 
 #### 小鳥
  プロデューサーさん、私、Kotlinなら書けます！！！
@@ -126,7 +126,7 @@ $ yarn run dev
 
 <footer>\*6 commit hash: c735dce6d277524128cf0d4076ac61228f2b04dd</footer>
 
- UIが用意できたところで、リセットボタンのクリック動作を実装します。Kotlin/JSでのDOM要素の取得は、Javascriptとほぼ同じように書くことができるんですよ。
+ UIが用意できたところで、リセットボタンのクリック動作を実装します。Kotlin/JSでのDOM要素の取得は、JavaScriptとほぼ同じように書くことができるんですよ。
 
  例えば、`name`属性が`'reset'`の要素を取得したい場合は、こんな感じのコードになります。
 
@@ -184,7 +184,7 @@ fun reset(
 
   `get() = ...`/`set(value) { ... }`と書くことで、Kotlinのプロパティ(=Javaで言うフィールド変数)はカスタムのゲッターとセッターを定義することができます(\*7)。カスタムゲッターを使うことで、プロパティにアクセスする度にゲッター内の処理が実行され、まるで関数のように扱うことができるんですよ！
 
- そして最後に、リセットボタンにクリックイベントに対するコールバックを実装(\*8)します。これもJavascriptの時とほぼ一緒、です！
+ そして最後に、リセットボタンにクリックイベントに対するコールバックを実装(\*8)します。これもJavaScriptの時とほぼ一緒、です！
 
 ```
 resetButton?.addEventListener("click", { event: Event? ->
@@ -211,9 +211,9 @@ resetButton?.addEventListener("click", { event: Event? ->
 - レスポンス
   - Google Calendar APIの`Events.list`のレスポンスそのまま(\*9)
 
- HTTPのクライアントライブラリには、KtorのKotlin/JS用ライブラリ(\*10)が最も高機能ですね。ですが今回は、簡単なGETのリクエストを送るだけなので、JavascriptのFetch API(\*11)を使って実装しちゃいます！
+ HTTPのクライアントライブラリには、KtorのKotlin/JS用ライブラリ(\*10)が最も高機能ですね。ですが今回は、簡単なGETのリクエストを送るだけなので、JavaScriptのFetch API(\*11)を使って実装しちゃいます！
 
- Kotlin/JSでFetch APIを利用するには、`window`プロパティから生えている`fetch`メソッドを使います。返り値は`Promise`クラスのインスタンスになります。Javascriptで扱う場合と、ほぼ一緒ですね。
+ Kotlin/JSでFetch APIを利用するには、`window`プロパティから生えている`fetch`メソッドを使います。返り値は`Promise`クラスのインスタンスになります。JavaScriptで扱う場合と、ほぼ一緒ですね。
 
 ```
 val query: String = "..."
@@ -232,7 +232,7 @@ val promise: Promise<Any?> = window.fetch(
  Firebase Functionsからはたくさんの値が降ってきますけど、今回のアプリでは「イベントが誰のものか」「イベントの名前」「開始時間」「終了時間」の4つが分かれば十分そうです。なので、これを満たすように`data class`で`CalendarEvent`クラスを定義します。
 
 <footer>\*9 https://developers.google.com/calendar/v3/reference/events/list#response_1</footer>
-<footer>\*10 https://ktor.io/clients/http-client/multiplatform.html#javascript</footer>
+<footer>\*10 https://ktor.io/clients/http-client/multiplatform.html#Javascript</footer>
 <footer>\*11 https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch</footer>
 
 ```
@@ -264,7 +264,7 @@ companion object {
 
  さてさて、`fromDynamic`メソッドの引数に、また見慣れない単語が出てきました。そう、`dynamic`型です。この`dynamic`、Kotlinの中でもKotlin/JSにしか登場しない、珍しい文法なんです！
 
- はてさて、この子はどんな働きをする型でしょう？その答えは、**「Kotlinのコードの中で、Javascriptのオブジェクトをそのまま扱うことができる型」**です！
+ はてさて、この子はどんな働きをする型でしょう？その答えは、**「Kotlinのコードの中で、JavaScriptのオブジェクトをそのまま扱うことができる型」**です！
 
  ……何を言っているかわからない、ですか？了解です、例をお見せします。
 
@@ -279,11 +279,11 @@ obj.aaa.ccc = "1234"
 println(obj.aaa.ccc) // => "1234"...(3)
 ```
 
- コード例の(1)では、Kotlin/JSの`js`メソッドを使って、Javascriptのオブジェクトを`dynamic`型で宣言しています。
+ コード例の(1)では、Kotlin/JSの`js`メソッドを使って、JavaScriptのオブジェクトを`dynamic`型で宣言しています。
 
- `dynamic`型で宣言された変数`obj`は、Kotlinのコードの中で **「あたかもJavascriptのオブジェクトのように」**ふるまいます。例えば(2)のように、Javascriptとほぼ同じようなアクセサで、`hoge`キーに対応する文字列や`aaa.bbb`キーに対応する文字列を取得できます。また、(3)のように、存在しないキーに対する代入処理も、いともかんたんに書けちゃうんです。
+ `dynamic`型で宣言された変数`obj`は、Kotlinのコードの中で **「あたかもJavaScriptのオブジェクトのように」**ふるまいます。例えば(2)のように、JavaScriptとほぼ同じようなアクセサで、`hoge`キーに対応する文字列や`aaa.bbb`キーに対応する文字列を取得できます。また、(3)のように、存在しないキーに対する代入処理も、いともかんたんに書けちゃうんです。
 
- そうです！`dynamic`型は、Kotlinの世界とJavascriptの世界を結ぶ、とても優秀な橋渡し役なんです！この`dynamic`型があるからこそ、Javascriptのクラスや関数をKotlinの世界でも自由に扱うことができるんです！
+ そうです！`dynamic`型は、Kotlinの世界とJavaScriptの世界を結ぶ、とても優秀な橋渡し役なんです！この`dynamic`型があるからこそ、JavaScriptのクラスや関数をKotlinの世界でも自由に扱うことができるんです！
 
  でも、1つ注意があります。この`dynamic`型、便利だからといってたくさん使うと、型安全なKotlinの良さが完全に消えてしまいます……。**アイドルの個性を活かしつつ、お仕事を取ってくるのが優秀なプロデューサー**、ですよね？だから**Kotlin/JSでも、Kotlinの良さを引き出せるよう、`dynamic`型とKotlinの型のマッピングメソッドはサボらずしっかり実装しましょう**ね！
 
