@@ -198,11 +198,6 @@ resetButton?.addEventListener("click", { event: Event? ->
 
  シンプルですけど、UIの実装は終わりました。次はプロデューサーさんがFirebase Functionsに置いてくれたAPIから、プロデューサーさん、律子さん、社長のスケジュールを取得しましょう！
 
-<br/>
-<br/>
-<br/>
-<br/>
-
 <footer>\*7 https://kotlinlang.org/docs/reference/properties.html#getters-and-setters</footer>
 <footer>\*8 commit hash: 09ddbc7169e6a692324de928fcd59df2602067a2</footer>
 
@@ -404,19 +399,12 @@ fun resultElement(events: List<CalendarEvent>) = document.create.div {
     fun kotlinx.html.FlowContent.eventSummary(name: String, events: List<CalendarEvent>) {
         // (1) divタグ
         div { +"${name}[${events.size}件]" }
-```
-
-<footer>\*13 commit hash: 31a747b55ceaa03bddfd70a82f39216b41b936af</footer>
-
-```
         if (events.isNotEmpty()) {
             // (2) ulタグ
-            ul {
-                events.forEach {
-                    // (3) liタグ
-                    li { +"${it.summary}: ${it.startTimeString()} - ${it.endTimeString()}" }
-                }
-            }
+            ul { events.forEach {
+                // (3) liタグ
+                li { +"${it.summary}: ${it.startTimeString()} - ${it.endTimeString()}" }
+            } }
         }
     }
 
@@ -428,6 +416,8 @@ fun resultElement(events: List<CalendarEvent>) = document.create.div {
     }
 }
 ```
+
+<footer>\*13 commit hash: 31a747b55ceaa03bddfd70a82f39216b41b936af</footer>
 
  (1)〜(4)の箇所で`kotlinx-html`のメソッドを使っていますよ。`タグ名 { ... }`の形でHTMLを直に書いているような見た目を崩すことなく、DOMの組み立てができるよくできたライブラリです！
 
