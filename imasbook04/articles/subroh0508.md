@@ -396,15 +396,22 @@ fun resultElement(events: List<CalendarEvent>) = document.create.div {
     val ritsukoEvents = events.filter { it.name == "律子さん" }
     val junjirouEvents = events.filter { it.name == "社長" }
 
-    fun kotlinx.html.FlowContent.eventSummary(name: String, events: List<CalendarEvent>) {
+    fun kotlinx.html.FlowContent.eventSummary(
+        name: String,
+        events: List<CalendarEvent>
+    ) {
         // (1) divタグ
         div { +"${name}[${events.size}件]" }
         if (events.isNotEmpty()) {
             // (2) ulタグ
             ul { events.forEach {
                 // (3) liタグ
-                li { +"${it.summary}: ${it.startTimeString()} - ${it.endTimeString()}" }
-            } }
+                li { +"${
+                    it.summary + ":"  + 
+                        it.startTimeString() + " - " +
+                        it.endTimeString()
+                }" }
+            }
         }
     }
 
