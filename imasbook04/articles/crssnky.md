@@ -76,7 +76,7 @@ SpectreVisualizerをBlueprint(以下BP)で作成します。コンテンツブ�
 作成したBPを開くと"Blueprint Editor"(\*5)が開きます。"Blueprint Editor"は主に、BPの見た目の確認や変更ができる"Viewport"とBPグラフを記述する"Construction Script"・"Event Graph"等があります。
 <footer>\*5：https://docs.unrealengine.com/ja/Engine/Blueprints/Editor/index.html</footer>
 
-最初に、このBPに"InstancedStaticMesh"コンポーネントを追加します。"Component"タブから"Add Component"で追加できます。名前検索も可能です。  
+最初に、このBPに"InstancedStaticMesh"コンポーネントを追加します。"Component"タブから"Add Component"で追加です。名前検索も可能です。  
 <center>![](./images/crssnky/1-2.png)<br/>
 図7 InstancedStaticMeshの追加</center>
 
@@ -119,6 +119,79 @@ SpectreVisualizerをBlueprint(以下BP)で作成します。コンテンツブ�
 
 <center>![](./images/crssnky/1-10.png)<br/>
 図14 ConstructionScriptの完成後</center>
+
+ここまではただの初期化。ここからBGMの再生機能と、それに合わせたBOXの伸縮の処理を描いていきます。  
+まずはBGMです。"Component"タブから"Add Component"で、"Audio"を追加します。
+
+<center>![](./images/crssnky/1-11.png)<br/>
+図14 "Audio"コンポーネントの追加</center>
+
+そしてその"Audio"コンポーネントの、SoundグループのSoundにUE4にWAV形式で読み込ませた`ローリング△さんかく`を適用します。また、"Activation"グループの"Auto Activate"を`False`にします。これで、任意のタイミングでBGMとして流すことができます。
+
+<center>![](./images/crssnky/1-12.png)<br/>
+図14 Soundファイルの適用</center>
+
+任意のタイミングでBGMを再生する処理をBPグラフで記述します。"Event Graph"タブを開いてください。再生イベントは何でも良いですが、今回の例では`Right Mouse Button`ノードを使用します。`Pressed`ピンから`Flip Flop`ノードに接続します。このノードは、処理が通るたびに`A`ピン・`B`ピンに交互に進むものです。今回の例で言えば、右クリックするたびに通る処理が交互になるといったものです。
+
+Aルートでは、再生に関する処理を描いていきます。まず、`Start Analyzing Output`ノードを呼びます。これはスペクトル解析を開始するノードです。スペクトル解析は決して軽い処理ではないため、必要なときだけ解析ができるようになっています。そして、"Audio"コンポーネントをグラフ内に持っていき、`Play`ノードを接続します。これで再生時に必要な処理は終わりです。
+
+Bルートでは、停止に関する処理を描いていきます。停止中はスペクトル解析する必要はないため、`Stop Analyzing Output`ノードを呼びます。そして"Audio"コンポーネントから`Stop`ノードを接続し、BGMを停止させます。
+
+<center>![](./images/crssnky/1-13.png)<br/>
+図14 Event Graph①</center>
+
+入力に関する処理を描いたら、このBPに入力できるよう設定を変更しましょう。"Class Defaults"からBP自体の設定を変えられます。"Class Defaults"を押し、"Details"タブから"Input"グループの"Auto Receive"を`Player 0`に変更します。
+
+<center>![](./images/crssnky/1-16.png)<br/>
+図14 入力を許可</center>
+
+ここで一旦、ゲームに配置して動作を確かめてみましょう。"Content Browser"タブからBPを"Viewport"タブへドラッグ&ドロップして配置してください。そして、上のツールバーにある"Play"で試してみてください。右クリックでBGMの再生と停止ができるようになっていると思います。
+
+<center>![](./images/crssnky/1-17.png)<br/>
+図14 BPを配置し、Play</center>
+
+"Blueprint Editor"に戻り、続いてスペクトル解析の結果を周期的に取得し、表現する処理です。この「周期的」の部分は、`Set Timer by Event`ノードを使用します。これは`Event`ピンに接続された`Event`ノードを指定時間後に呼び出すノードです。ループすることで一定周期で処理を呼び出すことができます。出力側にある`Return Value`ピンはイベントに対するハンドルです。これを図xxのように変数に保存しておくことで、後々そのイベントを停止するときなどに使用できます。今回はBGMを停止したら周期処理も止まるように、`Clear and Invalidate Timer by Handle`ノードを接続しています。
+
+<center>![](./images/crssnky/1-15.png)<br/>
+図14 出力の変数化(Promote to variable)</center>
+
+<center>![](./images/crssnky/1-14.png)<br/>
+図14 Event Graph②</center>
+
+最後に周期処理の中身を記述します。カスタムノード`UpdateSprctre`の右上の□は、`Set Timer by Event`ノードの`Event`ピンと繋がっています。こうして周期処理で行うイベントを紐付けています。  
+`Get Magnitude for Frequencies`ノードでスペクトル解析の結果を取得します。入力した配列サイズと同じサイズの配列で出力されます。このサイズはBOXの数と同じはずなので、この結果の配列を用いて`For Each Loop`して各BOXに適用していきます。
+
+<center>![](./images/crssnky/1-18.png)<br/>
+図14 Event Graph③</center>
+
+まず位置に関する部分です。位置は配列のIndexと要素から算出するため、`MathExpression`ノードを使っています。算出された値は`Make Vector`ノードで`Y`・`Z`ピンにそれぞれ入力されて座標を作ります。`MathExpression`ノードは
+
+```
+Y軸：Sind(index*30)*200 + Sind(index*30)/10*50*Element
+Z軸：上記の式でSind -> Cosdにしたもの
+```
+
+を`Expression`として入力しています。`index`や`Element`といった変数名は`Expression`に入力されると、自動的にノードの入力ピンにも追加されます。`For Each Loop`ノードからそれぞれ繋ぎます。
+
+<center>![](./images/crssnky/1-19.png)<br/>
+図14 Event Graph④</center>
+
+続いて向きです。Construction Scriptと同様に、`For Each Loop`ノードの`Array Index`ピンに`30`を掛けた値を`Make Rotator`の`Roll`ピンに接続しています。
+
+<center>![](./images/crssnky/1-20.png)<br/>
+図14 Event Graph⑤</center>
+
+次は大きさです。一般的なスペクトルビジュアライザのように、値が大きいほど箱を大きくします。でも解析結果の値が大きすぎるため、`For Each Loop`ノードの`Array Element`ピンに`0.1`を掛けた値を`Make Vector`の`Z`ピンに接続しています。
+
+<center>![](./images/crssnky/1-21.png)<br/>
+図14 Event Graph⑥</center>
+
+最後に、"Instanced Static Mesh"を"Components"から持ってきて、`Update Instance Transform`ノードに接続します。`Instance Index`ピンには`For Each Loop`ノードの`Array Index`ピンを接続します。`Transform`ピンは右クリックで`Split Struct Pin`をして、`Location`・`Rotation`・`Scale`ピンに分割しましょう。それぞれに先程求めた位置・向き・大きさを繋げば完成です。
+
+<center>![](./images/crssnky/1-22.png)<br/>
+図14 Event Graph⑦</center>
+
+これで、BGMをスペクトル解析するビジュアライザが完成しました。"Play"して、実際にできているか確認してみましょう。
 
 ### Position based colors ～位置と色相で良い感じの色～
 作った方はお気付きですね。そうです。**色が無ーーーい！！**というわけで、このMeshに対して色を設定していきましょう。色は、Boxの位置によって色相(Hue)が移り変わる綺麗そうなものにします。
