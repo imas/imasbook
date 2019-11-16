@@ -343,7 +343,21 @@ Materialのグラフは図22のような感じです。`Particle Color`ノード
 
 以上でエフェクト作成は終わりです。中央からローリング△さんかくを放出するものがプレビューに表示されているのではないでしょうか。
 
+作成した"Niagara Emitter"は、"Niagara System"に組み込む必要があります。"Niagara System"とは、エフェクトをゲーム空間に配置できるクラスで、複数のEmitterを内包できます。  
+"Niagara Emitter"と同様に、"FX"グループから"Niagara System"を作成します。
+
+<center>![](./images/crssnky/3-19.png)<br/>
+図37 "Niagara System"の作成</center>
+
+"Niagara Emitter"と同様に、作成ダイアログが立ち上がります。今回は"Create a new system from a set of selected emitters"を選択し、作成した"Niagara Emitter"ファイルを選択、"+"ボタンで追加してOKします。
+
+<center>![](./images/crssnky/3-20.png)<br/>
+図37 "Niagara System"の設定</center>
+
+以上でエフェクトをゲーム空間に配置できるようになりました。次の章でエフェクトを出現させます。
+
 ### Spectre Visualizer② ～BPMを反映～
+エフェクトを作成しましたが、どれにも紐付けていないため"Play"してもエフェクトが現れることはありません。
 
 ### Niagara② ～もうちょっとカドを少なく～
 
