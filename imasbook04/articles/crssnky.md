@@ -162,6 +162,113 @@ UE4では色や質感をMaterialで記述していきます。Blueprintと同様
 図20 Materialの適用</center>
 
 ### Niagara① ～ローリング△さんかく～
+続いては、BPMに合わせて△を放出する部分です。こちらはエフェクトで実装しますが、UE4のメインのエフェクトツール"Cascade"ではなく、新しいエフェクトツール"Niagara"(\*8)を使用します。
+<footer>\*8：まだベータ機能であることに注意してください</footer>
+
+まず初めに放出する△自体をMaterialで作ります。BPのMaterialと同様に"Shading Model"は`Unlit`です。また、徐々に透明になって消えてほしいため、"Blend Mode"は`Translucent`を選択しましょう。
+
+<center>![](./images/crssnky/3-2-2.png)<br/>
+図21 エフェクトに使うMaterialの設定</center>
+
+Materialのグラフは図22のような感じです。`Particle Color`ノードと`TextureSampleParameter2D`ノードの1・4番目のピンをそれぞれ`Multiply`ノードで乗算し、`Emissive Color`・`Opacity`ピンに接続します。  
+`Particle Color`ノードとは、Material内で色を決めず、エフェクトツールで色を指定した時に入力されるノードです。`TextureSampleParameter2D`ノードは、テクスチャを入力可能なパラメータにできるノードです。後述するMaterial Instanceなどで活きるノードです。とりあえず今は、背景が透明で白い線の△の画像を適用しておいてください。画像の作り方は何でも良いです。僕はPowerPointで作りました。縦横比は**正方形**でお願いします。
+
+<center>![](./images/crssnky/3-1.png)<br/>
+図22 使用するテクスチャ例と作成するMaterial</center>
+
+続いて、"Niagara"を用いてエフェクトを作成していきます。"Niagara"はベータ機能であるため、デフォルトではOffになっています。メニューバーから"Edit"-> "Plugins"でプラグインウィンドウを開き、"Niagara"を有効化しましょう。
+
+<center>![](./images/crssnky/3-3.png)<br/>
+図23 "Niagara"を有効化</center>
+
+有効化したら、"Add New"の中に"FX"グループが増えているはずなので、そこから"Niagara Emitter"を作成し、適当な名前をつけて開きます。
+
+<center>![](./images/crssnky/3-4.png)<br/>
+図24 "Niagara Emitter"を作成</center>
+
+するとEmitterの作成ダイアログが現れます。"Create a new emitter from an emitter template"を選択し、`Omnidirectional Burst`テンプレートを選択してOKして作成しましょう。
+
+<center>![](./images/crssnky/3-5.png)<br/>
+図25 "Niagara Emitter"のテンプレートを設定</center>
+
+作成したNiagara Emitterファイルを開くと、"Niagara Editor"(\*9)が立ち上がります。こちらもMaterialと同様に、結果を確認しながらエフェクトを調整することができます。
+<footer>\*9：https://docs.unrealengine.com/ja/Engine/Niagara/NiagaraKeyConcepts/index.html</footer>
+
+それでは設定していきましょう。主に設定は、"Selected Emitters"タブにある各種パラメータを編集することでできます。
+
+"Emitter Spawn"はそのままにします。"Emitter Update"では、"Spawn Burst Instantaneous"モジュールを編集します。"Spawn Count"を`25`にします。そうすることで、一度に放出されるパーティクルが25個に減少します。
+
+<center>![](./images/crssnky/3-6.png)<br/>
+図26 "Spawn Burst Instantaneous"モジュール</center>
+
+続いて"Particle Spawn"です。ここではパーティクルの生成に関するモジュールが入っています。今回は必要ない、"Initialize Particle"モジュール以外をゴミ箱マークで削除し、右上の"+"マークで`Torus Location`・`Point Force`・`Apply Initial Forces`モジュールを追加します。
+
+<center>![](./images/crssnky/3-7.png)<br/>
+図27 "Particle Spawn"のモジュール変更後</center>
+
+モジュール内のパラメータを見ていきましょう。"Initialize Particle"モジュールでは、LifeTime`1.65～2.0`・Mass`6～1.2`・Color`R:10, G:5, B:0, A:1`・Sprite Size`X:50, Y:50`・Sprite Rotation`0.0～1.0`とします(変更点のみ記載)。
+
+<center>![](./images/crssnky/3-8.png)<br/>
+図28 "Initialize Particle"モジュール</center>
+
+"Torus Location"モジュールでは、Torus Mode`Ring`・Large Radius`10.0`・Torus Axis`X:1, Y:0, Z:0`とします(変更点のみ記載)。
+
+<center>![](./images/crssnky/3-9.png)<br/>
+図29 "Torus Location"モジュール</center>
+
+"Point Forces"モジュールでは、Force Strength`1000.0`とします(変更点のみ記載)。また、"Apply Initial Forces"モジュールにはパラメータが無いため変更点は無いです。
+
+<center>![](./images/crssnky/3-10.png)<br/>
+図30 "Point Forces"モジュール</center>
+
+続いて"Particle Update"です。ここでは生成されたパーティクルに対するモジュールが入っています。"Update Age"・"Drag"・"Scale Color"・"Solve Forces and Velocity"モジュールを残して他を消し、`NMS Rotation`モジュールを追加します。
+
+<center>![](./images/crssnky/3-11.png)<br/>
+図31 "Particle Update"のモジュール変更後</center>
+
+<big>**待った！！**</big>
+
+実は`NMS Rotation`モジュールはありません。これは**自作**のモジュールだからです。ですので、みなさんにも作成していただきます。まず、図32のように"Niagara Module Script"を作成し`NMS Rotation`と名付けましょう(名前は合わせなくても良いですが、変える場合は`NMS Rotation`をその名前に読み替えてください)。
+
+<center>![](./images/crssnky/3-12.png)<br/>
+図32 "Niagara Module Script"の作成</center>
+
+作成したNiagara Module Scriptファイルを開くと、"NiagaraModuleEditor"が立ち上がります。ここで言う"Map"とは"std::map"のようなKey・Valueのコンテナを指します。`Map Get`ノードからパラメータの値を取得し、処理して、`Map Set`でパラメータを更新することができます。
+
+作成する`NMS Rotation`では、パーティクルをローリング(回転)させる処理を書いていきます。まず回転量を指定できるパラメータを作成します。"Parameters"タブから"Module"グループの"+"ボタンを押して、`float`型で作ります。名前は何でも良いですが、`Module.`を頭に付ける必要があります。
+
+<center>![](./images/crssnky/3-13.png)<br/>
+図32 モジュールパラメータの作成</center>
+
+パラメータを作成したら、それを使ってグラフを記述していきます。`InputMap`ノードに繋がっている`Map Get`ノードにある"+"ボタンを押し、`Particles.SpriteRotation`・`Module.rate`ピンを作成します。この2つのピンの値を`Add`ノードで加算します。`Output Module`ノードに繋がっている`Map Set`ノードの"+"ボタンを押し、`Particles.SpriteRotation`ピンを作成します。このピンに加算結果をつなげることで、ローリング(回転)させる処理が完成しました。
+
+<center>![](./images/crssnky/3-14.png)<br/>
+図33 NMS Rotationのグラフ</center>
+
+ウィンドウを再び"Niagara Editor"に戻し、"Particle Update"に作成した"Niagara Module Script"を追加して図31と同じモジュール構成にしましょう。  
+構成し終えたら中のパラメータを編集していきます。"Update Age"・"Solve Forces and Velocity"は編集するパラメータが無いため、デフォルトのままにします。
+
+"Drag"モジュールでは、Drag`2.0`とします(変更点のみ記載)。
+
+<center>![](./images/crssnky/3-15.png)<br/>
+図34 "Drag"モジュール</center>
+
+"Scale Color"モジュールでは、"Scale Alpha"を"Curve Editor"で編集します。デフォルトでは正規化されたパーティクルの寿命に対してリニアに減っていくので、グラフを右クリックしてKeyを追加したり、Keyを右クリックして補間方法を変えてお好みのAlpha値の減少カーブを作成してください。
+
+<center>![](./images/crssnky/3-16.png)<br/>
+図35 "Scale Color"モジュール</center>
+
+作成した"NMS Rotation"モジュールでは、Rate`5.0`としますが、お好みで構いません。
+
+<center>![](./images/crssnky/3-17.png)<br/>
+図36 "NMS Rotation"モジュール</center>
+
+最後に"Render"です。ここではパーティクル1つ1つがどういうものかを設定します。今回は先ほど作成したパーティクル用マテリアルを適用するだけで大丈夫です。
+
+<center>![](./images/crssnky/3-18.png)<br/>
+図37 パーティクルにMaterialを設定</center>
+
+以上でエフェクト作成は終わりです。中央からローリング△さんかくを放出するものがプレビューに表示されているのではないでしょうか。
 
 ### Spectre Visualizer② ～BPMを反映～
 
