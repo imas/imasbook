@@ -411,6 +411,32 @@ AルートはBGMの再生側なので、アクティブの処理を書きます�
 以上で"もうちょっとカドが少ない"エフェクトが完成しました。次の章で良いタイミングでそれらを切り替えていきます。
 
 ### Spectre Visualizer③ ～歌詞を反映～
+まず、即値で設定したBPの`Spawn System at Location`ノードの`System Template`について、入力を変数にすることで自由に切り替えられるようにします。
+
+<center>![](./images/crssnky/6-2.png)<br/>
+図37 "Niagara System"の変数を作成</center>
+
+変数にしたら、変数の初期値を設定しておきましょう。"Details"タブの"Defalut Value"グループにあります。最初は△のエフェクトを設定しておきます。
+
+<center>![](./images/crssnky/6-1.png)<br/>
+図37 "Niagara System"の初期値を変更</center>
+
+続いてメンバ関数を定義していきます。"MyBlueprint"タブから"Function"グループの"+"押すと関数が定義できます。`ChangeToTriangle`・`ChangeToRectangle`・`ChangeToCircle`の3つを定義します。
+
+<center>![](./images/crssnky/6-3.png)<br/>
+図37 関数を作成</center>
+
+関数の中身は極めて簡単です。"Niagara System"の変数に即値で"Niagara System"ファイルを指定します。それぞれの関数に、それぞれのファイルを指定してください。
+
+<center>![](./images/crssnky/6-4.png)<br/>
+図37 関数を定義</center>
+
+出来た関数はそのまま呼び出しても良いですが、今回は`Set Timer by Function Name`ノードで指定時間後に呼び出してもらいます。`Function Name`ピンには呼び出したい関数名、`Time`には時間を入力します。(ちなみに、「正方形」初出は2:13辺り、「丸」初出は3:59辺り)
+
+<center>![](./images/crssnky/6-5.png)<br/>
+図37 関数を指定時間後に呼び出し</center>
+
+以上で歌詞(...のタイミング)に合わせたエフェクトの変更が完了しました。これでみなさんもVJのスタートに立てたと思います！
 
 ## おわりに
 
