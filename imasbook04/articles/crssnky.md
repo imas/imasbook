@@ -167,7 +167,7 @@ Bルートでは、停止に関する処理を描いていきます。停止中�
 まず位置に関する部分です。位置は配列のIndexと要素から算出するため、`MathExpression`ノードを使っています。算出された値は`Make Vector`ノードで`Y`・`Z`ピンにそれぞれ入力されて座標を作ります。`MathExpression`ノードは
 
 ```
-Y軸：Sind(index*30)*200 + Sind(index*30)/10*50*Element
+Y軸：Sind(index*30)*300 + Sind(index*30)/10*50*Element
 Z軸：上記の式でSind -> Cosdにしたもの
 ```
 
@@ -357,9 +357,29 @@ Materialのグラフは図22のような感じです。`Particle Color`ノード
 以上でエフェクトをゲーム空間に配置できるようになりました。次の章でエフェクトを出現させます。
 
 ### Spectre Visualizer② ～BPMを反映～
-エフェクトを作成しましたが、どれにも紐付けていないため"Play"してもエフェクトが現れることはありません。
+BPにエフェクトを紐付け、BGMのBPMに合わせてエフェクトが放出するようにしていきます。BPMに関する"Time Synth"コンポーネントをBPに追加しましょう。
+
+<center>![](./images/crssnky/4-1.png)<br/>
+図37 "Time Synth"の追加</center>
+
+最初に"Time Synth"の初期化処理を描いていきます。"Construction Script"での初期化では使用できるノードが限られているため、今回は"Event Graph"の"BeginPlay"ノードから記述します。このイベントはゲーム開始時に呼ばれるノードとなっています。  
+まず"TimeSynth"にBPM値をセットします。`Set BPM`ノード使い、値は`132`(\*10)とします。そしてそのBPMに合わせて発行されるイベントを登録する`Add Quantization Event Delegate`を"Time Synth"から呼び出します。毎拍イベントが発行されてほしいため、`Quantization Type`ピンは`1/4`にセットします。`On Quantization Event`ピンはカスタムイベントを接続します。名前はご自由にどうぞ。このイベントでは、`Spawn System at Location`ノードを呼び出します。`System Template`ピンには先ほど作成した"Niagara System"を、`Location`ピンには`Get Actor Location`で取得した自分自身の位置を入れます。これでBPMに合わせてエフェクトが放出するでしょう。
+<footer>\*10：ニコニコ大百科「ローリング△さんかく」より</footer>
+
+<center>![](./images/crssnky/4-2.png)<br/>
+図37 "Time Synth"の初期化</center>
+
+最後にBPMイベントのアクティブ・非アクティブ処理を追加します。BPに追加した"Flip Flop"ノードがあったと思います。そのAルート・Bルートにそれぞれ追加します。  
+AルートはBGMの再生側なので、アクティブの処理を書きます。ローリング△さんかくは冒頭4秒間は前奏のため、4秒後に"Time Synth"の`Activate`ノードが呼ばれるように`Set Timer by Event`ノードで設定します。  
+一方Bルートはすぐにでも停止してほしいため、そのまま`Deactivate`ノードを接続します。
+
+<center>![](./images/crssnky/4-3.png)<br/>
+図37 "Time Synth"のアクティブ・非アクティブ</center>
+
+以上で、BPMに合わせてエフェクトが放出する処理は完了です。ゲーム画面で試して、正しく動作するかご確認ください。
 
 ### Niagara② ～もうちょっとカドを少なく～
+
 
 ### Spectre Visualizer③ ～歌詞を反映～
 
