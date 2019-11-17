@@ -379,7 +379,36 @@ AルートはBGMの再生側なので、アクティブの処理を書きます�
 以上で、BPMに合わせてエフェクトが放出する処理は完了です。ゲーム画面で試して、正しく動作するかご確認ください。
 
 ### Niagara② ～もうちょっとカドを少なく～
+ローリング△さんかくという楽曲をだいぶ端折って説明すれば、△が□、○へと変化するお話です。ですのでそれに合わせて、エフェクトを△から□、そして○へと変化させましょう。
 
+エフェクト用のMaterialを作成した時を思い出してください。あるノードを使いました。
+
+> `TextureSampleParameter2D`ノードは、テクスチャを入力可能なパラメータにできるノードです。後述するMaterial Instanceなどで活きるノードです。
+
+そうです。テクスチャの入力可能なパラメータとしています。ですので、今回は新たに"□"・"○"のテクスチャを用意してそれを差し替えることで実現します。ではまず、"Material Instance"を作成しましょう。エフェクト用のMaterialを右クリックし、"Create Material Instance"を押して作成します。
+
+<center>![](./images/crssnky/5-1.png)<br/>
+図37 "Material Instance"の作成</center>
+
+このMaterial Instanceとは、親となるMaterialのパラメータを変化させて使えるものとなっています。同じようなノードを繋いでテクスチャ1枚だけ異なるMaterialを複数作るよりも、1つの親からテクスチャだけを差し替えた方が、工数的にも処理負荷的にも優しいのです。
+
+では作成したMaterial Instanceを開いてください。"Parameter Gourps"に、"TextureSampleParameter2D"ノードに指定した名前がパラメータとして表示されています。ここを△の画像と同じ要領で作成した□の画像を設定してください。  
+同様の処理を、別のMaterial Instanceに○の画像で行ってください。
+
+<center>![](./images/crssnky/5-2.png)<br/>
+図37 "Material Instance"のテクスチャを変更</center>
+
+続いてそのMaterial Instanceを持つ"Niagara System"を作成します。作成にあたって先程と違う部分は、作成ダイアログで"Copy an existing system from your project content"を選択し、先程作ったSystemを選ぶことです。こうすることで、以前のものをコピーして新たに作ることができます。
+
+<center>![](./images/crssnky/5-3.png)<br/>
+図37 他のものを元に、新たに"Niagara System"を作成</center>
+
+変更する部分は1箇所です。"Render"の中にある"NiagaraSpriteRendererProperties"モジュールの"Sprite Rendering"グループの"Material"を今作成したMaterial Instanceに変更してください。するとプレビュー画面では、△が放出されてたものが□や○に変わったと思います。
+
+<center>![](./images/crssnky/5-4.png)<br/>
+図37 Material Instanceに変更</center>
+
+以上で"もうちょっとカドが少ない"エフェクトが完成しました。次の章で良いタイミングでそれらを切り替えていきます。
 
 ### Spectre Visualizer③ ～歌詞を反映～
 
