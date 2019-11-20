@@ -102,7 +102,7 @@ $ yarn run dev
  さて、このまま`localhost:8080`にアクセスすれば……。完璧です！「Hello, World!」、ちゃんと出力されてます！
 
 <footer>\*4 https://github.com/subroh0508/imasbook04-sample</footer>
-<footer>\*5 commit hash: d892d91b8cc7ac50e6fe4b6c477ea20903fc4bdd</footer>
+<footer>\*5 commit hash: [d892d91b8cc7ac50e6fe4b6c477ea20903fc4bdd](https://github.com/subroh0508/imasbook04-sample/commit/d892d91b8cc7ac50e6fe4b6c477ea20903fc4bdd)</footer>
 
 ![図2. Kotlin/JSでHello,World!](./images/subroh0508/helloworld.png)
 <center>図2. Kotlin/JSでHello,World!</center><br/>
@@ -124,7 +124,7 @@ $ yarn run dev
 ![図3. 実装したUI](./images/subroh0508/ui.png)
 <center>図3. 実装したUI</center><br/>
 
-<footer>\*6 commit hash: c735dce6d277524128cf0d4076ac61228f2b04dd</footer>
+<footer>\*6 commit hash: [c735dce6d277524128cf0d4076ac61228f2b04dd](https://github.com/subroh0508/imasbook04-sample/commit/c735dce6d277524128cf0d4076ac61228f2b04dd)</footer>
 
  UIが用意できたところで、リセットボタンのクリック動作を実装します。Kotlin/JSでのDOM要素の取得は、JavaScriptとほぼ同じように書くことができるんですよ。
 
@@ -199,7 +199,7 @@ resetButton?.addEventListener("click", { event: Event? ->
  シンプルですけど、UIの実装は終わりました。次はプロデューサーさんがFirebase Functionsに置いてくれたAPIから、プロデューサーさん、律子さん、社長のスケジュールを取得しましょう！
 
 <footer>\*7 https://kotlinlang.org/docs/reference/properties.html#getters-and-setters</footer>
-<footer>\*8 commit hash: 09ddbc7169e6a692324de928fcd59df2602067a2</footer>
+<footer>\*8 commit hash: [09ddbc7169e6a692324de928fcd59df2602067a2](https://github.com/subroh0508/imasbook04-sample/commit/09ddbc7169e6a692324de928fcd59df2602067a2)</footer>
 
  因みに、APIの仕様はこんな感じです！
 
@@ -362,7 +362,7 @@ submitButton?.addEventListener("click", { event: Event? ->
 })
 ```
 
-<footer>\*12 commit hash: 3b701a6ae7337cfcc76827f86034427ae2df19b6</footer>
+<footer>\*12 commit hash: [3b701a6ae7337cfcc76827f86034427ae2df19b6](https://github.com/subroh0508/imasbook04-sample/commit/3b701a6ae7337cfcc76827f86034427ae2df19b6)</footer>
 
 ```
 fun request(query: String): Promise<List<CalendarEvent>> =
@@ -407,15 +407,11 @@ fun resultElement(events: List<CalendarEvent>) = document.create.div {
             // (2) ulタグ
             ul { events.forEach {
                 // (3) liタグ
-                li { +"${
-                    it.summary + ":"  + 
-                        it.startTimeString() + " - " +
-                        it.endTimeString()
-                }" }
+                li { +"${it.summary + ":"  + 
+                        it.startTimeString() + " - " + it.endTimeString()}" }
             }
         }
     }
-
     // (4) pタグ
     p {
         eventSummary("プロデューサーさん", producerEvents)
@@ -425,7 +421,7 @@ fun resultElement(events: List<CalendarEvent>) = document.create.div {
 }
 ```
 
-<footer>\*13 commit hash: 31a747b55ceaa03bddfd70a82f39216b41b936af</footer>
+<footer>\*13 commit hash: [31a747b55ceaa03bddfd70a82f39216b41b936af](https://github.com/subroh0508/imasbook04-sample/commit/31a747b55ceaa03bddfd70a82f39216b41b936af)</footer>
 
  (1)〜(4)の箇所で`kotlinx-html`のメソッドを使っていますよ。`タグ名 { ... }`の形でHTMLを直に書いているような見た目を崩すことなく、DOMの組み立てができるよくできたライブラリです！
 
@@ -474,7 +470,7 @@ p { if (freeTimes.isNotEmpty()) {
  
  ……あっ、でもよく見ると、後ろの30分余計に空き時間が表示されちゃってます。ここはあとでPull Requestを出して、修正しておきましょう(\*15)。何よりこれで、スケジュール調整が一気に楽になります！早くプロデューサーさんにも報告しないと！
 
-<footer>\*14 commit hash: d094f6b20bafdb2a497b18763abf140ace2afc9c</footer>
+<footer>\*14 commit hash: [d094f6b20bafdb2a497b18763abf140ace2afc9c](https://github.com/subroh0508/imasbook04-sample/commit/d094f6b20bafdb2a497b18763abf140ace2afc9c)</footer>
 <footer>\*15 https://github.com/subroh0508/imasbook04-sample/pull/2</footer>
 
 ## エピローグ -新年明けまして-
