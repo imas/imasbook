@@ -16,5 +16,5 @@ twiplaで告知されていることが多いですが、DJバー主催のイベ
 
 みなさんもアイマスDJイベントで、恋するミラーボールになりましょう！
 
-https://imas.dj
+https://imas.dj  
 https://github.com/nqimo/imas.dj
