@@ -259,7 +259,7 @@ Materialのグラフは図22のような感じです。`Particle Color`ノード
 <center>![](./images/crssnky/3-4.png)<br/>
 図24 "Niagara Emitter"を作成</center>
 
-するとEmitterの作成ダイアログが現れます。"Create a new emitter from an emitter template"を選択し、`Omnidirectional Burst`テンプレートを選択してOKして作成しましょう。
+するとEmitterの作成ダイアログが現れます。"Create a new emitter from an emitter template"から`Omnidirectional Burst`テンプレートを選択し、OKを押して作成しましょう。
 
 <center>![](./images/crssnky/3-5.png)<br/>
 図25 "Niagara Emitter"のテンプレートを設定</center>
@@ -274,7 +274,7 @@ Materialのグラフは図22のような感じです。`Particle Color`ノード
 <center>![](./images/crssnky/3-6.png)<br/>
 図26 "Spawn Burst Instantaneous"モジュール</center>
 
-続いて"Particle Spawn"です。ここではパーティクルの生成に関するモジュールが入っています。今回は必要ない、"Initialize Particle"モジュール以外をゴミ箱マークで削除し、右上の"+"マークで`Torus Location`・`Point Force`・`Apply Initial Forces`モジュールを追加します。
+続いて"Particle Spawn"です。ここではパーティクルの生成に関するモジュールが入っています。"Initialize Particle"以外のモジュールは今回必要ないため、ゴミ箱マークで削除し、右上の"+"マークで`Torus Location`・`Point Force`・`Apply Initial Forces`モジュールを追加します。
 
 <center>![](./images/crssnky/3-7.png)<br/>
 図27 "Particle Spawn"のモジュール変更後</center>
@@ -349,7 +349,7 @@ Materialのグラフは図22のような感じです。`Particle Color`ノード
 <center>![](./images/crssnky/3-19.png)<br/>
 図37 "Niagara System"の作成</center>
 
-"Niagara Emitter"と同様に、作成ダイアログが立ち上がります。今回は"Create a new system from a set of selected emitters"を選択し、作成した"Niagara Emitter"ファイルを選択、"+"ボタンで追加してOKします。
+"Niagara Emitter"と同様に、作成ダイアログが立ち上がります。今回は"Create a new system from a set of selected emitters"から、作成した"Niagara Emitter"ファイルを選択、"+"ボタンで追加してOKします。
 
 <center>![](./images/crssnky/3-20.png)<br/>
 図37 "Niagara System"の設定</center>
@@ -403,7 +403,7 @@ AルートはBGMの再生側なので、アクティブの処理を書きます�
 <center>![](./images/crssnky/5-3.png)<br/>
 図37 他のものを元に、新たに"Niagara System"を作成</center>
 
-変更する部分は1箇所です。"Render"の中にある"NiagaraSpriteRendererProperties"モジュールの"Sprite Rendering"グループの"Material"を今作成したMaterial Instanceに変更してください。するとプレビュー画面では、△が放出されてたものが□や○に変わったと思います。
+変更する部分は1箇所です。"Render"の中にある"NiagaraSprite RendererProperties"モジュールの"Sprite Rendering"グループの"Material"を今作成したMaterial Instanceに変更してください。するとプレビュー画面では、△が放出されてたものが□や○に変わったと思います。
 
 <center>![](./images/crssnky/5-4.png)<br/>
 図37 Material Instanceに変更</center>
@@ -439,5 +439,6 @@ AルートはBGMの再生側なので、アクティブの処理を書きます�
 以上で歌詞(...のタイミング)に合わせたエフェクトの変更が完了しました。これでみなさんもVJのスタートに立てたと思います！
 
 ## おわりに
+
 
 ## 参考
