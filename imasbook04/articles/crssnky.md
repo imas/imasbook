@@ -9,8 +9,6 @@ Unreal Engine 4(以下UE4)は、Epic Gameが開発する商用ゲームエンジ
 図1 UE4の発展例</center>
 
 今回は、UE4を使ってゲームではなく、アイマス楽曲を盛り上げるためのソフトウェアの簡単な例を作成します。この例を発展させることで将来的には、VJ(Visual Jockey)で使用できるような映像表現を獲得できるでしょう。
-<br>
-<br>
 
 <footer>\*1：https://idolmaster.jp/blog/?p=10945 など</footer>
 
