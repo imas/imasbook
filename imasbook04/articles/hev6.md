@@ -213,20 +213,5 @@ Xilinx Zynq-7000シリーズの開発ボードDigilent ZYBOで動かしてみま
 <br>
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 ## プロデューサーさんって、<br>　　　FPGAだーいすきですよね。<br>　　　　　私も気に入っちゃったかも！
 ![ibuki](./images/hev6/ibuki.png)
