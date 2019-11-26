@@ -519,3 +519,5 @@ p { if (freeTimes.isNotEmpty()) {
 
 #### プロデューサー & 小鳥
  ああああああああああああああ！！！！！！！！！！！！
+
+<img style="float:right;" src="./images/subroh0508/kotori.png" height="300px">
