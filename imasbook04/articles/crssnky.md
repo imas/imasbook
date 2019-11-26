@@ -447,3 +447,7 @@ BPにエフェクトを紐付け、BGMのBPMに合わせてエフェクトが放
 - 株式会社ヒストリア ブログ「UE 4.22 の新機能!Sound Submix のスペクトル解析について」 http://historia.co.jp/archives/11784/
 - Yuya Shiotani 「NiagaraでサクッとMorphEffectを作ろう」 https://www.slideshare.net/YuyaShiotani/niagaramorpheffect-113524177
 - ニコニコ大百科「ローリング△さんかく」 https://dic.nicovideo.jp/a/ローリング△さんかく
+  
+## 歌の表現にも色々なものがあるんですね。<br>普段のライブのスクリーン演出もこういった技術に支えられているんでしょうか。
+<center>![](./images/crssnky/chihaya.png)</center>
+<footer>UE4はプリレンダリングも得意！</footer>
