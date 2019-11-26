@@ -269,94 +269,93 @@ Materialのグラフは下図のような感じです。`Particle Color`ノー�
 図38 "Niagara Emitter"のテンプレートを設定</center>
 
 作成したNiagara Emitterファイルを開くと、"Niagara Editor"(\*9)が立ち上がります。こちらもMaterialと同様に、結果を確認しながらエフェクトを調整することができます。
-<footer>\*9：https://docs.unrealengine.com/ja/Engine/Niagara/NiagaraKeyConcepts/index.html</footer>
+<footer>\*9： https://docs.unrealengine.com/ja/Engine/Niagara/NiagaraKeyConcepts/index.html</footer>
 
 それでは設定していきましょう。主に設定は、"Selected Emitters"タブにある各種パラメータを編集することでできます。
 
 "Emitter Spawn"はそのままにします。"Emitter Update"では、"Spawn Burst Instantaneous"モジュールを編集します。"Spawn Count"を`25`にします。そうすることで、一度に放出されるパーティクルが25個に減少します。
 
 <center>![](./images/crssnky/3-6.png)<br/>
-図26 "Spawn Burst Instantaneous"モジュール</center>
+図39 "Spawn Burst Instantaneous"モジュール</center>
 
 続いて"Particle Spawn"です。ここではパーティクルの生成に関するモジュールが入っています。"Initialize Particle"以外のモジュールは今回必要ないため、ゴミ箱マークで削除し、右上の"+"マークで`Torus Location`・`Point Force`・`Apply Initial Forces`モジュールを追加します。
 
 <center>![](./images/crssnky/3-7.png)<br/>
-図27 "Particle Spawn"のモジュール変更後</center>
+図40 "Particle Spawn"のモジュール変更後</center>
 
-モジュール内のパラメータを見ていきましょう。"Initialize Particle"モジュールでは、LifeTime`1.65～2.0`・Mass`6～1.2`・Color`R:10, G:5, B:0, A:1`・Sprite Size`X:50, Y:50`・Sprite Rotation`0.0～1.0`とします(変更点のみ記載)。
+モジュール内のパラメータを見ていきましょう。"Initialize Particle"モジュールでは、LifeTime`1.65～2.0`・Mass`0.6～1.2`・Color`R:10, G:5, B:0, A:1`・Sprite Size`X:50, Y:50`・Sprite Rotation`0.0～1.0`とします(変更点のみ記載)。
 
 <center>![](./images/crssnky/3-8.png)<br/>
-図28 "Initialize Particle"モジュール</center>
+図41 "Initialize Particle"モジュール</center>
 
 "Torus Location"モジュールでは、Torus Mode`Ring`・Large Radius`10.0`・Torus Axis`X:1, Y:0, Z:0`とします(変更点のみ記載)。
 
 <center>![](./images/crssnky/3-9.png)<br/>
-図29 "Torus Location"モジュール</center>
+図42 "Torus Location"モジュール</center>
 
 "Point Forces"モジュールでは、Force Strength`1000.0`とします(変更点のみ記載)。また、"Apply Initial Forces"モジュールにはパラメータが無いため変更点は無いです。
 
 <center>![](./images/crssnky/3-10.png)<br/>
-図30 "Point Forces"モジュール</center>
+図43 "Point Forces"モジュール</center>
 
 続いて"Particle Update"です。ここでは生成されたパーティクルに対するモジュールが入っています。"Update Age"・"Drag"・"Scale Color"・"Solve Forces and Velocity"モジュールを残して他を消し、`NMS Rotation`モジュールを追加します。
 
 <center>![](./images/crssnky/3-11.png)<br/>
-図31 "Particle Update"のモジュール変更後</center>
+図44 "Particle Update"のモジュール変更後</center>
 
 <big>**待った！！**</big>
 
-実は`NMS Rotation`モジュールはありません。これは**自作**のモジュールだからです。ですので、みなさんにも作成していただきます。まず、図32のように"Niagara Module Script"を作成し`NMS Rotation`と名付けましょう(名前は合わせなくても良いですが、変える場合は`NMS Rotation`をその名前に読み替えてください)。
+実は`NMS Rotation`モジュールはありません。これは**自作**のモジュールだからです。ですので、みなさんにも作成していただきます。まず、下図のように"Niagara Module Script"を作成し`NMS Rotation`と名付けましょう(名前は合わせなくても良いですが、変える場合は`NMS Rotation`をその名前に読み替えてください)。
 
 <center>![](./images/crssnky/3-12.png)<br/>
-図32 "Niagara Module Script"の作成</center>
+図45 "Niagara Module Script"の作成</center>
 
 作成したNiagara Module Scriptファイルを開くと、"NiagaraModuleEditor"が立ち上がります。ここで言う"Map"とは"std::map"のようなKey・Valueのコンテナを指します。`Map Get`ノードからパラメータの値を取得し、処理して、`Map Set`でパラメータを更新することができます。
 
-作成する`NMS Rotation`では、パーティクルをローリング(回転)させる処理を書いていきます。まず回転量を指定できるパラメータを作成します。"Parameters"タブから"Module"グループの"+"ボタンを押して、`float`型で作ります。名前は何でも良いですが、`Module.`を頭に付ける必要があります。
+作成する`NMS Rotation`では、パーティクルをローリング(回転)させる処理を書いていきます。まず回転量を指定できるパラメータ(Module.rate)を作成します。"Parameters"タブから"Module"グループの"+"ボタンを押して、`float`型で作ります。名前は何でも良いですが、`Module.`を頭に付ける必要があります。
 
 <center>![](./images/crssnky/3-13.png)<br/>
-図32 モジュールパラメータの作成</center>
+図46 モジュールパラメータの作成</center>
 
 パラメータを作成したら、それを使ってグラフを記述していきます。`InputMap`ノードに繋がっている`Map Get`ノードにある"+"ボタンを押し、`Particles.SpriteRotation`・`Module.rate`ピンを作成します。この2つのピンの値を`Add`ノードで加算します。`Output Module`ノードに繋がっている`Map Set`ノードの"+"ボタンを押し、`Particles.SpriteRotation`ピンを作成します。このピンに加算結果をつなげることで、ローリング(回転)させる処理が完成しました。
 
 <center>![](./images/crssnky/3-14.png)<br/>
-図33 NMS Rotationのグラフ</center>
+図47 NMS Rotationのグラフ</center>
 
-ウィンドウを再び"Niagara Editor"に戻し、"Particle Update"に作成した"Niagara Module Script"を追加して図31と同じモジュール構成にしましょう。  
+ウィンドウを再び"Niagara Editor"に戻し、"Particle Update"に作成した"Niagara Module Script"を追加して図44と同じモジュール構成にしましょう。  
 構成し終えたら中のパラメータを編集していきます。"Update Age"・"Solve Forces and Velocity"は編集するパラメータが無いため、デフォルトのままにします。
 
 "Drag"モジュールでは、Drag`2.0`とします(変更点のみ記載)。
 
 <center>![](./images/crssnky/3-15.png)<br/>
-図34 "Drag"モジュール</center>
+図48 "Drag"モジュール</center>
 
 "Scale Color"モジュールでは、"Scale Alpha"を"Curve Editor"で編集します。デフォルトでは正規化されたパーティクルの寿命に対してリニアに減っていくので、グラフを右クリックしてKeyを追加したり、Keyを右クリックして補間方法を変えてお好みのAlpha値の減少カーブを作成してください。
 
 <center>![](./images/crssnky/3-16.png)<br/>
-図35 "Scale Color"モジュール</center>
+図49 "Scale Color"モジュール</center>
 
 作成した"NMS Rotation"モジュールでは、Rate`5.0`としますが、お好みで構いません。
 
 <center>![](./images/crssnky/3-17.png)<br/>
-図36 "NMS Rotation"モジュール</center>
+図50 "NMS Rotation"モジュール</center>
 
 最後に"Render"です。ここではパーティクル1つ1つがどういうものかを設定します。今回は先ほど作成したパーティクル用マテリアルを適用するだけで大丈夫です。
 
 <center>![](./images/crssnky/3-18.png)<br/>
-図37 パーティクルにMaterialを設定</center>
+図51 パーティクルにMaterialを設定</center>
 
 以上でエフェクト作成は終わりです。中央からローリング△さんかくを放出するものがプレビューに表示されているのではないでしょうか。
 
-作成した"Niagara Emitter"は、"Niagara System"に組み込む必要があります。"Niagara System"とは、エフェクトをゲーム空間に配置できるクラスで、複数のEmitterを内包できます。  
-"Niagara Emitter"と同様に、"FX"グループから"Niagara System"を作成します。
+作成した"Niagara Emitter"は、"Niagara System"に組み込む必要があります。"Niagara System"とは、エフェクトをゲーム空間に配置できるクラスで、複数のEmitterを内包できます。"Niagara Emitter"と同様に、"FX"グループから"Niagara System"を作成します。
 
 <center>![](./images/crssnky/3-19.png)<br/>
-図37 "Niagara System"の作成</center>
+図52 "Niagara System"の作成</center>
 
 "Niagara Emitter"と同様に、作成ダイアログが立ち上がります。今回は"Create a new system from a set of selected emitters"から、作成した"Niagara Emitter"ファイルを選択、"+"ボタンで追加してOKします。
 
 <center>![](./images/crssnky/3-20.png)<br/>
-図37 "Niagara System"の設定</center>
+図53 "Niagara System"の設定</center>
 
 以上でエフェクトをゲーム空間に配置できるようになりました。次の章でエフェクトを出現させます。
 
@@ -364,21 +363,20 @@ Materialのグラフは下図のような感じです。`Particle Color`ノー�
 BPにエフェクトを紐付け、BGMのBPMに合わせてエフェクトが放出するようにしていきます。BPMに関する"Time Synth"コンポーネントをBPに追加しましょう。
 
 <center>![](./images/crssnky/4-1.png)<br/>
-図37 "Time Synth"の追加</center>
+図54 "Time Synth"の追加</center>
 
-最初に"Time Synth"の初期化処理を描いていきます。"Construction Script"での初期化では使用できるノードが限られているため、今回は"Event Graph"の"BeginPlay"ノードから記述します。このイベントはゲーム開始時に呼ばれるノードとなっています。  
+最初に"Time Synth"の初期化処理を描いていきます。"Construction Script"での初期化では使用できるノードが限られているため、今回は"Event Graph" の"BeginPlay"ノードから記述します。このイベントはゲーム開始時に呼ばれるノードとなっています。
+
 まず"TimeSynth"にBPM値をセットします。`Set BPM`ノード使い、値は`132`(\*10)とします。そしてそのBPMに合わせて発行されるイベントを登録する`Add Quantization Event Delegate`を"Time Synth"から呼び出します。毎拍イベントが発行されてほしいため、`Quantization Type`ピンは`1/4`にセットします。`On Quantization Event`ピンはカスタムイベントを接続します。名前はご自由にどうぞ。このイベントでは、`Spawn System at Location`ノードを呼び出します。`System Template`ピンには先ほど作成した"Niagara System"を、`Location`ピンには`Get Actor Location`で取得した自分自身の位置を入れます。これでBPMに合わせてエフェクトが放出するでしょう。
 <footer>\*10：ニコニコ大百科「ローリング△さんかく」より</footer>
 
 <center>![](./images/crssnky/4-2.png)<br/>
-図37 "Time Synth"の初期化</center>
+図55 "Time Synth"の初期化</center>
 
-最後にBPMイベントのアクティブ・非アクティブ処理を追加します。BPに追加した"Flip Flop"ノードがあったと思います。そのAルート・Bルートにそれぞれ追加します。  
-AルートはBGMの再生側なので、アクティブの処理を書きます。ローリング△さんかくは冒頭4秒間は前奏のため、4秒後に"Time Synth"の`Activate`ノードが呼ばれるように`Set Timer by Event`ノードで設定します。  
-一方Bルートはすぐにでも停止してほしいため、そのまま`Deactivate`ノードを接続します。
+最後にBPMイベントのアクティブ・非アクティブ処理を追加します。BPに追加した"Flip Flop"ノードがあったと思います。そのAルート・Bルートにそれぞれ追加します。AルートはBGMの再生側なので、アクティブの処理を書きます。ローリング△さんかくは冒頭4秒間は前奏のため、4秒後に"Time Synth"の`Activate`ノードが呼ばれるように`Set Timer by Event`ノードで設定します。一方Bルートはすぐにでも停止してほしいため、そのまま`Deactivate`ノードを接続します。
 
 <center>![](./images/crssnky/4-3.png)<br/>
-図37 "Time Synth"のアクティブ・非アクティブ</center>
+図56 "Time Synth"のアクティブ・非アクティブ</center>
 
 以上で、BPMに合わせてエフェクトが放出する処理は完了です。ゲーム画面で試して、正しく動作するかご確認ください。
 
@@ -392,25 +390,24 @@ AルートはBGMの再生側なので、アクティブの処理を書きます�
 そうです。テクスチャの入力可能なパラメータとしています。ですので、今回は新たに"□"・"○"のテクスチャを用意してそれを差し替えることで実現します。ではまず、"Material Instance"を作成しましょう。エフェクト用のMaterialを右クリックし、"Create Material Instance"を押して作成します。
 
 <center>![](./images/crssnky/5-1.png)<br/>
-図37 "Material Instance"の作成</center>
+図57 "Material Instance"の作成</center>
 
 このMaterial Instanceとは、親となるMaterialのパラメータを変化させて使えるものとなっています。同じようなノードを繋いでテクスチャ1枚だけ異なるMaterialを複数作るよりも、1つの親からテクスチャだけを差し替えた方が、工数的にも処理負荷的にも優しいのです。
 
-では作成したMaterial Instanceを開いてください。"Parameter Gourps"に、"TextureSampleParameter2D"ノードに指定した名前がパラメータとして表示されています。ここを△の画像と同じ要領で作成した□の画像を設定してください。  
-同様の処理を、別のMaterial Instanceに○の画像で行ってください。
+では作成したMaterial Instanceを開いてください。"Parameter Gourps"に、"TextureSampleParameter2D"ノードに指定した名前がパラメータとして表示されています。ここを△の画像と同じ要領で作成した□の画像を設定してください。同様の処理を、別のMaterial Instanceに○の画像で行ってください。
 
 <center>![](./images/crssnky/5-2.png)<br/>
-図37 "Material Instance"のテクスチャを変更</center>
+図58 "Material Instance"のテクスチャを変更</center>
 
 続いてそのMaterial Instanceを持つ"Niagara System"を作成します。作成にあたって先程と違う部分は、作成ダイアログで"Copy an existing system from your project content"を選択し、先程作ったSystemを選ぶことです。こうすることで、以前のものをコピーして新たに作ることができます。
 
 <center>![](./images/crssnky/5-3.png)<br/>
-図37 他のものを元に、新たに"Niagara System"を作成</center>
+図59 他のものを元に、新たに"Niagara System"を作成</center>
 
 変更する部分は1箇所です。"Render"の中にある"NiagaraSprite RendererProperties"モジュールの"Sprite Rendering"グループの"Material"を今作成したMaterial Instanceに変更してください。するとプレビュー画面では、△が放出されてたものが□や○に変わったと思います。
 
 <center>![](./images/crssnky/5-4.png)<br/>
-図37 Material Instanceに変更</center>
+図60 Material Instanceに変更</center>
 
 以上で"もうちょっとカドが少ない"エフェクトが完成しました。次の章で良いタイミングでそれらを切り替えていきます。
 
@@ -418,27 +415,27 @@ AルートはBGMの再生側なので、アクティブの処理を書きます�
 まず、即値で設定したBPの`Spawn System at Location`ノードの`System Template`について、入力を変数にすることで自由に切り替えられるようにします。
 
 <center>![](./images/crssnky/6-2.png)<br/>
-図37 "Niagara System"の変数を作成</center>
+図61 "Niagara System"の変数を作成</center>
 
 変数にしたら、変数の初期値を設定しておきましょう。"Details"タブの"Defalut Value"グループにあります。最初は△のエフェクトを設定しておきます。
 
 <center>![](./images/crssnky/6-1.png)<br/>
-図37 "Niagara System"の初期値を変更</center>
+図62 "Niagara System"の初期値を変更</center>
 
 続いてメンバ関数を定義していきます。"MyBlueprint"タブから"Function"グループの"+"押すと関数が定義できます。`ChangeToTriangle`・`ChangeToRectangle`・`ChangeToCircle`の3つを定義します。
 
 <center>![](./images/crssnky/6-3.png)<br/>
-図37 関数を作成</center>
+図63 関数を作成</center>
 
 関数の中身は極めて簡単です。"Niagara System"の変数に即値で"Niagara System"ファイルを指定します。それぞれの関数に、それぞれのファイルを指定してください。
 
 <center>![](./images/crssnky/6-4.png)<br/>
-図37 関数を定義</center>
+図64 関数を定義</center>
 
 出来た関数はそのまま呼び出しても良いですが、今回は`Set Timer by Function Name`ノードで指定時間後に呼び出してもらいます。`Function Name`ピンには呼び出したい関数名、`Time`には時間を入力します。(ちなみに、「正方形」初出は2:13辺り、「丸」初出は3:59辺り)
 
 <center>![](./images/crssnky/6-5.png)<br/>
-図37 関数を指定時間後に呼び出し</center>
+図65 関数を指定時間後に呼び出し</center>
 
 以上で歌詞(...のタイミング)に合わせたエフェクトの変更が完了しました。これでみなさんもVJのスタートに立てたと思います！
 
@@ -448,5 +445,5 @@ AルートはBGMの再生側なので、アクティブの処理を書きます�
 
 ## 参考
 - 株式会社ヒストリア ブログ「UE 4.22 の新機能!Sound Submix のスペクトル解析について」 http://historia.co.jp/archives/11784/
-- 
-Yuya Shiotani 「NiagaraでサクッとMorphEffectを作ろう」 https://www.slideshare.net/YuyaShiotani/niagaramorpheffect-113524177
+- Yuya Shiotani 「NiagaraでサクッとMorphEffectを作ろう」 https://www.slideshare.net/YuyaShiotani/niagaramorpheffect-113524177
+- ニコニコ大百科「ローリング△さんかく」 https://dic.nicovideo.jp/a/ローリング△さんかく
